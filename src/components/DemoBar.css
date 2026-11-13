@@ -1,0 +1,126 @@
+/* Bandeau de démo (mobile) : aux couleurs de VisionViewer, pas à celles du cinéma */
+.demo-bar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: calc(6px + env(safe-area-inset-top)) 8px 6px 6px;
+  background: var(--v-bg);
+  color: var(--v-ink);
+  font-family: var(--font-brand);
+}
+
+.demo-bar__about {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 34px;
+  padding: 0 8px 0 6px;
+  border-radius: 9px;
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Le logo de la page de présentation, en plus petit */
+.demo-bar__about img {
+  display: block;
+  width: auto;
+  height: 27px;
+}
+
+/* Dans le bandeau, la place manque : on garde le nom des salles, pas leur capacité */
+.demo-bar .segmented__meta {
+  display: none;
+}
+
+.demo-bar__about > svg {
+  opacity: 0.7;
+}
+
+.demo-bar__about:active {
+  background: rgb(255 255 255 / 0.12);
+}
+
+.demo-bar__about:focus-visible {
+  outline-color: #fff;
+}
+
+/* --- Sélecteur de salle ---------------------------------------------------
+   Les couleurs passent par des variables, pour pouvoir l'habiller autrement ailleurs. */
+.segmented {
+  --seg-track: rgb(255 255 255 / 0.1);
+  --seg-text: rgb(255 255 255 / 0.66);
+  --seg-active-bg: #fff;
+  --seg-active-text: var(--v-bg);
+  --seg-shadow: 0 1px 3px rgb(0 0 0 / 0.3);
+  --seg-focus: #fff;
+  flex: 1;
+  display: flex;
+  min-width: 0;
+  padding: 3px;
+  border-radius: 10px;
+  background: var(--seg-track);
+  font-family: var(--font-brand);
+}
+
+.segmented__item {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px;
+  min-width: 0;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 7px;
+  color: var(--seg-text);
+  line-height: 32px;
+  white-space: nowrap;
+  transition: color 200ms;
+}
+
+.segmented__item.is-active {
+  color: var(--seg-active-text);
+}
+
+.segmented__item:focus-visible {
+  outline-color: var(--seg-focus);
+}
+
+.segmented__pill {
+  position: absolute;
+  inset: 0;
+  border-radius: 7px;
+  background: var(--seg-active-bg);
+  box-shadow: var(--seg-shadow);
+}
+
+.segmented__label,
+.segmented__meta {
+  position: relative;
+}
+
+.segmented__label {
+  overflow: hidden;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  text-overflow: ellipsis;
+}
+
+.segmented__meta {
+  font-family: var(--font-brand-mono);
+  font-size: 11px;
+  opacity: 0.6;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

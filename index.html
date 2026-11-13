@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#040405" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="VisionViewer" />
+    <!-- Site envoyé par lien : il n'a pas vocation à être référencé -->
+    <meta name="robots" content="noindex, nofollow" />
+
+    <title>VisionViewer — La vue depuis votre fauteuil</title>
+    <meta name="description" content="VisionViewer montre à chaque spectateur la vue depuis sa place, en 3D, avant le paiement." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="VisionViewer" />
+    <meta property="og:title" content="VisionViewer — La vue depuis votre fauteuil" />
+    <meta property="og:description" content="VisionViewer montre à chaque spectateur la vue depuis sa place, en 3D, avant le paiement." />
+    <!-- Aperçu du lien (messageries, e-mail) : adresses absolues, à adapter si le site change de domaine -->
+    <meta property="og:url" content="https://visionviewer.vercel.app/" />
+    <meta property="og:image" content="https://visionviewer.vercel.app/og-visionviewer.jpg" />
+    <meta property="og:image:width" content="800" />
+    <meta property="og:image:height" content="420" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://visionviewer.vercel.app/og-visionviewer.jpg" />
+
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- Polices du premier écran, demandées en même temps que la page -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/node_modules/@fontsource-variable/inter-tight/files/inter-tight-latin-wght-normal.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2" />
+    <link rel="stylesheet" href="/src/landing/landing.css" />
+    <!-- Sans JavaScript, pas de scène à faire défiler : la page se réduit à son ouverture et à ses sections -->
+    <noscript><style>#track{height:auto}.stage{position:relative}.foot{display:none}</style></noscript>
+  </head>
+  <body>
+    <!--
+      Page de présentation VisionViewer, reprise de la maquette visionviewer-landing.html.
+      Styles : src/landing/landing.css. Scène 3D, coupe et comportements : src/landing/.
+    -->
+<div id="track">
+  <main class="stage" id="stage">
+    <canvas id="gl" aria-hidden="true"></canvas>
+
+    <header class="bar">
+      <a class="logo" href="#top" id="top"><img src="/logo.svg" alt="VisionViewer" width="127" height="40"></a>
+      <nav class="mono" aria-label="Sections">
+        <a href="#sur-mesure">Sur mesure</a>
+        <a href="#integration">Intégration</a>
+        <a href="#demo">Démo</a>
+      </nav>
+      <a class="btn demo-link" href="/demo">Essayez maintenant<span class="arr" aria-hidden="true">→</span></a>
+    </header>
+
+    <div id="hero"><h1>Montrez à chaque spectateur la vue depuis sa place.</h1></div>
+    <p id="sub">VisionViewer reconstitue chacune de vos salles en 3D, à ses propres cotes, et se branche directement sur votre site web et votre application mobile.</p>
+
+    <section class="cap" id="c1"><h2>Chaque salle est modélisée telle qu'elle est.</h2><p>Rangées, pente, espacement, écran : chaque point se place aux cotes réelles de la salle.</p></section>
+    <section class="cap" id="c2"><h2>Salle 1. Onze rangs, 157 places.</h2><p>Écran de 9,40 × 3,93 m, pente de 11°, 1,10 m entre les rangs, 5 emplacements PMR.</p></section>
+    <section class="cap" id="c3"><h2>Le spectateur choisit un fauteuil.</h2><p>G9 s'allume, et son champ de vision se trace jusqu'à l'écran.</p></section>
+    <section class="cap" id="c4"><h2>Il voit ce qu'il verra.</h2><p>Hauteur des yeux, centre de l'écran, rangs de devant : la vue de sa place, pas celle d'une salle type.</p></section>
+    <section class="cap" id="c5"><h2>Premier rang ou fond de salle&nbsp;?</h2><p>De A1 à K15, la distance et l'angle se recalculent à chaque fauteuil.</p></section>
+    <section class="cap" id="c7"><h2>S'adapte à la disposition de chacune de vos salles.</h2>
+      <dl class="stats"><div><dt class="mono">Salle</dt><dd id="sName">Salle 1</dd></div><div><dt class="mono">Places</dt><dd id="sPlaces">157</dd></div><div><dt class="mono">Écran</dt><dd id="sScreen">9,40 × 3,93 m</dd></div></dl>
+      <p id="sDesc">Onze rangs droits, avec des places doubles aux extrémités de deux rangs.</p></section>
+    <section class="cap" id="c6"><h2>Il choisit, puis continue sa commande.</h2><p>La vue s'ouvre depuis votre plan de salle, sans faire quitter le parcours de réservation.</p></section>
+
+    <dl id="hud">
+      <div><dt class="mono">Fauteuil</dt><dd id="hSeat">G9</dd></div>
+      <div><dt class="mono">Distance</dt><dd id="hDist">—</dd></div>
+      <div><dt class="mono">Angle</dt><dd id="hAng">—</dd></div>
+    </dl>
+    <div class="mono" id="tagSeat">G9</div>
+
+    <div class="foot mono"><span id="hint">Défilez</span><span id="tc">00:00:00:00</span></div>
+  </main>
+</div>
+
+<div class="after">
+  <section id="sur-mesure"><div class="wrap">
+    <span class="mono"><b>01</b>Sur mesure</span>
+    <h2>Aucune salle ne ressemble à une autre.</h2>
+    <p class="lead">VisionViewer s'adapte à vos salles, une par une. Le spectateur voit la vue de sa salle, pas celle d'une salle type.</p>
+
+    <figure class="fig">
+      <div class="scroll" id="coupe"></div>
+      <figcaption class="mono">Fig. 1 — Coupe · Salle 1 · G9 · 10,6 m · 48°</figcaption>
+    </figure>
+
+    <ul class="spec">
+      <li class="th mono">Ce que nous reprenons de chacune de vos salles</li>
+      <li><h3>Inclinaison</h3><p>La pente du gradin, marche par marche.</p></li>
+      <li><h3>Disposition des places</h3><p>Rangées, allées, emplacements PMR, places absentes.</p></li>
+      <li><h3>Espacement</h3><p>Entre les rangées et d'un fauteuil à l'autre.</p></li>
+      <li><h3>Taille de l'écran</h3><p>Largeur, hauteur et position dans la salle.</p></li>
+      <li><h3>Places doubles</h3><p>Fauteuils duo et banquettes.</p></li>
+    </ul>
+
+    <div class="noplan" id="plan">
+      <h3>Pas encore de plan de salle&nbsp;? Nous le construisons.</h3>
+      <div class="duo">
+        <article><span class="mono">Option 1 · à distance</span><h4>À partir de vos photos</h4><p>Vous nous envoyez quelques photos de la salle. Nous reconstituons le plan 2D, la numérotation et les cotes.</p></article>
+        <article><span class="mono">Option 2 · sur place</span><h4>Un ingénieur VisionViewer se déplace</h4><p>Il mesure la salle chez vous : écran, gradin, rangées et espacements. Vous n'avez rien à préparer.</p></article>
+      </div>
+    </div>
+  </div></section>
+
+  <section id="integration"><div class="wrap">
+    <span class="mono"><b>02</b>Intégration</span>
+    <h2>Se branche directement sur votre site web et votre application mobile.</h2>
+    <p class="lead">Le spectateur compare les places, choisit, puis continue sa commande. Il ne quitte jamais votre parcours de réservation.</p>
+    <div class="flow">
+      <article><span class="mono">Chez vous</span><h3>Votre plan de salle</h3><a class="hint" href="#plan">Pas de plan ? Nous le construisons.</a></article>
+      <span class="arr" aria-hidden="true">→</span>
+      <article class="us"><span class="mono">VisionViewer</span><h3>La vue depuis le fauteuil</h3></article>
+      <span class="arr" aria-hidden="true">→</span>
+      <article><span class="mono">Chez vous</span><h3>La suite de la commande</h3></article>
+    </div>
+    <p class="mono where">Site web · Application mobile</p>
+  </div></section>
+
+  <section id="chiffres"><div class="wrap tight">
+    <span class="mono">En chiffres</span>
+    <h2>La place compte avant même l'achat.</h2>
+    <div class="kpis" id="kpis" tabindex="0" aria-label="Chiffres clés, faites défiler horizontalement">
+      <article><b>1<small>sur 2</small></b><p>Plus d'un acheteur sur deux se dit prêt à payer davantage pour sa place préférée ou pour le milieu de la salle.</p><span class="mono">Fandango, Moviegoing Trends &amp; Insights · États-Unis, 2024</span></article>
+      <article><b>N°1</b><p>La place réservée est la première raison citée pour acheter son billet en ligne ou sur une application.</p><span class="mono">Fandango, Moviegoing Trends &amp; Insights · États-Unis, 2024</span></article>
+      <article><b>28<small>%</small></b><p>des acheteurs en ligne ont choisi leur cinéma parce qu'il permet de réserver sa place.</p><span class="mono">Vertigo Research · Webedia Movies Pro · États-Unis, 2018</span></article>
+      <article><b>72<small>%</small></b><p>des spectateurs qui trouvent leur séance sur le site du cinéma y terminent leur achat.</p><span class="mono">Vertigo Research · Webedia Movies Pro · États-Unis, 2018</span></article>
+    </div>
+    <div class="knav"><button type="button" id="kPrev" aria-label="Chiffre précédent">←</button><button type="button" id="kNext" aria-label="Chiffre suivant">→</button></div>
+  </div></section>
+
+  <section id="demo"><div class="wrap">
+    <span class="mono"><b>03</b>Démo</span>
+    <h2>Essayez-le vous-même.</h2>
+    <div class="try">
+      <article class="by-qr">
+        <span class="mono">Sur votre téléphone</span>
+        <div class="qr" id="qr"><span class="mono">QR code<br>affiché sur la version en ligne</span></div>
+        <h3>La démo se juge mieux en main.</h3>
+        <p>Scannez le code : elle s'ouvre sur votre téléphone, là où le spectateur réservera.</p>
+      </article>
+      <article>
+        <span class="mono"><span class="on-desk">Sur ordinateur</span><span class="on-touch">Sur cet appareil</span></span>
+        <div class="desk on-desk" aria-hidden="true"><i></i><i></i><i></i></div>
+        <h3><span class="on-desk">Ou directement ici, dans votre navigateur.</span><span class="on-touch">Directement ici, dans votre navigateur.</span></h3>
+        <p>La même démo, avec la vue 3D en plein écran.</p>
+        <a class="btn big demo-link" href="/demo">Essayez maintenant<span class="arr" aria-hidden="true">→</span></a>
+      </article>
+    </div>
+  </div></section>
+
+  <section id="contact" class="cta"><div class="wrap">
+    <h2>Pourquoi pas chez vous&nbsp;?</h2>
+    <p class="lead">Écrivez-nous avec le nom d'une de vos salles. Nous vous la montrons dans VisionViewer.</p>
+    <div class="mail">
+      <span class="addr" id="addr"></span>
+      <button class="btn" type="button" id="copy">Copier l'adresse</button>
+    </div>
+    <button class="link" type="button" id="replay">Revoir depuis le début</button>
+  </div></section>
+
+  <footer class="end"><div class="wrap mono"><span>VisionViewer · prototype</span><span>Salles, dimensions et occupation de démonstration</span></div></footer>
+</div>
+
+
+    <script type="module" src="/src/landing/main.ts"></script>
+  </body>
+</html>

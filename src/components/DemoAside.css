@@ -1,0 +1,125 @@
+/* Panneau de la démo sur ordinateur : la typographie et les couleurs de la page de présentation */
+.demo-aside {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+  height: min(860px, 100dvh - 56px);
+  padding: 8px 0;
+  color: var(--v-ink);
+  font-family: var(--font-brand);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.demo-aside a:focus-visible {
+  outline-color: var(--v-ink);
+  outline-offset: 4px;
+}
+
+.demo-aside p {
+  max-width: 26em;
+  color: var(--v-dim);
+}
+
+.demo-aside__mono {
+  color: var(--v-dim);
+  font: 400 11px/1.4 var(--font-brand-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.demo-aside__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.demo-aside__logo img {
+  display: block;
+  width: auto;
+  height: 40px;
+}
+
+.demo-aside__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--v-line);
+  color: var(--v-dim);
+  font-size: 14px;
+  text-decoration: none;
+  transition:
+    color 200ms,
+    border-color 200ms;
+}
+
+.demo-aside__back:hover,
+.demo-aside__back:focus-visible {
+  border-color: var(--v-ink);
+  color: var(--v-ink);
+}
+
+.demo-aside h1 {
+  margin: 20px 0 18px;
+  font-weight: 300;
+  font-size: clamp(40px, 4.4vw, 62px);
+  line-height: 1.03;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.demo-aside__room {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 340px;
+  margin-top: 30px;
+}
+
+.demo-aside .segmented {
+  flex: none;
+}
+
+.demo-aside__phone {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 22px;
+  padding-top: 24px;
+  border-top: 1px solid var(--v-line);
+}
+
+.demo-aside__qr {
+  display: block;
+  width: 132px;
+  height: 132px;
+  /* Complète la marge blanche du code, pour qu'il reste lisible sur le fond noir */
+  border: 6px solid #fff;
+  background: #fff;
+}
+
+.demo-aside__qr--off {
+  display: grid;
+  place-items: center;
+  padding: 10px;
+  border: 1px dashed rgb(245 245 246 / 0.35);
+  background: none;
+  font-size: 10px;
+  text-align: center;
+}
+
+.demo-aside h2 {
+  margin: 8px 0;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+}
+
+.demo-aside__phone p {
+  font-size: 15px;
+}

@@ -1,0 +1,170 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--v-bg);
+  color: var(--c-ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--c-seat-free);
+  outline-offset: 2px;
+}
+
+/* --- Mise en page d'ensemble ---------------------------------------------
+   Mobile : l'application occupe tout l'écran.
+   Ordinateur : elle est présentée dans un téléphone, à côté du panneau de démo
+   (components/DemoAside), sur le fond de la page de présentation. */
+
+.stage,
+.device-rail,
+.device {
+  height: 100dvh;
+}
+
+.app {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 440px;
+  height: 100%;
+  margin: 0 auto;
+  background: var(--c-bg);
+  overflow: hidden;
+}
+
+/* Barre d'état factice du téléphone de présentation */
+.statusbar {
+  display: none;
+}
+
+@media (min-width: 1000px) and (min-height: 620px) {
+  .stage {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: minmax(0, 430px) auto;
+    align-items: center;
+    justify-content: center;
+    column-gap: clamp(56px, 9vw, 150px);
+    padding: 0 clamp(28px, 4.5vw, 64px);
+  }
+
+  /* La lueur rouge du bas de la page de présentation */
+  .stage::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(
+      70% 46% at 50% 118%,
+      rgb(208 50 58 / 0.62),
+      rgb(208 50 58 / 0.12) 55%,
+      rgb(208 50 58 / 0) 100%
+    );
+    pointer-events: none;
+  }
+
+  .device-rail {
+    display: grid;
+    place-items: center;
+  }
+
+  .device {
+    position: relative;
+    width: 398px;
+    height: min(860px, 100dvh - 56px);
+    padding: 10px;
+    border-radius: 52px;
+    background: #0b0d12;
+    box-shadow:
+      inset 0 0 0 1.5px #3a3d47,
+      0 0 0 1px rgb(0 0 0 / 0.6),
+      0 40px 90px -30px rgb(0 0 0 / 0.9);
+  }
+
+  .device .app {
+    max-width: none;
+    border-radius: 42px;
+  }
+
+  /* Le sélecteur de salle passe dans le panneau de démo */
+  .device .demo-bar {
+    display: none;
+  }
+
+  .statusbar {
+    flex: none;
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 44px;
+    padding: 0 30px;
+    background: var(--c-navy);
+    color: #fff;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .statusbar::after {
+    content: '';
+    position: absolute;
+    top: 9px;
+    left: 50%;
+    width: 104px;
+    height: 28px;
+    border-radius: 14px;
+    background: #0b0d12;
+    translate: -50% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

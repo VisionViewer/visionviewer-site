@@ -1,0 +1,31 @@
+{
+  "id": "grande-salle",
+  "name": "Grande salle",
+  "description": "Dix-huit rangs droits, deux allées, un écran de dix-huit mètres.",
+  "rows": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R"],
+  "seatsPerRow": 24,
+  "seatOneSide": "left",
+  "aislesAfter": [6, 18],
+  "rowOverrides": {
+    "A": {
+      "pmr": [1, 2, 23, 24]
+    },
+    "R": {
+      "empty": [11, 12, 13, 14],
+      "double": [1, 3, 5, 19, 21, 23]
+    }
+  },
+  "occupied": ["D11", "D12", "D13", "E9", "E10", "E15", "E16", "F8", "F9", "F12", "F13", "F14", "F20", "F21", "F22", "G8", "G9", "G12", "G13", "G14", "G15", "G20", "G21", "H3", "H4", "H5", "H10", "H11", "H13", "H14", "H19", "H20", "I1", "I2", "I3", "I8", "I11", "I12", "I13", "I14", "I15", "I20", "I21", "I22", "J1", "J2", "J3", "J11", "J12", "J13", "J14", "J15", "J16", "J17", "J18", "J21", "J22", "K3", "K4", "K9", "K10", "K12", "K13", "K14", "K16", "K17", "K18", "K21", "K22", "L4", "L5", "L9", "L10", "L11", "L16", "L17", "L18", "L20", "L21", "M5", "M6", "M11", "M12", "M13", "M14", "M15", "M19", "M20", "N6", "N7", "N8", "N9", "N10", "N12", "N13", "N15", "N16", "N19", "N20", "N21", "N22", "O3", "O4", "O5", "O7", "O10", "O11", "O12", "O13", "O14", "O15", "O16", "O19", "O20", "O21", "O22", "P3", "P4", "P7", "P8", "P13", "P14", "P15", "P16", "P19", "P20", "Q1", "Q2", "Q3", "Q4", "Q8", "Q9", "Q10", "Q11", "Q12", "Q13", "Q16", "Q17", "Q19", "Q20", "Q21", "Q22", "R7", "R8", "R9", "R19-20", "R21-22"],
+  "preselected": "L12",
+  "price": 13.9,
+  "dimensions": {
+    "screenWidth": 18,
+    "screenHeight": 7.53,
+    "screenBottomHeight": 1.6,
+    "screenToFirstRow": 7,
+    "rowSpacing": 1.25,
+    "seatWidth": 0.6,
+    "stepHeight": 0.38,
+    "aisleWidth": 1.2
+  }
+}

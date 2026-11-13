@@ -1,0 +1,49 @@
+/*
+ * Jetons de design de l'écran de réservation.
+ * Tout ce qui doit coller à la capture de référence (couleurs, typo, rayons)
+ * se règle ici.
+ */
+:root {
+  /* Marque */
+  --c-navy: #0a1a3c;
+  --c-navy-2: #14295a;
+  --c-ink: #0a1a3c;
+  --c-muted: #5c6884;
+  --c-line: #e1e5ee;
+  --c-bg: #ffffff;
+  --c-bg-soft: #f2f4f9;
+  --c-page: #e6e9f1;
+
+  /* États des fauteuils */
+  --c-seat-free: #1e5bd8;
+  --c-seat-selected: #18a558;
+  --c-seat-occupied: #e2132e;
+  --c-seat-pmr: #0a1a3c;
+
+  /* Bouton principal */
+  --c-cta: #e2132e;
+  --c-cta-press: #bf0f26;
+
+  /* Typographie */
+  --font-display: 'Barlow Condensed', 'Arial Narrow', 'Helvetica Neue', sans-serif;
+  --font-body: 'Barlow', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Habillage VisionViewer autour de la démo (bandeau, panneau sur ordinateur) : les valeurs
+     de la page de présentation (src/landing/landing.css). Volontairement distinct de l'écran
+     de réservation, qui porte les couleurs du cinéma client */
+  --v-bg: #040405;
+  --v-ink: #f5f5f6;
+  --v-dim: #9a9aa4;
+  --v-line: rgb(245 245 246 / 0.14);
+  --v-red: #d0323a;
+  --v-green: #5fd08a;
+  --font-brand: 'Inter Tight Variable', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-brand-mono: 'Geist Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Formes et mouvements */
+  --radius: 6px;
+  --radius-lg: 14px;
+  --gutter: 16px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}

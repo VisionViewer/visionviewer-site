@@ -1,0 +1,333 @@
+.plan {
+  margin: 0 var(--gutter);
+}
+
+.plan__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.plan__heading {
+  min-width: 0;
+}
+
+.plan__caption {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+.plan__zoom {
+  display: flex;
+  gap: 8px;
+}
+
+.zoom-btn {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1.5px solid var(--c-navy);
+  border-radius: var(--radius);
+  color: var(--c-navy);
+  background: var(--c-bg);
+  transition:
+    transform 160ms var(--ease-out),
+    background-color 160ms,
+    color 160ms,
+    opacity 160ms;
+}
+
+.zoom-btn:active:not(:disabled) {
+  transform: scale(0.9);
+  background: var(--c-navy);
+  color: #fff;
+}
+
+.zoom-btn:disabled {
+  opacity: 0.28;
+}
+
+/* --- Zone défilable ------------------------------------------------------ */
+
+/* Invitation à zoomer, sous le nom de la salle : uniquement au doigt,
+   quand les sièges sont trop petits pour être touchés sans erreur */
+.plan__hint {
+  display: none;
+  align-items: center;
+  gap: 5px;
+  margin-top: 3px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--c-seat-free);
+}
+
+@media (hover: none), (pointer: coarse) {
+  .plan__hint {
+    display: flex;
+  }
+}
+
+
+.plan__viewport {
+  position: relative;
+  display: flex;
+  overflow: auto;
+  border-radius: var(--radius-lg);
+  background: var(--c-bg-soft);
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.plan__viewport::-webkit-scrollbar {
+  display: none;
+}
+
+@media (hover: hover) {
+  .plan__viewport--zoomed {
+    cursor: grab;
+  }
+  .plan__viewport--zoomed:active {
+    cursor: grabbing;
+  }
+}
+
+/* `margin: auto` centre le plan quand il est plus petit que la zone visible */
+.plan__sizer {
+  flex: none;
+  margin: auto;
+}
+
+.plan__map {
+  /* Doit correspondre à MAP_PADDING dans SeatPlan.tsx */
+  padding: 12px;
+}
+
+.plan__row {
+  display: flex;
+  align-items: center;
+  height: calc(var(--cell) * 1.2);
+}
+
+.plan__rowlabel {
+  /* Doit correspondre à ROW_LABEL_WIDTH dans SeatPlan.tsx */
+  flex: 0 0 18px;
+  /* Reste visible au bord de la zone quand le plan zoomé défile horizontalement */
+  position: sticky;
+  z-index: 2;
+  padding: calc(var(--cell) * 0.3) 0;
+  border-radius: 5px;
+  background: var(--c-bg-soft);
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(9px, calc(var(--cell) * 0.55), 13px);
+  line-height: 1;
+  color: var(--c-muted);
+  user-select: none;
+}
+
+.plan__rowlabel:first-child {
+  left: 0;
+}
+
+.plan__rowlabel:last-child {
+  right: 0;
+}
+
+.plan__seats {
+  position: relative;
+  flex: 1;
+  height: var(--cell);
+}
+
+/* --- Fauteuils ----------------------------------------------------------- */
+
+.seat {
+  position: absolute;
+  top: 0;
+  left: calc(var(--cell) * var(--x));
+  display: block;
+  /* --span vaut 2 pour une place double */
+  width: calc(var(--cell) * var(--span, 1));
+  height: var(--cell);
+  padding: calc(var(--cell) * 0.07);
+  animation: seat-in 520ms var(--ease-spring) backwards;
+  animation-delay: var(--delay);
+}
+
+.seat__shape {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  /* Vu de dessus : dossier en haut, l'écran est en bas du plan */
+  border-radius: 34% 34% 24% 24%;
+  background: var(--seat-color);
+  box-shadow: inset 0 calc(var(--cell) * 0.17) 0 rgb(0 0 0 / 0.17);
+  color: #fff;
+  transition:
+    background-color 220ms,
+    transform 200ms var(--ease-out),
+    filter 200ms;
+}
+
+.seat__label {
+  padding-top: calc(var(--cell) * 0.15);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: calc(var(--cell) * 0.42);
+  line-height: 1;
+  user-select: none;
+}
+
+/* Place double : une banquette large, deux numéros, un fin repère au milieu */
+.seat--double .seat__shape {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border-radius: 17% 17% 12% 12% / 34% 34% 24% 24%;
+}
+
+.seat--double .seat__shape::after {
+  content: '';
+  position: absolute;
+  top: 46%;
+  bottom: 16%;
+  left: calc(50% - 0.5px);
+  width: 1px;
+  background: rgb(255 255 255 / 0.45);
+}
+
+.seat--double.seat--selected::after {
+  border-radius: 18% / 36%;
+}
+
+.seat--free {
+  --seat-color: var(--c-seat-free);
+}
+
+.seat--selected {
+  --seat-color: var(--c-seat-selected);
+  z-index: 1;
+}
+
+.seat--occupied {
+  --seat-color: var(--c-seat-occupied);
+  cursor: not-allowed;
+}
+
+@media (hover: hover) {
+  .seat--free:hover .seat__shape {
+    transform: translateY(-1px) scale(1.12);
+    filter: brightness(1.15);
+  }
+}
+
+.seat:active:not(:disabled) .seat__shape {
+  transform: scale(0.84);
+}
+
+.seat--selected .seat__shape {
+  animation: seat-pop 460ms var(--ease-spring);
+}
+
+.seat--selected::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--c-seat-selected);
+  border-radius: 36%;
+  pointer-events: none;
+  animation: seat-ring 760ms var(--ease-out) forwards;
+}
+
+.seat--pmr .seat__shape {
+  border-radius: 24%;
+  background: transparent;
+  box-shadow: inset 0 0 0 max(1px, calc(var(--cell) * 0.07)) var(--c-seat-pmr);
+  color: var(--c-seat-pmr);
+}
+
+.seat--pmr svg {
+  width: 72%;
+  height: 72%;
+  stroke-width: 2.3;
+}
+
+/* --- Écran --------------------------------------------------------------- */
+
+.plan__screen {
+  margin: 16px 18px 0;
+  color: var(--c-navy);
+  text-align: center;
+  animation: screen-in 700ms var(--ease-out) 120ms backwards;
+}
+
+.plan__screen svg {
+  display: block;
+  width: 100%;
+  height: 22px;
+  overflow: visible;
+}
+
+.plan__screen path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.plan__screen span {
+  display: block;
+  margin-top: 6px;
+  padding-left: 0.34em;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 0.34em;
+}
+
+@keyframes seat-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.3);
+  }
+}
+
+@keyframes seat-pop {
+  0% {
+    transform: scale(0.7);
+  }
+  55% {
+    transform: scale(1.24);
+  }
+}
+
+@keyframes seat-ring {
+  from {
+    opacity: 0.9;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 0;
+    transform: scale(2.2);
+  }
+}
+
+@keyframes screen-in {
+  from {
+    opacity: 0;
+    transform: scaleX(0.6);
+  }
+}

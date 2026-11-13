@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#040405" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="VisionViewer" />
+    <!-- Site envoyé par lien : il n'a pas vocation à être référencé -->
+    <meta name="robots" content="noindex, nofollow" />
+
+    <title>VisionViewer — Démo</title>
+    <meta name="description" content="Démo interactive : choisissez un fauteuil sur le plan de salle et voyez l'écran en 3D depuis cette place, avant de réserver." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="VisionViewer" />
+    <meta property="og:title" content="VisionViewer — Démo" />
+    <meta property="og:description" content="Démo interactive : choisissez un fauteuil sur le plan de salle et voyez l'écran en 3D depuis cette place, avant de réserver." />
+    <!-- Aperçu du lien (messageries, e-mail) : adresses absolues, à adapter si le site change de domaine -->
+    <meta property="og:url" content="https://visionviewer.vercel.app/demo" />
+    <meta property="og:image" content="https://visionviewer.vercel.app/og-visionviewer.jpg" />
+    <meta property="og:image:width" content="800" />
+    <meta property="og:image:height" content="420" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://visionviewer.vercel.app/og-visionviewer.jpg" />
+
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- Polices du premier écran, demandées en même temps que le script (sinon elles attendent son exécution) -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/node_modules/@fontsource/barlow-condensed/files/barlow-condensed-latin-700-normal.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/node_modules/@fontsource/barlow-condensed/files/barlow-condensed-latin-600-normal.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/node_modules/@fontsource/barlow/files/barlow-latin-400-normal.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/node_modules/@fontsource/barlow/files/barlow-latin-500-normal.woff2" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>Cette démo a besoin de JavaScript pour fonctionner.</noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
