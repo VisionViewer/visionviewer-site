@@ -18,7 +18,7 @@ Puis ouvrir http://localhost:5173 pour la présentation, ou http://localhost:517
 | `npm run dev -- --host` | expose le serveur sur le réseau local, pour tester sur un vrai téléphone |
 | `npm run build` | vérifie les types puis génère `dist/` |
 | `npm test` | tests du calcul des salles (positions, rangée K, indicateurs) |
-| `npm run deploy` | construit puis met en ligne la démo sur Vercel (projet `visionviewer`) |
+| `npm run deploy` | construit ici puis met en ligne sur Vercel, sans passer par GitHub (en secours : voir « Démo en ligne ») |
 
 ## Ajouter une salle
 
@@ -72,11 +72,13 @@ Par défaut, l'écran est blanc et lumineux, comme dans la page de présentation
 
 Le site est publié sur https://visionviewer.vercel.app (non référencé par les moteurs de recherche).
 
+**Publier** : envoyer sur la branche `main` de ce dépôt. Vercel (projet `visionviewer`) construit alors le site et le met en ligne ; une autre branche donne une préversion, réservée aux comptes Vercel de l'équipe.
+
 - **Présentation** (`/`, fichier `index.html`) : la page VisionViewer, reprise de la maquette `visionviewer-landing.html`. Une salle en points de lumière se construit au défilement, puis viennent les sections « Sur mesure », « Intégration », les chiffres, « Démo » et le contact.
 - **Démo** (`/demo`, fichier `demo.html`) : l'application de réservation. Sur téléphone, elle occupe tout l'écran, avec un bandeau pour changer de salle et revenir à la présentation. Sur ordinateur, elle est présentée dans un téléphone, à côté d'un panneau qui porte le choix de la salle et le QR code.
 - **De l'une à l'autre** : les boutons « Essayez maintenant » de la présentation et les QR codes (section « Démo » de la présentation, panneau de la démo sur ordinateur) mènent à `/demo`, sur le plan de salle : au visiteur de choisir son fauteuil, puis d'ouvrir la vue 3D. Les QR codes ne s'affichent pas en local : un téléphone n'a pas accès à `localhost`.
 - L'adresse `/demo` repose sur une règle de réécriture vers `demo.html` (`vercel.json`). L'ancienne adresse `/?demo` y redirige.
-- `npm run deploy` republie après une modification. Si le site change de domaine, mettre à jour les balises `og:` de `index.html` et de `demo.html`.
+- Si le site change de domaine, mettre à jour les balises `og:` de `index.html` et de `demo.html`.
 
 ### Modifier la présentation
 
