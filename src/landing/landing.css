@@ -195,3 +195,92 @@ footer.end .wrap{max-width:none;padding-block:26px;display:flex;justify-content:
 .no-gl #track{height:auto}
 .no-gl .stage{position:relative}
 .no-gl #gl,.no-gl .foot,.no-gl #replay{display:none}
+
+/* Intégration : les deux façons de se brancher, en menu dépliant.
+   Dans les codes de la page : filets fins, aucun arrondi, étiquettes en monospace. Chaque façon est
+   un cadre, comme ceux du schéma au-dessus ; le vert, qui y désigne VisionViewer, marque la façon
+   ouverte. Leur surbrillance est celle des cadres « Pas encore de plan de salle ? » : voir « Le
+   contour qui s'allume », à la fin de cette feuille. */
+.ways{margin-top:96px;text-align:left}
+.ways>.mono{display:block;margin-bottom:16px}
+.acc{border:1px solid var(--line)}
+.acc+.acc{margin-top:14px}
+.acc__head{display:grid;grid-template-columns:minmax(0,1fr) auto 28px;align-items:center;gap:6px 28px;width:100%;margin:0;padding:24px 26px;border:0;background:none;color:inherit;font:inherit;letter-spacing:inherit;text-align:left;cursor:pointer}
+.acc__tag{grid-column:1;transition:color .3s}
+.acc__title{grid-column:1;font-size:clamp(22px,2.3vw,30px);font-weight:400;letter-spacing:-.03em;line-height:1.08}
+.acc__hint{grid-column:2;grid-row:1 / span 2;color:var(--dim);font-size:15px;font-weight:400;letter-spacing:0}
+/* Le signe : un « + » fait de deux filets, qui se referme en « − » quand la façon s'ouvre */
+.acc__sign{grid-column:3;grid-row:1 / span 2;position:relative;width:28px;height:28px}
+.acc__sign:before,.acc__sign:after{content:"";position:absolute;left:50%;top:50%;width:15px;height:1px;margin:-.5px 0 0 -7.5px;background:var(--ink);transition:transform .45s cubic-bezier(.2,.7,.2,1),background-color .3s}
+.acc__sign:after{transform:rotate(90deg)}
+.acc.is-open .acc__sign:after{transform:none}
+.acc.is-open .acc__tag{color:var(--green)}
+.acc.is-open .acc__sign:before,.acc.is-open .acc__sign:after{background:var(--green)}
+/* Sous la souris — sur le titre comme sur le contenu déplié — ou au clavier, l'étiquette et le
+   signe s'allument avec le contour du cadre. Le
+   contour tracé tient lieu de marque de focus, là où le navigateur sait l'afficher. */
+.acc__head:focus-visible{outline:1px solid var(--green);outline-offset:-1px}
+.acc__head:focus-visible .acc__tag{color:var(--green)}
+@supports selector(:has(a)){.acc__head:focus-visible{outline:none}}
+@media (hover:hover){
+  .acc:hover .acc__tag{color:var(--green)}
+  .acc:hover .acc__sign:before,.acc:hover .acc__sign:after{background:var(--green)}
+}
+/* Le contenu se déplie en hauteur, puis ses trois parties montent en place l'une après l'autre ;
+   refermé, il sort de la lecture et du clavier */
+.acc__panel{display:grid;grid-template-rows:0fr;visibility:hidden;transition:grid-template-rows .55s cubic-bezier(.2,.7,.2,1),visibility 0s .55s}
+.acc.is-open .acc__panel{grid-template-rows:1fr;visibility:visible;transition-delay:0s}
+.acc__inner{min-height:0;overflow:hidden}
+.acc__body{padding:26px 26px 30px;border-top:1px solid var(--line)}
+.acc__body>*{opacity:0;transform:translateY(10px);transition:opacity .3s,transform .45s cubic-bezier(.2,.7,.2,1)}
+.acc.is-open .acc__body>*{opacity:1;transform:none;transition-delay:.12s}
+.acc.is-open .acc__body>:nth-child(2){transition-delay:.18s}
+.acc.is-open .acc__body>:nth-child(3){transition-delay:.24s}
+.acc__body>p{margin:0;max-width:34em;color:var(--dim);font-size:17px;font-weight:400}
+.steps{list-style:none;margin:24px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.steps li{display:flex;flex-direction:column;gap:8px;font-size:16px;font-weight:400}
+/* Le code : une fenêtre au trait, comme le navigateur de la section Démo */
+.code{margin:28px 0 0;border:1px solid var(--line)}
+.code figcaption{display:flex;align-items:center;gap:14px;height:40px;padding-left:14px;border-bottom:1px solid var(--line)}
+.code .dots{display:flex;gap:6px}
+.code .dots i{width:6px;height:6px;border-radius:50%;background:var(--dim)}
+.code__copy{margin-left:auto;height:100%;padding:0 16px;border:0;border-left:1px solid var(--line);background:none;color:var(--ink);cursor:pointer;transition:color .2s}
+.code__copy:hover,.code__copy:focus-visible{color:var(--green);outline:none}
+.code pre{margin:0;padding:20px 22px 22px;overflow-x:auto;font:400 13px/1.75 var(--f-mono);color:var(--ink);tab-size:2}
+.code code{font:inherit}
+.code pre:focus-visible{outline:1px solid var(--ink);outline-offset:-1px}
+.code pre i{font-style:normal;color:var(--dim)}
+.code pre b{font-weight:400;color:var(--green)}
+@media (max-width:820px){
+  .ways{margin-top:64px}
+  .acc__head{grid-template-columns:minmax(0,1fr) 28px;gap:6px 16px;padding:20px 18px}
+  .acc__hint{display:none}
+  .acc__sign{grid-column:2}
+  .acc__body{padding:20px 18px 22px}
+  .steps{grid-template-columns:minmax(0,1fr);gap:14px}
+  .code pre{padding:16px;font-size:12px}
+}
+
+/* Le contour qui s'allume : sur les deux cadres « Pas encore de plan de salle ? » et sur les deux
+   façons d'intégrer, le contour se trace en vert, d'un coin à l'autre, puis une lueur légère
+   s'installe. Un cadre ou une façon s'allume sous la souris, où qu'elle soit dedans : une façon
+   ouverte reste allumée tant qu'on lit son contenu. Seulement là où il y a une souris : sur un
+   écran tactile, rien ne reste allumé après le toucher. Au clavier, une façon s'allume quand son
+   titre a le focus.
+   Les règles en « :has » restent à part : un navigateur qui ne le connaît pas écarte la règle entière. */
+.duo article,.acc{--glow:0 0 54px -22px rgba(95,208,138,.5),inset 0 0 44px -30px rgba(95,208,138,.55);--draw:opacity 0s,width .3s cubic-bezier(.2,.7,.2,1),height .3s cubic-bezier(.2,.7,.2,1) .28s;position:relative;transition:box-shadow .5s}
+.duo .mono{transition:color .3s}
+.duo article:before,.duo article:after,.acc:before,.acc:after{content:"";position:absolute;box-sizing:border-box;width:0;height:0;border:0 solid var(--green);opacity:0;pointer-events:none;transition:opacity .3s,width 0s .3s,height 0s .3s}
+.duo article:before,.acc:before{top:-1px;left:-1px;border-top-width:1px;border-right-width:1px}
+.duo article:after,.acc:after{bottom:-1px;right:-1px;border-bottom-width:1px;border-left-width:1px}
+.acc:has(.acc__head:focus-visible){box-shadow:var(--glow)}
+.acc:has(.acc__head:focus-visible):before,.acc:has(.acc__head:focus-visible):after{opacity:1;width:calc(100% + 2px);height:calc(100% + 2px);transition:var(--draw)}
+@media (hover:hover){
+  .duo article:hover,.acc:hover{box-shadow:var(--glow)}
+  .duo article:hover .mono{color:var(--green)}
+  .duo article:hover:before,.duo article:hover:after,.acc:hover:before,.acc:hover:after{opacity:1;width:calc(100% + 2px);height:calc(100% + 2px);transition:var(--draw)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .acc,.acc:before,.acc:after,.acc__panel,.acc__body>*,.acc__tag,.acc__sign:before,.acc__sign:after,.duo article,.duo .mono,.duo article:before,.duo article:after{transition:none !important}
+}

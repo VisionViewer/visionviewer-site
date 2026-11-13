@@ -33,7 +33,7 @@
     <link rel="preload" as="font" type="font/woff2" crossorigin href="/node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2" />
     <link rel="stylesheet" href="/src/landing/landing.css" />
     <!-- Sans JavaScript, pas de scène à faire défiler : la page se réduit à son ouverture et à ses sections -->
-    <noscript><style>#track{height:auto}.stage{position:relative}.foot{display:none}</style></noscript>
+    <noscript><style>#track{height:auto}.stage{position:relative}.foot{display:none}.acc__panel{grid-template-rows:1fr;visibility:visible}.acc__body>*{opacity:1;transform:none}.acc__sign,.code__copy{display:none}</style></noscript>
   </head>
   <body>
     <!--
@@ -119,6 +119,76 @@
       <article><span class="mono">Chez vous</span><h3>La suite de la commande</h3></article>
     </div>
     <p class="mono where">Site web · Application mobile</p>
+
+    <div class="ways" id="integrations">
+      <span class="mono">Deux façons de l'intégrer · une balise, un appel</span>
+
+      <article class="acc">
+        <h3><button class="acc__head" type="button" id="way-a-head" aria-expanded="false" aria-controls="way-a">
+          <span class="mono acc__tag">A · Vous avez déjà un plan de salle</span>
+          <span class="acc__title">Vue 3D seule</span>
+          <span class="acc__hint">Un bouton dans votre page</span>
+          <i class="acc__sign" aria-hidden="true"></i>
+        </button></h3>
+        <div class="acc__panel" id="way-a" role="region" aria-labelledby="way-a-head"><div class="acc__inner"><div class="acc__body">
+          <p>Votre plan de salle ne change pas. Vous y ajoutez un bouton : la vue 3D s'ouvre en plein écran, depuis les places que le spectateur vient de choisir.</p>
+          <ol class="steps">
+            <li><span class="mono">Étape 1</span>Il choisit ses places sur votre plan.</li>
+            <li><span class="mono">Étape 2</span>Il ouvre la vue 3D et déplace ses places pour comparer.</li>
+            <li><span class="mono">Étape 3</span>Il revient à votre plan avec son choix, et continue sa commande.</li>
+          </ol>
+          <figure class="code">
+            <figcaption><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="mono">votre-page.html</span><button class="mono code__copy" type="button">Copier</button></figcaption>
+<pre tabindex="0"><code>&lt;script src="https://visionviewer-widget.vercel.app/sdk/visionviewer.js"&gt;&lt;/script&gt;
+
+&lt;button id="vue-3d"&gt;Vue 3D&lt;/button&gt;
+
+&lt;script&gt;
+  document.querySelector('#vue-3d').onclick = () =&gt;
+    <b>VisionViewer.open</b>({
+      apiKey: 'vv_test_…',
+      roomId: 'salle-1',
+      selected: ['G1', 'G2', 'G3'],   <i>// les places choisies sur votre plan</i>
+      occupied: ['G8', 'G9'],         <i>// les sièges déjà vendus</i>
+      onConfirm: (seats) =&gt; panier.remplacer(seats),
+    })
+&lt;/script&gt;</code></pre>
+          </figure>
+        </div></div></div>
+      </article>
+
+      <article class="acc">
+        <h3><button class="acc__head" type="button" id="way-b-head" aria-expanded="false" aria-controls="way-b">
+          <span class="mono acc__tag">B · Vous n'avez pas de plan de salle</span>
+          <span class="acc__title">Plan de salle 2D + vue 3D</span>
+          <span class="acc__hint">Un bloc dans votre page</span>
+          <i class="acc__sign" aria-hidden="true"></i>
+        </button></h3>
+        <div class="acc__panel" id="way-b" role="region" aria-labelledby="way-b-head"><div class="acc__inner"><div class="acc__body">
+          <p>Vous réservez un bloc dans votre page de réservation. Notre plan de salle s'y insère : le spectateur y choisit ses places, puis ouvre la vue 3D.</p>
+          <ol class="steps">
+            <li><span class="mono">Étape 1</span>Notre plan s'affiche dans votre page, en clair ou en sombre.</li>
+            <li><span class="mono">Étape 2</span>Il y choisit jusqu'à neuf places, puis les compare en 3D.</li>
+            <li><span class="mono">Étape 3</span>Votre page reçoit son choix, et continue la commande.</li>
+          </ol>
+          <figure class="code">
+            <figcaption><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="mono">votre-page.html</span><button class="mono code__copy" type="button">Copier</button></figcaption>
+<pre tabindex="0"><code>&lt;script src="https://visionviewer-widget.vercel.app/sdk/visionviewer.js"&gt;&lt;/script&gt;
+
+&lt;div id="plan-de-salle"&gt;&lt;/div&gt;
+
+&lt;script&gt;
+  <b>VisionViewer.mountPlan</b>('#plan-de-salle', {
+    apiKey: 'vv_test_…',
+    roomId: 'salle-1',
+    occupied: ['G8', 'G9'],           <i>// les sièges déjà vendus</i>
+    onChange: ({ selected }) =&gt; panier.remplacer(selected),
+  })
+&lt;/script&gt;</code></pre>
+          </figure>
+        </div></div></div>
+      </article>
+    </div>
   </div></section>
 
   <section id="chiffres"><div class="wrap tight">

@@ -1,10 +1,12 @@
 /*
  * Page de présentation : tout ce qui n'est pas la scène 3D.
- * Liens vers la démo, QR code, coupe de la salle, adresse de contact, carrousel des chiffres.
+ * Liens vers la démo, QR code, coupe de la salle, menu de l'intégration, adresse de contact,
+ * carrousel des chiffres.
  */
 import { DEMO_PATH, shareableDemoUrl } from '../lib/links'
 import { drawCoupe } from './coupe'
 import { halls } from './halls'
+import { setupWays } from './ways'
 
 /** Adresse de contact affichée en bas de page (exemple à remplacer). */
 const CONTACT = 'contact@visionviewer.example'
@@ -41,6 +43,9 @@ if (demoUrl && !window.matchMedia('(hover: none) and (pointer: coarse)').matches
     qr.classList.add('on')
   })
 }
+
+// Section Intégration : les deux façons de se brancher, en menu dépliant
+setupWays($('integrations'))
 
 // --- Adresse de contact ------------------------------------------------------
 const address = $('addr')
