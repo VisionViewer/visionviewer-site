@@ -205,7 +205,7 @@ footer.end .wrap{max-width:none;padding-block:26px;display:flex;justify-content:
 .ways>.mono{display:block;margin-bottom:16px}
 .acc{border:1px solid var(--line)}
 .acc+.acc{margin-top:14px}
-.acc__head{display:grid;grid-template-columns:minmax(0,1fr) auto 28px;align-items:center;gap:6px 28px;width:100%;margin:0;padding:24px 26px;border:0;background:none;color:inherit;font:inherit;letter-spacing:inherit;text-align:left;cursor:pointer}
+.acc__head{display:grid;grid-template-columns:minmax(0,1fr) auto 28px;align-items:center;gap:6px 28px;width:100%;margin:0;padding:24px 26px;border:0;background:none;color:inherit;font:inherit;letter-spacing:inherit;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .acc__tag{grid-column:1;transition:color .3s}
 .acc__title{grid-column:1;font-size:clamp(22px,2.3vw,30px);font-weight:400;letter-spacing:-.03em;line-height:1.08}
 .acc__hint{grid-column:2;grid-row:1 / span 2;color:var(--dim);font-size:15px;font-weight:400;letter-spacing:0}
@@ -264,15 +264,19 @@ footer.end .wrap{max-width:none;padding-block:26px;display:flex;justify-content:
 /* Le contour qui s'allume : sur les deux cadres « Pas encore de plan de salle ? » et sur les deux
    façons d'intégrer, le contour se trace en vert, d'un coin à l'autre, puis une lueur légère
    s'installe. Un cadre ou une façon s'allume sous la souris, où qu'elle soit dedans : une façon
-   ouverte reste allumée tant qu'on lit son contenu. Seulement là où il y a une souris : sur un
-   écran tactile, rien ne reste allumé après le toucher. Au clavier, une façon s'allume quand son
-   titre a le focus.
+   ouverte reste allumée tant qu'on lit son contenu. Au clavier, une façon s'allume quand son
+   titre a le focus. Au doigt, il n'y a pas de survol : le cadre qu'on touche reçoit « is-lit »
+   (lit.ts), et le garde jusqu'à ce qu'on touche ailleurs.
    Les règles en « :has » restent à part : un navigateur qui ne le connaît pas écarte la règle entière. */
 .duo article,.acc{--glow:0 0 54px -22px rgba(95,208,138,.5),inset 0 0 44px -30px rgba(95,208,138,.55);--draw:opacity 0s,width .3s cubic-bezier(.2,.7,.2,1),height .3s cubic-bezier(.2,.7,.2,1) .28s;position:relative;transition:box-shadow .5s}
 .duo .mono{transition:color .3s}
 .duo article:before,.duo article:after,.acc:before,.acc:after{content:"";position:absolute;box-sizing:border-box;width:0;height:0;border:0 solid var(--green);opacity:0;pointer-events:none;transition:opacity .3s,width 0s .3s,height 0s .3s}
 .duo article:before,.acc:before{top:-1px;left:-1px;border-top-width:1px;border-right-width:1px}
 .duo article:after,.acc:after{bottom:-1px;right:-1px;border-bottom-width:1px;border-left-width:1px}
+.duo article.is-lit,.acc.is-lit{box-shadow:var(--glow)}
+.duo article.is-lit .mono,.acc.is-lit .acc__tag{color:var(--green)}
+.acc.is-lit .acc__sign:before,.acc.is-lit .acc__sign:after{background:var(--green)}
+.duo article.is-lit:before,.duo article.is-lit:after,.acc.is-lit:before,.acc.is-lit:after{opacity:1;width:calc(100% + 2px);height:calc(100% + 2px);transition:var(--draw)}
 .acc:has(.acc__head:focus-visible){box-shadow:var(--glow)}
 .acc:has(.acc__head:focus-visible):before,.acc:has(.acc__head:focus-visible):after{opacity:1;width:calc(100% + 2px);height:calc(100% + 2px);transition:var(--draw)}
 @media (hover:hover){

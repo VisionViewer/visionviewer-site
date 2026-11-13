@@ -6,6 +6,7 @@
 import { DEMO_PATH, shareableDemoUrl } from '../lib/links'
 import { drawCoupe } from './coupe'
 import { halls } from './halls'
+import { setupTouchLight } from './lit'
 import { setupWays } from './ways'
 
 /** Adresse de contact affichée en bas de page (exemple à remplacer). */
@@ -46,6 +47,9 @@ if (demoUrl && !window.matchMedia('(hover: none) and (pointer: coarse)').matches
 
 // Section Intégration : les deux façons de se brancher, en menu dépliant
 setupWays($('integrations'))
+
+// Les cadres au contour vert : au doigt, ils s'allument au toucher
+setupTouchLight(Array.from(document.querySelectorAll<HTMLElement>('.duo article, .acc')))
 
 // --- Adresse de contact ------------------------------------------------------
 const address = $('addr')
