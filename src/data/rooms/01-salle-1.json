@@ -2,6 +2,7 @@
   "id": "salle-1",
   "name": "Salle 1",
   "description": "Onze rangs droits, avec des places doubles aux extrémités de deux rangs.",
+  "screenLogo": "screens/votre-logo-ici.png",
   "rows": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"],
   "seatsPerRow": 15,
   "seatOneSide": "left",

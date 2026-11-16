@@ -56,7 +56,10 @@ Le schéma complet et commenté est dans `src/lib/room.ts` (`RoomConfig`).
 
 ## Changer l'image de l'écran
 
-Par défaut, l'écran est blanc et lumineux, comme dans la page de présentation. Pour y projeter une image, la déposer dans `public/screens/` et l'indiquer dans le champ `screenImage` de la salle, par exemple `"screenImage": "screens/mire.png"` (une mire de test neutre, fournie). L'image remplit l'écran sans être déformée (recadrage centré si les formats diffèrent).
+Sans rien régler, l'écran est blanc et lumineux, comme dans la page de présentation. Pour y projeter une image, la déposer dans `public/screens/` et l'indiquer dans le champ `screenImage` de la salle, par exemple `"screenImage": "screens/mire.png"` (une mire de test neutre, fournie). L'image remplit l'écran sans être déformée (recadrage centré si les formats diffèrent).
+
+Dans la démo, les deux salles projettent un logo au centre de l'écran : l'emplacement « Votre logo ici » (`"screenLogo": "screens/votre-logo-ici.png"`), pour montrer à un cinéma où ira le sien. Un logo garde ses proportions et l'écran reste blanc autour de lui ; `screenImage`, s'il est donné, l'emporte. Retirer le champ `screenLogo` rend l'écran blanc.
+
 
 ## Conventions
 

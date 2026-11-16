@@ -59,6 +59,11 @@ export interface RoomConfig {
   price: number
   /** Image projetée sur l'écran, relative au dossier `public/`. Sans image, l'écran est blanc */
   screenImage?: string
+  /**
+   * Logo projeté au centre de l'écran, qui reste blanc autour de lui ; relatif au dossier `public/`.
+   * Dans la démo : l'emplacement « Votre logo ici ». Sans effet si `screenImage` est donné.
+   */
+  screenLogo?: string
   /** Une phrase qui décrit la salle, affichée par la page de présentation */
   description?: string
   dimensions: RoomDimensions
