@@ -73,7 +73,7 @@ Dans la démo, les deux salles projettent un logo au centre de l'écran : l'empl
 
 ## Démo en ligne
 
-Le site est publié sur https://visionviewer.vercel.app (non référencé par les moteurs de recherche).
+Le site est publié sur https://visionviewer.net (non référencé par les moteurs de recherche).
 
 **Publier** : envoyer sur la branche `main` de ce dépôt. Vercel (projet `visionviewer`) construit alors le site et le met en ligne ; une autre branche donne une préversion, réservée aux comptes Vercel de l'équipe.
 
