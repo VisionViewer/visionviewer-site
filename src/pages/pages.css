@@ -1,0 +1,128 @@
+/*
+ * Les pages légales, le blog et ses articles : la charte de la page de présentation, mise au
+ * service d'un texte long. Du noir, des filets, aucun arrondi ; le vert pour les liens et ce qui
+ * est actif. Leur en-tête et leur pied de page sont des morceaux communs (partials/), posés par
+ * tools/pages.ts.
+ */
+@import '../styles/commun.css';
+
+/* ---------- barre du haut ---------- */
+/* Le logo et le bouton s'alignent sur le texte de la page, qui ne dépasse pas 1240 px */
+.top{--bord:max(28px,calc((100vw - 1240px) / 2 + 28px));position:relative;display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:1px solid var(--line);
+  padding:calc(22px + env(safe-area-inset-top,0px)) max(var(--bord),env(safe-area-inset-right,0px)) 22px max(var(--bord),env(safe-area-inset-left,0px))}
+.top nav{position:absolute;left:50%;transform:translateX(-50%);display:flex;gap:30px;white-space:nowrap}
+.top nav a{color:var(--ink);transition:color .2s}
+.top nav a:hover,.top nav a:focus-visible,.top nav a[aria-current]{color:var(--green);outline:none}
+
+/* ---------- une page : son titre, puis son sommaire à côté de son texte ---------- */
+.doc{max-width:1240px;margin:0 auto;padding:0 max(28px,env(safe-area-inset-right,0px)) 140px max(28px,env(safe-area-inset-left,0px))}
+.doc__head{padding:104px 0 72px}
+.doc__head>.mono{display:block;margin-bottom:26px}
+.doc__head>.mono a{color:inherit;transition:color .2s}
+.doc__head>.mono a:hover,.doc__head>.mono a:focus-visible{color:var(--green);outline:none}
+.doc__head h1{font-size:clamp(38px,6vw,88px);line-height:1.03;letter-spacing:-.045em;max-width:13em}
+.chapo{margin:28px 0 0;max-width:34em;color:var(--dim);font-size:clamp(17px,1.4vw,20px);font-weight:400}
+.doc__body{display:grid;grid-template-columns:210px minmax(0,46em);gap:0 80px;align-items:start}
+
+.sommaire{position:sticky;top:28px;display:flex;flex-direction:column;align-items:flex-start;gap:10px;max-height:calc(100vh - 56px);overflow-y:auto}
+.sommaire .mono{margin-bottom:8px}
+.sommaire a{font-size:14.5px;font-weight:400;line-height:1.35;color:var(--dim);transition:color .2s}
+.sommaire a:hover,.sommaire a:focus-visible{color:var(--green);outline:none}
+
+/* ---------- le texte ---------- */
+/* Un texte long ne se lit pas en graisse 300 sur du noir : il prend de la graisse, et un blanc adouci */
+.prose{font-size:17px;line-height:1.65;font-weight:400;color:#d4d4d9;min-width:0}
+.prose h2{margin:72px 0 22px;padding-top:30px;border-top:1px solid var(--line);font-size:clamp(24px,2.5vw,32px);font-weight:400;letter-spacing:-.03em;line-height:1.15;color:var(--ink);scroll-margin-top:20px}
+.prose>h2:first-child,.prose>.avis+h2{margin-top:0}
+/* L'avis a déjà son cadre : le titre qui le suit n'ajoute pas de filet */
+.prose>.avis+h2{padding-top:0;border-top:0}
+.prose h3{margin:38px 0 10px;font-size:19px;font-weight:500;letter-spacing:-.015em;line-height:1.3;color:var(--ink)}
+.prose p{margin:0 0 16px}
+.prose ul,.prose ol{margin:0 0 18px;padding-left:1.25em}
+.prose li{margin-bottom:8px;padding-left:.2em}
+.prose li::marker{color:var(--dim)}
+.prose strong{font-weight:500;color:var(--ink)}
+.prose a,.chapo a{color:var(--green);border-bottom:1px solid color-mix(in srgb,var(--green) 38%,transparent);overflow-wrap:anywhere;transition:border-color .2s}
+.prose a:hover,.prose a:focus-visible,.chapo a:hover,.chapo a:focus-visible{border-color:var(--green);outline:none}
+.prose code{font:400 .88em var(--f-mono);color:var(--ink)}
+.note{color:var(--dim);font-size:15px}
+
+/* Un tableau : des étiquettes, des filets. Trop large pour l'écran, il défile dans son cadre */
+.tableau{margin:26px 0 30px;overflow-x:auto}
+.tableau:focus-visible{outline:1px solid var(--ink);outline-offset:4px}
+.tableau table{width:100%;min-width:540px;border-collapse:collapse;font-size:15px;line-height:1.5}
+.tableau th{padding:0 18px 12px 0;font:400 11px/1.4 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim);text-align:left;vertical-align:bottom}
+.tableau td{padding:14px 18px 14px 0;border-top:1px solid var(--line);vertical-align:top}
+.tableau tr:last-child td{border-bottom:1px solid var(--line)}
+.tableau td:first-child{color:var(--ink)}
+/* Une fiche (un intitulé, sa valeur) : les intitulés s'alignent d'une fiche à l'autre */
+.tableau table:not(:has(thead)) td:first-child{width:14em}
+
+/* Ce qui reste à renseigner : un emplacement en pointillé, comme « Votre logo ici » */
+.todo{display:inline-block;padding:2px 8px;border:1px dashed rgba(245,245,246,.45);font:400 11px/1.6 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
+
+.avis{display:grid;gap:10px;margin:0 0 64px;padding:22px 24px 24px;border:1px solid var(--line)}
+.avis p{margin:0;color:var(--dim);font-size:15.5px;line-height:1.55}
+
+/* ---------- blog ---------- */
+.rubriques{display:flex;flex-wrap:wrap;gap:10px;margin-top:44px}
+.rubriques a{padding:11px 16px;border:1px solid var(--line);font:400 11px/1.4 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink);transition:color .2s,border-color .2s}
+.rubriques a:hover,.rubriques a:focus-visible{color:var(--green);border-color:var(--green);outline:none}
+.rubriques b{font-weight:400;color:var(--dim);margin-left:.7em}
+
+.rubrique{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.7fr);gap:28px 80px;padding:72px 0;border-top:1px solid var(--line);scroll-margin-top:0}
+.rubrique__titre .mono{display:block;margin-bottom:18px}
+.rubrique__titre .mono b{font-weight:500;color:var(--red);margin-right:.8em}
+.rubrique__titre h2{font-size:clamp(30px,3.6vw,52px);line-height:1.04;letter-spacing:-.04em}
+.rubrique__titre p{margin:18px 0 0;max-width:22em;color:var(--dim);font-size:16px;font-weight:400}
+
+.cards{display:grid;gap:14px}
+.card{display:flex;flex-direction:column;align-items:flex-start;gap:14px;padding:26px 26px 28px;border:1px solid var(--line);transition:border-color .3s,box-shadow .5s}
+.card h3{font-size:clamp(22px,2.3vw,30px);font-weight:400;letter-spacing:-.03em;line-height:1.1}
+.card p{margin:0;max-width:34em;color:var(--dim);font-size:16px;font-weight:400}
+.card .mono{transition:color .3s}
+.card__go{display:inline-flex;gap:10px;margin-top:6px;font-size:14.5px;font-weight:500}
+.card__go span{font-family:var(--f-mono);font-weight:400;transition:transform .25s cubic-bezier(.2,.7,.2,1)}
+.card:hover,.card:focus-visible{border-color:var(--green);box-shadow:0 0 54px -22px rgba(95,208,138,.5),inset 0 0 44px -30px rgba(95,208,138,.55);outline:none}
+.card:hover .mono,.card:focus-visible .mono{color:var(--green)}
+.card:hover .card__go span,.card:focus-visible .card__go span{transform:translateX(5px)}
+/* Une rubrique sans article : son emplacement, en pointillé */
+.vide{margin:0;padding:26px;border:1px dashed rgba(245,245,246,.35);color:var(--dim);font-size:16px;font-weight:400}
+
+/* ---------- article ---------- */
+/* Les chiffres d'une étude : en grand, comme sur la page de présentation, chacun avec sa source */
+.chiffres{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:34px 26px;margin:38px 0 42px}
+.chiffres>div{display:flex;flex-direction:column;gap:12px;padding-top:18px;border-top:1px solid var(--line)}
+.chiffres b{font-weight:300;font-size:clamp(56px,7vw,96px);line-height:.95;letter-spacing:-.055em;color:var(--ink);font-variant-numeric:tabular-nums}
+.chiffres b small{margin-left:.2em;font-size:.34em;letter-spacing:-.02em;color:var(--dim)}
+.chiffres p{margin:0;font-size:16px;line-height:1.5}
+.chiffres .mono{margin-top:auto;font-size:10px;line-height:1.6}
+
+.sources{padding-left:0;list-style:none;font-size:15px}
+.sources li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+.sources li:last-child{border-bottom:1px solid var(--line)}
+
+.suite{display:flex;flex-wrap:wrap;align-items:center;gap:18px 28px;margin-top:72px;padding-top:30px;border-top:1px solid var(--line)}
+.suite p{flex:1 1 16em;margin:0;font-size:clamp(20px,2vw,26px);font-weight:400;letter-spacing:-.03em;line-height:1.15;color:var(--ink)}
+
+@media (max-width:1000px){
+  .doc__body{grid-template-columns:minmax(0,1fr)}
+  .sommaire{position:static;max-height:none;margin-bottom:56px;padding-bottom:28px;border-bottom:1px solid var(--line)}
+  .rubrique{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:820px){
+  .top{padding:calc(16px + env(safe-area-inset-top,0px)) max(18px,env(safe-area-inset-right,0px)) 16px max(18px,env(safe-area-inset-left,0px))}
+  .top nav{display:none}
+  .top .btn{--pad:13px;height:38px;font-size:13.5px}
+  .top .btn .arr{display:none}
+  .doc{padding:0 max(18px,env(safe-area-inset-right,0px)) 96px max(18px,env(safe-area-inset-left,0px))}
+  .doc__head{padding:64px 0 48px}
+  .prose{font-size:16.5px}
+  .prose h2{margin-top:56px}
+  .rubrique{padding:52px 0}
+  .card{padding:22px 20px 24px}
+  .chiffres{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){
+  .card,.card .mono,.card__go span,.prose a,.sommaire a,.rubriques a{transition:none}
+}

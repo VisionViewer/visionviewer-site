@@ -2,28 +2,13 @@
  * Page de présentation VisionViewer.
  * Styles repris de la maquette (visionviewer-landing.html) ; les ajouts propres au site
  * sont regroupés à la fin du fichier.
+ *
+ * La charte (couleurs, polices, étiquettes, bouton, logo) et le pied de page, que la présentation
+ * partage avec les pages légales et le blog, sont dans ../styles/commun.css.
  */
-@import '@fontsource-variable/inter-tight/wght.css';
-@import '@fontsource-variable/geist-mono/wght.css';
+@import '../styles/commun.css';
 
 /* Layout: everything centred on one object — a cinema hall drawn in points of light. Scroll gathers the points into the hall, lights one seat, then sits in it. Black, thin white type; red seats, green for the chosen one. */
-:root{
-  --bg:#040405;
-  --ink:#f5f5f6;
-  --dim:#9a9aa4;
-  --line:rgba(245,245,246,.14);
-  --red:#d0323a;
-  --green:#5fd08a;
-  --f:'Inter Tight Variable','Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;
-  --f-mono:'Geist Mono Variable','Geist Mono',ui-monospace,'SF Mono',Menlo,monospace;
-  color-scheme:dark;
-}
-*{box-sizing:border-box}
-html{background:var(--bg);scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f);font-weight:300;font-size:17px;line-height:1.45;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-a{color:inherit;text-decoration:none}
-.mono{font:400 11px/1.4 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
-h1,h2,h3{font-weight:300;letter-spacing:-.035em;text-wrap:balance;margin:0}
 
 #track{height:970vh;position:relative}
 .stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--bg)}
@@ -33,23 +18,9 @@ h1,h2,h3{font-weight:300;letter-spacing:-.035em;text-wrap:balance;margin:0}
 /* barre haute */
 .bar{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;z-index:5;
   padding:calc(22px + env(safe-area-inset-top,0px)) max(28px,env(safe-area-inset-right,0px)) 0 max(28px,env(safe-area-inset-left,0px))}
-.logo{display:block}
-.logo img{display:block;height:40px;width:auto}
 .bar nav{position:absolute;left:50%;transform:translateX(-50%);display:flex;gap:30px;white-space:nowrap}
 .bar nav a{color:var(--ink);transition:color .2s}
 .bar nav a:hover,.bar nav a:focus-visible{color:var(--green);outline:none}
-/* Bouton (redessiné par rapport à la maquette) : un rectangle plein, sans arrondi ni halo, dans
-   l'esprit des filets et des flèches du site. Blanc au repos ; au survol il prend le rouge des
-   fauteuils, et la flèche avance dans sa case. */
-.btn{--pad:16px;display:inline-flex;align-items:center;gap:var(--pad);height:40px;padding:0 var(--pad);font:500 14px/1 var(--f);letter-spacing:-.005em;white-space:nowrap;color:var(--bg);background:var(--ink);border:0;border-radius:0;cursor:pointer;transition:background-color .25s,color .25s}
-.btn .arr{align-self:stretch;display:flex;align-items:center;margin-right:calc(var(--pad) * -1);padding:0 13px;border-left:1px solid color-mix(in srgb,currentColor 20%,transparent);font:400 1.05em/1 var(--f-mono);transition:padding .25s cubic-bezier(.2,.7,.2,1)}
-.btn:hover,.btn:focus-visible{background:var(--red);color:#fff;outline:none}
-.btn:focus-visible{outline:1px solid var(--ink);outline-offset:3px}
-.btn:hover .arr,.btn:focus-visible .arr{padding:0 9px 0 17px}
-.btn:active{background:#b3262e}
-.btn.big{--pad:26px;height:62px;font-size:18px}
-.btn.big .arr{padding:0 22px}
-.btn.big:hover .arr,.btn.big:focus-visible .arr{padding:0 16px 0 28px}
 
 /* ouverture */
 #hero{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;pointer-events:none;z-index:3;padding:0 max(20px,env(safe-area-inset-right,0px)) 0 max(20px,env(safe-area-inset-left,0px))}
@@ -134,7 +105,8 @@ h1,h2,h3{font-weight:300;letter-spacing:-.035em;text-wrap:balance;margin:0}
 .hint{font-size:14px;font-weight:400;color:var(--dim);border-bottom:1px solid var(--line);padding-bottom:2px;transition:color .2s,border-color .2s}
 .hint:hover,.hint:focus-visible{color:var(--ink);border-color:var(--ink);outline:none}
 .mail{display:flex;flex-wrap:wrap;gap:18px 28px;align-items:center;justify-content:center;margin:46px 0 40px}
-.addr{font-size:clamp(22px,3.4vw,46px);letter-spacing:-.035em;user-select:all;overflow-wrap:anywhere}
+.addr{font-size:clamp(22px,3.4vw,46px);letter-spacing:-.035em;user-select:all;overflow-wrap:anywhere;transition:color .2s}
+.addr:hover,.addr:focus-visible{color:var(--green);outline:none}
 
 .flow{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);gap:22px;align-items:center;margin-top:90px}
 .flow article{border:1px solid var(--line);padding:30px 20px 34px;display:flex;flex-direction:column;align-items:center;gap:18px;min-width:0}
@@ -144,13 +116,17 @@ h1,h2,h3{font-weight:300;letter-spacing:-.035em;text-wrap:balance;margin:0}
 .flow .arr{color:var(--dim);font:400 18px var(--f-mono)}
 .where{margin-top:36px}
 
-.cta{position:relative;overflow:hidden}
-.cta:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(60% 50% at 50% 120%,rgba(208,50,58,.6),rgba(208,50,58,0))}
-.cta .wrap{position:relative;padding-block:190px}
+/* Fin de page : le contact, puis le pied de page et ses liens, sur une même lueur rouge. Ailleurs
+   sur le site, c'est le pied de page qui la porte (styles/commun.css), avec les mêmes mesures ;
+   ici elle appartient au bloc entier, qui la rogne à ses bords : le pied de page n'y a pas la sienne. */
+.fin{position:relative;overflow:hidden}
+.fin:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(80% 72% at 50% 105%,rgba(208,50,58,.62),rgba(208,50,58,.2) 52%,rgba(208,50,58,0) 100%)}
+.fin footer.end:before{content:none}
+.cta{position:relative}
+.cta .wrap{position:relative;padding-block:190px 150px}
 .cta h2{font-size:clamp(38px,6.6vw,108px);max-width:10em}
 .link{font:400 15px var(--f);background:none;border:0;border-bottom:1px solid var(--line);color:var(--dim);padding:0 0 4px;cursor:pointer;transition:color .2s,border-color .2s}
 .link:hover,.link:focus-visible{color:var(--ink);border-color:var(--ink);outline:none}
-footer.end .wrap{max-width:none;padding-block:26px;display:flex;justify-content:space-between;gap:12px 24px;flex-wrap:wrap;text-align:left;border-top:1px solid var(--line)}
 
 @media (max-width:820px){
   .bar{padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px));padding-top:calc(16px + env(safe-area-inset-top,0px))}
@@ -166,9 +142,8 @@ footer.end .wrap{max-width:none;padding-block:26px;display:flex;justify-content:
   .kpis{margin-top:48px}
   .flow{grid-template-columns:minmax(0,1fr);gap:14px}
   .flow .arr{transform:rotate(90deg)}
-  .cta .wrap{padding-block:130px}
+  .cta .wrap{padding-block:130px 100px}
 }
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn,.btn .arr{transition:none}}
 
 /* ---------- ajouts propres au site ---------- */
 
@@ -178,10 +153,10 @@ footer.end .wrap{max-width:none;padding-block:26px;display:flex;justify-content:
 /* Relevé du siège : il reste lisible quand l'écran blanc passe derrière lui (premier rang) */
 #hud{mix-blend-mode:difference}
 
+/* Barre haute : quatre liens au menu, resserrés sur un écran étroit pour ne pas toucher le bouton */
+@media (max-width:960px){.bar nav{gap:18px}}
 /* Barre haute sur téléphone : le bouton perd sa flèche pour tenir à côté du logo */
 @media (max-width:820px){.bar .btn{--pad:13px;height:38px;font-size:13.5px}.bar .btn .arr{display:none}}
-@media (max-width:820px){.logo img{height:32px}}
-@media (max-width:360px){.logo img{height:28px}}
 
 /* Démo : sur un écran tactile, pas de QR code à scanner — la démo s'ouvre sur place */
 .on-touch{display:none}

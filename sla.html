@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <!--@include head-->
+    <title>Engagement de niveau de service (SLA) — VisionViewer</title>
+    <meta name="description" content="Disponibilité visée, support, maintenance et avoirs : ce à quoi VisionViewer s’engage auprès de ses cinémas clients." />
+    <meta property="og:title" content="Engagement de niveau de service (SLA) — VisionViewer" />
+    <meta property="og:description" content="Disponibilité visée, support, maintenance et avoirs : ce à quoi VisionViewer s’engage auprès de ses cinémas clients." />
+    <meta property="og:url" content="https://visionviewer.net/sla" />
+  </head>
+  <body>
+    <!--@include header-->
+    <main class="doc">
+      <header class="doc__head">
+        <span class="mono">Clients · SLA · version du {{version}}</span>
+        <h1>Engagement de niveau de service</h1>
+        <p class="chapo">Ce à quoi VisionViewer s’engage auprès d’un cinéma client&nbsp;: la disponibilité du service, le support, la maintenance, et ce qui se passe quand l’engagement n’est pas tenu.</p>
+      </header>
+      <div class="doc__body">
+        <!--@sommaire-->
+        <div class="prose">
+          <!--@include avis-->
+
+          <h2 id="resume">En bref</h2>
+          <div class="chiffres">
+            <div><b>99,5<small>%</small></b><p>de disponibilité visée, chaque mois, pour les clés définitives.</p></div>
+            <div><b>4<small>h</small></b><p>ouvrées au plus pour prendre en charge un incident critique.</p></div>
+          </div>
+          <p>Cet engagement fait partie du contrat conclu avec chaque client, avec les <a href="/cgv">conditions générales de vente</a>. Il s’applique aux <strong>clés définitives</strong> (<code>vv_live_…</code>). Les clés de test, la démo et le guide d’intégration sont fournis sans engagement.</p>
+
+          <h2 id="perimetre">Ce qui est couvert</h2>
+          <p>Ce dont le parcours de réservation d’un cinéma a besoin pour afficher VisionViewer&nbsp;:</p>
+          <ul>
+            <li>le fichier d’intégration (SDK) chargé par le site du cinéma&nbsp;;</li>
+            <li>la page de la vue 3D et celle du plan de salle, avec leur salle&nbsp;;</li>
+            <li>le logo du cinéma, projeté sur l’écran de ses salles.</li>
+          </ul>
+          <p>Les statistiques d’usage sont fournies au mieux, sans engagement de disponibilité&nbsp;: une statistique en panne n’empêche jamais l’affichage.</p>
+
+          <h2 id="disponibilite">Disponibilité</h2>
+          <p>VisionViewer vise une disponibilité de <strong>99,5&nbsp;% par mois civil</strong>, soit au plus 3&nbsp;heures et 36&nbsp;minutes d’indisponibilité sur un mois de trente jours.</p>
+          <p>Le service est dit indisponible quand, pendant plus de cinq minutes de suite, la vue 3D ou le plan ne peuvent pas s’afficher pour l’ensemble des visiteurs d’un client, du fait de VisionViewer. L’indisponibilité est constatée par VisionViewer, ou signalée par le client puis confirmée.</p>
+          <p>La disponibilité du mois est le rapport entre les minutes où le service était disponible et le nombre de minutes du mois, hors exclusions ci-dessous.</p>
+
+          <h2 id="exclusions">Ce qui n’est pas compté</h2>
+          <ul>
+            <li>la maintenance planifiée, annoncée au moins 48&nbsp;heures à l’avance et menée hors des heures de forte affluence&nbsp;;</li>
+            <li>un cas de force majeure, ou une panne générale d’Internet ou d’un opérateur de réseau&nbsp;;</li>
+            <li>ce qui vient du site du client&nbsp;: une intégration non conforme au guide, un domaine non déclaré pour la clé, une clé révoquée à sa demande&nbsp;;</li>
+            <li>un trafic qui dépasse les limites de débit du service, ou une attaque visant le site du client&nbsp;;</li>
+            <li>une suspension pour impayé, dans les conditions du contrat.</li>
+          </ul>
+
+          <h2 id="repli">Si VisionViewer ne répond pas</h2>
+          <p>Le service est conçu pour ne jamais bloquer une vente à lui seul.</p>
+          <ul>
+            <li><strong>Vue 3D seule</strong>&nbsp;: votre plan de salle et votre commande ne dépendent pas de nous. Seul le bouton «&nbsp;Vue 3D&nbsp;» échoue, avec un message et de quoi fermer.</li>
+            <li><strong>Plan 2D + vue 3D</strong>&nbsp;: le choix des places passe par notre plan. S’il ne s’affiche pas, votre page en est prévenue (<code>onError</code>)&nbsp;: prévoyez un repli, par exemple un placement automatique.</li>
+          </ul>
+          <p>Dans les deux cas, votre billetterie reste seule maître des disponibilités et du paiement.</p>
+
+          <h2 id="support">Support</h2>
+          <p>Le support se joint à <a href="mailto:{{contact}}">{{contact}}</a>, du lundi au vendredi, de 9&nbsp;h à 18&nbsp;h (heure de Paris), hors jours fériés français.</p>
+          <div class="tableau" tabindex="0">
+            <table>
+              <thead>
+                <tr><th>Gravité</th><th>Ce que c’est</th><th>Prise en charge</th><th>Rétablissement visé</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Critique</td><td>La vue ou le plan ne s’affichent plus pour l’ensemble de vos visiteurs</td><td>4 heures ouvrées</td><td>1 jour ouvré</td></tr>
+                <tr><td>Majeure</td><td>Une fonction est dégradée, ou une salle s’affiche mal</td><td>1 jour ouvré</td><td>5 jours ouvrés</td></tr>
+                <tr><td>Mineure</td><td>Une gêne sans effet sur la réservation, une question</td><td>3 jours ouvrés</td><td>Dans une version à venir</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>La prise en charge est le délai dans lequel nous accusons réception et commençons à traiter. Un signalement est d’autant plus vite traité qu’il donne la salle, la clé, l’heure et une capture d’écran.</p>
+
+          <h2 id="avoirs">Si l’engagement n’est pas tenu</h2>
+          <p>Quand la disponibilité d’un mois est inférieure à l’engagement, le client peut demander un avoir sur la redevance de ce mois&nbsp;:</p>
+          <div class="tableau" tabindex="0">
+            <table>
+              <thead>
+                <tr><th>Disponibilité du mois</th><th>Avoir</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>De 99,0&nbsp;% à moins de 99,5&nbsp;%</td><td>5&nbsp;% de la redevance du mois</td></tr>
+                <tr><td>De 98,0&nbsp;% à moins de 99,0&nbsp;%</td><td>10&nbsp;% de la redevance du mois</td></tr>
+                <tr><td>Moins de 98,0&nbsp;%</td><td>20&nbsp;% de la redevance du mois</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>L’avoir se demande par écrit dans les trente jours qui suivent le mois concerné, et s’impute sur la facture suivante. Il constitue la seule réparation due au titre de la disponibilité.</p>
+
+          <h2 id="maintenance">Maintenance et évolutions</h2>
+          <ul>
+            <li>Les corrections et les évolutions du service sont mises en ligne sans intervention du client.</li>
+            <li>Une salle modifiée (travaux, nouveaux fauteuils) est mise à jour sur demande, dans les conditions du devis.</li>
+            <li>Une évolution du SDK qui demanderait de modifier l’intégration du client est annoncée au moins trois mois à l’avance.</li>
+          </ul>
+
+          <h2 id="reversibilite">Vos données</h2>
+          <p>Sur demande, et à la fin du contrat, VisionViewer remet au client les données de ses salles (géométrie, correspondance des sièges, logo) dans un format lisible.</p>
+
+          <h2 id="revision">Révision</h2>
+          <p>Cet engagement peut évoluer. Une évolution qui le réduirait ne s’applique à un contrat en cours qu’à son renouvellement, après information du client deux mois avant l’échéance.</p>
+        </div>
+      </div>
+    </main>
+    <!--@include footer-->
+  </body>
+</html>

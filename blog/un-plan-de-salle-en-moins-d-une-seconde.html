@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <!--@include head-->
+    <title>Un plan de salle en moins d’une seconde, sur un téléphone en 4G — VisionViewer</title>
+    <meta name="description" content="Dans un parcours de réservation, chaque seconde d’attente coûte. Comment nous mesurons la vitesse de VisionViewer, ce que nous avons corrigé, et où nous en sommes." />
+    <meta name="vv:rubrique" content="article" />
+    <meta name="vv:date" content="2026-11-18" />
+    <meta name="vv:lecture" content="6" />
+    <meta property="og:title" content="Un plan de salle en moins d’une seconde, sur un téléphone en 4G" />
+    <meta property="og:description" content="Dans un parcours de réservation, chaque seconde d’attente coûte. Comment nous mesurons la vitesse de VisionViewer, ce que nous avons corrigé, et où nous en sommes." />
+    <meta property="og:url" content="https://visionviewer.net/blog/un-plan-de-salle-en-moins-d-une-seconde" />
+  </head>
+  <body>
+    <!--@include header-->
+    <main class="doc">
+      <header class="doc__head">
+        <span class="mono"><a href="/blog">← Blog</a> · {{article.signature}}</span>
+        <h1>Un plan de salle en moins d’une seconde, sur un téléphone en 4G</h1>
+        <p class="chapo">VisionViewer s’ajoute à une page de réservation&nbsp;: il n’a pas le droit de la ralentir. Voici comment nous mesurons sa vitesse, ce que nous avons corrigé, et où nous en sommes, y compris là où l’objectif n’est pas encore atteint.</p>
+      </header>
+      <div class="doc__body">
+        <!--@sommaire-->
+        <div class="prose">
+          <h2 id="en-bref">En bref</h2>
+          <div class="chiffres">
+            <div><b>0,33<small>s</small></b><p>pour que la salle se voie dans la page du cinéma.</p><span class="mono">Première visite · 4G lente</span></div>
+            <div><b>0,65<small>s</small></b><p>pour que le plan soit utilisable. Il en fallait 2,8.</p><span class="mono">Première visite · 4G lente</span></div>
+            <div><b>0,87<small>s</small></b><p>pour la première image de la vue 3D ouverte depuis le plan. Il en fallait 2,9.</p><span class="mono">Première visite · 4G lente</span></div>
+            <div><b>0,00</b><p>saut de mise en page&nbsp;: le plan arrive à sa taille définitive.</p><span class="mono">Indice de décalage, contre 0,15 avant</span></div>
+          </div>
+
+          <h2 id="objectif">L’objectif</h2>
+          <p>Nous nous sommes fixé deux cibles, sur un téléphone de milieu de gamme en 4G&nbsp;: un plan de salle utilisable en 0,3&nbsp;seconde, et une vue 3D en une seconde. Avec deux précisions, venues de l’usage&nbsp;:</p>
+          <ul>
+            <li>sur le plan, ce qui compte d’abord est que <strong>la salle se voie dès que la page s’ouvre</strong>&nbsp;;</li>
+            <li>dans la vue 3D, ce qui gêne est <strong>l’attente avant que l’image apparaisse</strong>, pas le survol de la salle qui mène au fauteuil.</li>
+          </ul>
+
+          <h2 id="mesure">Comment nous mesurons</h2>
+          <p>Un vrai navigateur ouvre le produit tel qu’il est mis en ligne, dans une page de réservation, comme chez un client. Il émule un téléphone&nbsp;: une 4G lente (9&nbsp;Mbit/s, 170&nbsp;ms d’aller-retour) et un processeur quatre fois plus lent que celui de la machine. Chaque parcours est rejoué plusieurs fois&nbsp;; nous retenons la médiane.</p>
+          <p>Nous mesurons trois parcours&nbsp;: le plan, la vue 3D ouverte depuis le plan, et la vue 3D ouverte seule, pour un cinéma qui a déjà son propre plan. Et deux moments&nbsp;: la première visite, sans rien en mémoire, puis le retour du même visiteur quelques minutes plus tard.</p>
+
+          <h2 id="avant-apres">Avant, après</h2>
+          <div class="tableau" tabindex="0">
+            <table>
+              <thead>
+                <tr><th>Première visite, 4G lente</th><th>Avant</th><th>Après</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>La salle se voit</td><td>—</td><td>0,33 s</td></tr>
+                <tr><td>Le plan est utilisable</td><td>2,8 s</td><td>0,65 s</td></tr>
+                <tr><td>Vue 3D depuis le plan, première image</td><td>2,9 s</td><td>0,87 s</td></tr>
+                <tr><td>Vue 3D seule, première image</td><td>3,9 s</td><td>1,26 s</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Dans de meilleures conditions, les temps baissent encore&nbsp;: en bonne 4G, le plan est utilisable en 0,46&nbsp;seconde et la vue 3D montre sa première image en 0,77&nbsp;seconde. Sur un ordinateur, 0,17 et 0,33&nbsp;seconde. Et pour un visiteur qui revient dans les cinq minutes, en 4G lente, 0,28 et 0,61&nbsp;seconde.</p>
+          <p>Une grande salle ne change presque rien&nbsp;: avec plus de 400&nbsp;fauteuils, le plan est utilisable en 0,75&nbsp;seconde.</p>
+
+          <h2 id="corrections">Ce qui a fait gagner du temps</h2>
+          <h3>La page arrive complète</h3>
+          <p>Au départ, la page demandait sa salle après s’être chargée, puis découvrait ses fichiers l’un après l’autre. Désormais la salle voyage avec la page, et tous les fichiers sont annoncés d’emblée&nbsp;: ils partent ensemble. La page elle-même est servie au plus près du visiteur, sans calcul&nbsp;: 0,05&nbsp;seconde au lieu de 0,8.</p>
+          <h3>Le plan arrive dessiné</h3>
+          <p>La salle est tracée avant même que le code soit chargé&nbsp;: rangées, fauteuils, écran, à leur taille définitive. Les fauteuils n’ont pas encore leur couleur, parce que nous ne savons pas encore lesquels sont vendus&nbsp;: rien ne laisse croire qu’une place est libre avant de le savoir. Quand le code prend le relais, rien ne bouge.</p>
+          <h3>La vue 3D se prépare pendant qu’on choisit</h3>
+          <p>Pendant que le spectateur regarde le plan, la vue 3D télécharge son code en arrière-plan, au repos. Au clic, elle n’attend plus le réseau. Elle ne le fait pas si le visiteur a demandé à économiser ses données.</p>
+          <h3>Une attente de 0,3 seconde, retirée</h3>
+          <p>La dernière correction ne tenait ni au réseau ni au serveur&nbsp;: la bibliothèque d’interface retenait l’affichage de la scène de 300&nbsp;millisecondes à chaque ouverture. Nous chargeons la scène autrement.</p>
+
+          <h2 id="tenir">Ce qui empêche de reperdre ce temps</h2>
+          <p>Une vitesse gagnée se reperd, correction après correction. Chaque construction de VisionViewer se termine donc par des seuils de poids et de temps. S’ils sont dépassés, la mise en ligne est refusée. Un seuil est la dernière mesure, avec une marge&nbsp;: une correction qui fait gagner du temps le resserre.</p>
+
+          <h2 id="limites">Ce qui reste à faire, et ce que nous ne savons pas</h2>
+          <ul>
+            <li><strong>L’objectif de 0,3&nbsp;seconde n’est pas atteint.</strong> La salle se voit à 0,33&nbsp;seconde, mais le plan n’est utilisable qu’à 0,65. La vue 3D ouverte seule est à 1,26&nbsp;seconde, pour une cible à une seconde.</li>
+            <li><strong>Ce sont des mesures en émulation.</strong> Le réseau et le processeur sont bridés, mais la carte graphique est celle d’un ordinateur. Nous n’avons pas encore mesuré sur de vrais téléphones, ni sous Safari.</li>
+            <li><strong>Une ouverture sur cinquante prend une seconde de plus</strong>, le temps que la carte graphique prépare la scène pour la première fois.</li>
+          </ul>
+          <p>Nous publierons les mesures sur de vrais appareils quand nous les aurons.</p>
+
+          <div class="suite">
+            <p>Le plus simple est encore de l’ouvrir sur votre téléphone.</p>
+            <a class="btn" href="/demo">Essayez la démo<span class="arr" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!--@include footer-->
+  </body>
+</html>

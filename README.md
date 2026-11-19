@@ -1,6 +1,6 @@
 # VisionViewer
 
-Prototype mobile-first : sélection de fauteuils de cinéma, avec une vue 3D de l'écran depuis chaque siège. Le site a deux pages : la présentation (`/`) et la démo (`/demo`).
+Prototype mobile-first : sélection de fauteuils de cinéma, avec une vue 3D de l'écran depuis chaque siège. Le site a la présentation (`/`), la démo (`/demo`), le blog (`/blog`) et les pages légales (`/mentions-legales`, `/confidentialite`, `/cgu`, `/cgv`, `/sla`, `/dpa`).
 
 React · Vite · TypeScript · Three.js (`@react-three/fiber`, `@react-three/drei`) · Motion. Aucun backend : les salles sont des fichiers JSON.
 
@@ -16,8 +16,9 @@ Puis ouvrir http://localhost:5173 pour la présentation, ou http://localhost:517
 | Commande | Effet |
 | --- | --- |
 | `npm run dev -- --host` | expose le serveur sur le réseau local, pour tester sur un vrai téléphone |
-| `npm run build` | vérifie les types puis génère `dist/` |
-| `npm test` | tests du calcul des salles (positions, rangée K, indicateurs) |
+| `npm run build` | vérifie les types puis génère `dist/` ; rappelle les mentions légales encore « À compléter » |
+| `npm run preview` | sert `dist/` avec les en-têtes de sécurité de `vercel.json` (http://localhost:4173) : c'est là que la politique de contenu s'éprouve |
+| `npm test` | tests du calcul des salles (positions, rangée K, indicateurs) et des pages (liens, règles de `vercel.json`, blog) |
 | `npm run deploy` | construit ici puis met en ligne sur Vercel, sans passer par GitHub (en secours : voir « Démo en ligne ») |
 
 ## Ajouter une salle
@@ -80,7 +81,7 @@ Le site est publié sur https://visionviewer.net (non référencé par les moteu
 - **Présentation** (`/`, fichier `index.html`) : la page VisionViewer, reprise de la maquette `visionviewer-landing.html`. Une salle en points de lumière se construit au défilement, puis viennent les sections « Sur mesure », « Intégration », les chiffres, « Démo » et le contact.
 - **Démo** (`/demo`, fichier `demo.html`) : l'application de réservation. Sur téléphone, elle occupe tout l'écran, avec un bandeau pour changer de salle et revenir à la présentation. Sur ordinateur, elle est présentée dans un téléphone, à côté d'un panneau qui porte le choix de la salle et le QR code.
 - **De l'une à l'autre** : les boutons « Essayez maintenant » de la présentation et les QR codes (section « Démo » de la présentation, panneau de la démo sur ordinateur) mènent à `/demo`, sur le plan de salle : au visiteur de choisir son fauteuil, puis d'ouvrir la vue 3D. Les QR codes ne s'affichent pas en local : un téléphone n'a pas accès à `localhost`.
-- L'adresse `/demo` repose sur une règle de réécriture vers `demo.html` (`vercel.json`). L'ancienne adresse `/?demo` y redirige.
+- L'adresse `/demo` repose sur une règle de réécriture vers `demo.html` (`vercel.json`), comme celle de chaque page légale et du blog. L'ancienne adresse `/?demo` y redirige.
 - Si le site change de domaine, mettre à jour les balises `og:` de `index.html` et de `demo.html`.
 
 ### Modifier la présentation
@@ -88,7 +89,7 @@ Le site est publié sur https://visionviewer.net (non référencé par les moteu
 - Le texte est dans `index.html`, les styles dans `src/landing/landing.css` (ceux de la maquette, plus quelques ajouts regroupés en fin de fichier).
 - **Les salles de la page sont celles de la démo** : `src/landing/halls.ts` lit les JSON de `src/data/rooms/`. La scène 3D (`scene.js`, repris de la maquette, en JavaScript) et la coupe de la Fig. 1 (`coupe.ts`) montrent donc les mêmes fauteuils, les mêmes places doubles et les mêmes spectateurs que la démo : la première salle est racontée, la deuxième sert à la transformation finale.
 - Les chiffres écrits dans le texte de `index.html` (places, écran, pente, légende de la coupe) se modifient à la main. `npm test` signale ceux qui ne correspondent plus au JSON de la première salle.
-- `src/landing/main.ts` porte le reste : liens vers la démo, QR code, carrousel des chiffres et adresse de contact (constante `CONTACT`, encore un exemple à remplacer).
+- `src/landing/main.ts` porte le reste : liens vers la démo, QR code, carrousel des chiffres et copie de l'adresse de contact. L'adresse elle-même est dans `src/pages/societe.json`.
 - Sur écran tactile, la section « Démo » n'affiche pas de QR code, seulement le bouton. Sans WebGL, la scène est retirée et la page reste lisible.
 - Le fauteuil géant de l'ouverture est décrit dans `scene.js` (fonctions `seatBack`, `seatCushion`, `seatArm`, `seatFrame`) : dossier, assise, accoudoirs à porte-gobelet, flancs. La coupe de la Fig. 1 se redessine à la largeur disponible, pour tenir en entier sur un téléphone.
 
@@ -98,6 +99,23 @@ Le site est publié sur https://visionviewer.net (non référencé par les moteu
 - **Démo** : le premier affichage ne charge que React et l'écran de réservation. Arrivent ensuite, à part : le moteur d'animation (`src/lib/motionFeatures.ts`, via `LazyMotion`), les bandeaux d'information (`src/lib/notify.ts`), le panneau de démo sur ordinateur, puis la vue 3D dès qu'un fauteuil est sélectionné.
 - Les polices du premier écran sont préchargées dans `index.html` et `demo.html`. Dans les composants de la démo, utiliser `m.div` (import `motion/react-m`) et non `motion.div` : `LazyMotion` est en mode strict et le signale.
 
+## Pages légales et blog
+
+Ce sont des fichiers HTML sans script : les pages légales à la racine (`mentions-legales.html`, `confidentialite.html`, `cgu.html`, `cgv.html`, `sla.html`, `dpa.html`), le blog dans `blog.html` et ses articles dans `blog/`. À la construction comme en développement, `tools/pages.ts` y remplace :
+
+| Dans la page | Par |
+| --- | --- |
+| `<!--@include head-->`, `header`, `footer`, `avis` | le morceau du même nom, dans `src/pages/partials/`. Le pied de page est aussi celui de la présentation |
+| `{{contact}}`, `{{societe.siege}}`, `{{version}}`… | les valeurs de `src/pages/societe.json`. Une valeur à `null` s'affiche « À compléter » |
+| `<!--@sommaire-->` | un lien par section de la page (`<h2 id="…">`) |
+| `<!--@articles enquete \| texte si vide-->` | les articles de cette rubrique, les plus récents d'abord (dans `blog.html`) |
+
+- **La société est en cours de formation** : ce que `societe.json` ne dit pas encore (siège, capital, RCS, TVA, directeur de la publication, téléphones) est à renseigner avant de publier. `npm run build` le rappelle.
+- **Un article** dit lui-même, dans son en-tête, sa rubrique (`vv:rubrique` : `enquete`, `article`, `etude-de-cas`), sa date (`vv:date`) et son temps de lecture (`vv:lecture`) ; son résumé est sa description. Le copier, changer ces valeurs : il apparaît dans le blog.
+- **Une page nouvelle** a besoin de sa règle dans `vercel.json`, sans quoi elle répond 404 en ligne. `npm test` le vérifie, comme il vérifie qu'aucun lien ne mène nulle part.
+- **Aucun script écrit dans une page** : la politique de contenu de `vercel.json` ne laisse passer que des fichiers.
+- La charte commune à ces pages et à la présentation (couleurs, polices, bouton, pied de page) est dans `src/styles/commun.css` ; leur mise en page propre dans `src/pages/pages.css`.
+
 ## Logo
 
 Le kit du logo est dans `logo/` : toutes les versions en SVG et en PNG, les icônes du site et un guide d'usage (`logo/guide.md`, vue d'ensemble dans `logo/planche.png`). Le site utilise quatre fichiers copiés dans `public/` : `logo.svg` (la version horizontale simplifiée, en blanc), `favicon.svg`, `favicon.ico` et `apple-touch-icon.png`. Pour changer de logo, remplacer ces fichiers.
@@ -105,7 +123,14 @@ Le kit du logo est dans `logo/` : toutes les versions en SVG et en PNG, les icô
 ## Structure
 
 ```
-index.html, demo.html           les deux pages : présentation et démo
+index.html, demo.html           la présentation et la démo
+blog.html, blog/*.html          le blog et ses articles
+mentions-legales.html, confidentialite.html, cgu.html, cgv.html, sla.html, dpa.html
+                                les pages légales
+tools/pages.ts                  ce que ces pages ont en commun, posé à la construction
+src/pages/                      leur feuille de style, leurs morceaux communs, les mentions de la société
+src/styles/commun.css           la charte commune à la présentation, aux pages légales et au blog
+vercel.json                     une règle par adresse, et les en-têtes de sécurité
 public/screens/mire.png         image de test, à projeter au besoin (`screenImage`)
 public/og-visionviewer.jpg      vignette du lien (messageries, e-mail)
 public/logo.svg, favicon.*      logo et icônes du site, tirés de logo/

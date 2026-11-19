@@ -1,5 +1,7 @@
+import { readFileSync } from 'node:fs'
 import { defineConfig, type HtmlTagDescriptor, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
+import { pageInputs, sitePages } from './tools/pages'
 
 /**
  * La scène 3D de la page de présentation est chargée à part (la page reste lisible sans elle),
@@ -40,12 +42,28 @@ function preloadLandingScene(): Plugin {
   }
 }
 
+/**
+ * Les en-têtes de sécurité que Vercel pose sur toutes les pages (vercel.json) : politique de
+ * contenu, interdiction d'être encadré… `npm run preview` les pose aussi, pour éprouver la
+ * politique sur la version construite avant une mise en ligne : un script ou une image qu'elle
+ * refuserait ne se verrait, sinon, qu'une fois en ligne.
+ */
+function securityHeaders(): Record<string, string> {
+  const { headers } = JSON.parse(readFileSync(new URL('./vercel.json', import.meta.url), 'utf8')) as {
+    headers: { source: string; headers: { key: string; value: string }[] }[]
+  }
+  const everywhere = headers.find((rule) => rule.source === '/(.*)')
+  return Object.fromEntries((everywhere?.headers ?? []).map(({ key, value }) => [key, value]))
+}
+
 export default defineConfig({
-  plugins: [react(), preloadLandingScene()],
+  plugins: [sitePages(), react(), preloadLandingScene()],
+  preview: { headers: securityHeaders() },
   build: {
-    // Deux pages : la présentation (index.html) et la démo (demo.html, servie sur /demo)
+    // Une entrée par page : la présentation (index.html), la démo (demo.html, servie sur /demo),
+    // les pages légales, le blog et ses articles (blog/). Voir tools/pages.ts.
     rolldownOptions: {
-      input: { index: 'index.html', demo: 'demo.html' },
+      input: pageInputs(),
     },
     // three.js (~1 Mo) est un chunk à part, partagé par la scène de la présentation et la vue 3D
     chunkSizeWarningLimit: 1100,

@@ -50,6 +50,7 @@
         <a href="#sur-mesure">Sur mesure</a>
         <a href="#integration">Intégration</a>
         <a href="#demo">Démo</a>
+        <a href="/blog">Blog</a>
       </nav>
       <a class="btn demo-link" href="/demo">Essayez maintenant<span class="arr" aria-hidden="true">→</span></a>
     </header>
@@ -224,18 +225,23 @@
     </div>
   </div></section>
 
-  <section id="contact" class="cta"><div class="wrap">
-    <h2>Pourquoi pas chez vous&nbsp;?</h2>
-    <p class="lead">Écrivez-nous avec le nom d'une de vos salles. Nous vous la montrons dans VisionViewer.</p>
-    <div class="mail">
-      <span class="addr" id="addr"></span>
-      <button class="btn" type="button" id="copy">Copier l'adresse</button>
-    </div>
-    <button class="link" type="button" id="replay">Revoir depuis le début</button>
-  </div></section>
+  <!-- Le contact et le pied de page partagent une même lueur rouge, qui monte du bas de la page -->
+  <div class="fin">
+    <section id="contact" class="cta"><div class="wrap">
+      <h2>Pourquoi pas chez vous&nbsp;?</h2>
+      <p class="lead">Écrivez-nous avec le nom d'une de vos salles. Nous vous la montrons dans VisionViewer.</p>
+      <div class="mail">
+        <a class="addr" id="addr" href="mailto:{{contact}}">{{contact}}</a>
+        <button class="btn" type="button" id="copy">Copier l'adresse</button>
+      </div>
+      <button class="link" type="button" id="replay">Revoir depuis le début</button>
+    </div></section>
 
-  <footer class="end"><div class="wrap mono"><span>VisionViewer · prototype</span><span>Salles, dimensions et occupation de démonstration</span></div></footer>
+    <!-- Le pied de page commun à toutes les pages du site : src/pages/partials/footer.html -->
+    <!--@include footer-->
+  </div>
 </div>
+
 
 
     <script type="module" src="/src/landing/main.ts"></script>

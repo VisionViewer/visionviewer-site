@@ -9,8 +9,6 @@ import { halls } from './halls'
 import { setupTouchLight } from './lit'
 import { setupWays } from './ways'
 
-/** Adresse de contact affichée en bas de page (exemple à remplacer). */
-const CONTACT = 'contact@visionviewer.example'
 
 const $ = (id: string) => document.getElementById(id)!
 
@@ -52,9 +50,10 @@ setupWays($('integrations'))
 setupTouchLight(Array.from(document.querySelectorAll<HTMLElement>('.duo article, .acc')))
 
 // --- Adresse de contact ------------------------------------------------------
+// L'adresse est écrite dans la page (src/pages/societe.json) : ici, seulement de quoi la copier
 const address = $('addr')
 const copy = $('copy')
-address.textContent = CONTACT
+const CONTACT = address.textContent ?? ''
 copy.addEventListener('click', () => {
   const copied = () => {
     copy.textContent = 'Adresse copiée'

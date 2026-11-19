@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <!--@include head-->
+    <title>Mentions légales — VisionViewer</title>
+    <meta name="description" content="Éditeur, directeur de la publication et hébergeur des sites VisionViewer." />
+    <meta property="og:title" content="Mentions légales — VisionViewer" />
+    <meta property="og:description" content="Éditeur, directeur de la publication et hébergeur des sites VisionViewer." />
+    <meta property="og:url" content="https://visionviewer.net/mentions-legales" />
+  </head>
+  <body>
+    <!--@include header-->
+    <main class="doc">
+      <header class="doc__head">
+        <span class="mono">Légal · version du {{version}}</span>
+        <h1>Mentions légales</h1>
+        <p class="chapo">Qui édite et qui héberge les sites VisionViewer&nbsp;: visionviewer.net, app.visionviewer.net et docs.visionviewer.net.</p>
+      </header>
+      <div class="doc__body">
+        <!--@sommaire-->
+        <div class="prose">
+          <!--@include avis-->
+
+          <h2 id="editeur">Éditeur</h2>
+          <p>Les sites visionviewer.net, app.visionviewer.net et docs.visionviewer.net sont édités par&nbsp;:</p>
+          <div class="tableau" tabindex="0">
+            <table>
+              <tbody>
+                <tr><td>Dénomination</td><td>{{societe.denomination}}</td></tr>
+                <tr><td>Forme</td><td>{{societe.statut}}</td></tr>
+                <tr><td>Capital social</td><td>{{societe.capital}}</td></tr>
+                <tr><td>Siège social</td><td>{{societe.siege}}</td></tr>
+                <tr><td>Immatriculation</td><td>{{societe.rcs}}</td></tr>
+                <tr><td>TVA intracommunautaire</td><td>{{societe.tva}}</td></tr>
+                <tr><td>Téléphone</td><td>{{societe.telephone}}</td></tr>
+                <tr><td>Courriel</td><td><a href="mailto:{{contact}}">{{contact}}</a></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="publication">Directeur de la publication</h2>
+          <p>{{societe.directeur}}, en qualité de représentant légal de {{societe.denomination}}.</p>
+
+          <h2 id="hebergement">Hébergement</h2>
+          <p>Les trois sites sont hébergés par&nbsp;:</p>
+          <div class="tableau" tabindex="0">
+            <table>
+              <tbody>
+                <tr><td>Hébergeur</td><td>Vercel Inc.</td></tr>
+                <tr><td>Adresse</td><td>440 N Barranca Ave #4133, Covina, CA 91723, États-Unis</td></tr>
+                <tr><td>Téléphone</td><td>{{societe.hebergeurTelephone}}</td></tr>
+                <tr><td>Site</td><td><a href="https://vercel.com" rel="noopener noreferrer">vercel.com</a></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Les données du service (la forme des salles, les logos des cinémas, les compteurs d’usage) sont conservées dans une base de données Turso, dans la région de Francfort, en Allemagne. Le nom de domaine et la messagerie sont fournis par OVH SAS, 2 rue Kellermann, 59100 Roubaix, France.</p>
+
+          <h2 id="contact">Nous écrire, signaler un contenu</h2>
+          <p>Pour toute question sur ces sites ou sur le service, écrivez à <a href="mailto:{{contact}}">{{contact}}</a>.</p>
+          <p>Pour signaler un contenu que vous estimez illicite, écrivez à la même adresse en indiquant l’adresse de la page, le contenu concerné et la raison de votre signalement. Nous vous répondons, et retirons le contenu s’il y a lieu.</p>
+
+          <h2 id="propriete">Propriété intellectuelle</h2>
+          <p>Le nom VisionViewer, le logo, les textes, les images, les scènes en 3D et le code de ces sites appartiennent à {{societe.denomination}} ou à ses concédants. Ils ne peuvent être reproduits, représentés ou adaptés sans son accord écrit, hors des cas prévus par le code de la propriété intellectuelle.</p>
+          <p>Le code d’exemple publié dans le guide d’intégration peut être copié et adapté pour intégrer VisionViewer à un site ou à une application.</p>
+          <p>Les polices Inter Tight et Geist Mono sont utilisées sous licence SIL Open Font License. Les chiffres d’études cités sur ces sites restent attribués à leurs auteurs, nommés à côté de chacun d’eux.</p>
+
+          <h2 id="demonstration">Contenus de démonstration</h2>
+          <p>Les salles, les dimensions, les prix et l’occupation des sièges présentés sur ces sites et dans la démo sont fictifs. Ils ne représentent aucun cinéma réel. Aucune réservation n’y est enregistrée, aucun paiement n’y est demandé.</p>
+
+          <h2 id="donnees">Données personnelles et cookies</h2>
+          <p>visionviewer.net ne dépose aucun cookie et ne mesure pas son audience. Ce que nous traitons, pourquoi, et vos droits sont décrits dans notre <a href="/confidentialite">politique de confidentialité</a>.</p>
+
+          <h2 id="responsabilite">Responsabilité et liens</h2>
+          <p>Nous veillons à l’exactitude de ce que nous publions, sans pouvoir garantir que ces sites sont exempts d’erreur ni disponibles sans interruption. Les conditions d’usage des sites, de la démo et des clés de test sont dans nos <a href="/cgu">conditions d’utilisation</a>.</p>
+          <p>Ces sites peuvent mener à des sites tiers, sur lesquels nous n’avons aucun contrôle et dont le contenu ne nous engage pas.</p>
+
+          <h2 id="droit">Droit applicable</h2>
+          <p>Ces mentions sont soumises au droit français. Tout différend qui ne trouverait pas de solution amiable relève des tribunaux compétents du ressort du siège social de {{societe.denomination}}.</p>
+        </div>
+      </div>
+    </main>
+    <!--@include footer-->
+  </body>
+</html>
