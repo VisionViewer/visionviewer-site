@@ -8,17 +8,14 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="VisionViewer" />
-    <!-- Site envoyé par lien : il n'a pas vocation à être référencé -->
-    <meta name="robots" content="noindex, nofollow" />
 
-    <title>VisionViewer — La vue depuis votre fauteuil</title>
-    <meta name="description" content="VisionViewer montre à chaque spectateur la vue depuis sa place, en 3D, avant le paiement." />
-    <meta property="og:type" content="website" />
+    <!-- Le titre et la description sont ce qu'un moteur de recherche affiche : ils disent le produit, le lieu (un cinéma) et le moment (avant l'achat) -->
+    <title>VisionViewer — La vue 3D depuis chaque place de votre cinéma</title>
+    <meta name="description" content="VisionViewer montre à chaque spectateur la vue 3D depuis sa place de cinéma, avant le paiement. Il s'ajoute à votre plan de salle et à votre billetterie en ligne." />
     <meta property="og:site_name" content="VisionViewer" />
-    <meta property="og:title" content="VisionViewer — La vue depuis votre fauteuil" />
-    <meta property="og:description" content="VisionViewer montre à chaque spectateur la vue depuis sa place, en 3D, avant le paiement." />
-    <!-- Aperçu du lien (messageries, e-mail) : adresses absolues, à adapter si le site change de domaine -->
-    <meta property="og:url" content="https://visionviewer.net/" />
+    <meta property="og:title" content="VisionViewer — La vue 3D depuis chaque place de votre cinéma" />
+    <meta property="og:description" content="VisionViewer montre à chaque spectateur la vue 3D depuis sa place de cinéma, avant le paiement. Il s'ajoute à votre plan de salle et à votre billetterie en ligne." />
+    <!-- Aperçu du lien (messageries, e-mail). L'adresse canonique, la traduction et les données structurées sont posées par tools/pages.ts -->
     <meta property="og:image" content="https://visionviewer.net/og-visionviewer.jpg" />
     <meta property="og:image:width" content="800" />
     <meta property="og:image:height" content="420" />
@@ -51,12 +48,13 @@
         <a href="#integration">Intégration</a>
         <a href="#demo">Démo</a>
         <a href="/blog">Blog</a>
+        <a href="{{traduction}}" hreflang="en" lang="en" title="English version">EN</a>
       </nav>
       <a class="btn demo-link" href="/demo">Essayez maintenant<span class="arr" aria-hidden="true">→</span></a>
     </header>
 
     <div id="hero"><h1>Montrez à chaque spectateur la vue depuis sa place.</h1></div>
-    <p id="sub">VisionViewer reconstitue chacune de vos salles en 3D, à ses propres cotes, et se branche directement sur votre site web et votre application mobile.</p>
+    <p id="sub">VisionViewer reconstitue chacune de vos salles de cinéma en 3D, à ses propres cotes, et se branche directement sur votre site web et votre application mobile.</p>
 
     <section class="cap" id="c1"><h2>Chaque salle est modélisée telle qu'elle est.</h2><p>Rangées, pente, espacement, écran : chaque point se place aux cotes réelles de la salle.</p></section>
     <section class="cap" id="c2"><h2>Salle 1. Onze rangs, 157 places.</h2><p>Écran de 9,40 × 3,93 m, pente de 11°, 1,10 m entre les rangs, 5 emplacements PMR.</p></section>
@@ -203,6 +201,7 @@
       <article><b>72<small>%</small></b><p>des spectateurs qui trouvent leur séance sur le site du cinéma y terminent leur achat.</p><span class="mono">Vertigo Research · Webedia Movies Pro · États-Unis, 2018</span></article>
     </div>
     <div class="knav"><button type="button" id="kPrev" aria-label="Chiffre précédent">←</button><button type="button" id="kNext" aria-label="Chiffre suivant">→</button></div>
+    <p class="more"><a class="hint" href="/blog/la-place-compte-avant-l-achat">Les sources de ces chiffres, et leurs limites</a></p>
   </div></section>
 
   <section id="demo"><div class="wrap">
@@ -222,6 +221,92 @@
         <p>La même démo, avec la vue 3D en plein écran.</p>
         <a class="btn big demo-link" href="/demo">Essayez maintenant<span class="arr" aria-hidden="true">→</span></a>
       </article>
+    </div>
+  </div></section>
+
+  <!-- Les questions fréquentes. Entre les deux repères, tools/pages.ts lit chaque question (data-q) et
+       sa réponse (data-a), et les reprend dans les données structurées de la page (FAQPage) -->
+  <section id="questions"><div class="wrap">
+    <span class="mono">Questions fréquentes</span>
+    <h2>Les questions qu'un cinéma se pose.</h2>
+    <div class="faq" id="faq">
+      <!--@faq-->
+      <article class="acc">
+        <h3><button class="acc__head" type="button" id="q1-head" aria-expanded="false" aria-controls="q1">
+          <span class="acc__title" data-q>Qu'est-ce que VisionViewer&nbsp;?</span>
+          <i class="acc__sign" aria-hidden="true"></i>
+        </button></h3>
+        <div class="acc__panel" id="q1" role="region" aria-labelledby="q1-head"><div class="acc__inner"><div class="acc__body" data-a>
+          <p>VisionViewer est un outil pour les cinémas&nbsp;: il montre à chaque spectateur la vue depuis sa place, en 3D, pendant la réservation en ligne et avant le paiement. Chaque salle est reconstituée à ses propres cotes&nbsp;: rangées, pente du gradin, espacement, écran.</p>
+        </div></div></div>
+      </article>
+      <article class="acc">
+        <h3><button class="acc__head" type="button" id="q2-head" aria-expanded="false" aria-controls="q2">
+          <span class="acc__title" data-q>Faut-il changer de billetterie ou de plan de salle&nbsp;?</span>
+          <i class="acc__sign" aria-hidden="true"></i>
+        </button></h3>
+        <div class="acc__panel" id="q2" role="region" aria-labelledby="q2-head"><div class="acc__inner"><div class="acc__body" data-a>
+          <p>Non. VisionViewer s'ajoute à votre page de réservation. Votre billetterie garde les séances, les disponibilités et le paiement&nbsp;; nous ne conservons que la forme de vos salles. Si vous avez déjà un plan de salle, il ne change pas&nbsp;: vous y ajoutez un bouton.</p>
+        </div></div></div>
+      </article>
+      <article class="acc">
+        <h3><button class="acc__head" type="button" id="q3-head" aria-expanded="false" aria-controls="q3">
+          <span class="acc__title" data-q>Comment s'intègre-t-il au site d'un cinéma&nbsp;?</span>
+          <i class="acc__sign" aria-hidden="true"></i>
+        </button></h3>
+        <div class="acc__panel" id="q3" role="region" aria-labelledby="q3-head"><div class="acc__inner"><div class="acc__body" data-a>
+          <p>Une balise charge le SDK, puis un appel suffit. Avec votre propre plan de salle, <code>VisionViewer.open()</code> ouvre la vue 3D sur les places que le spectateur vient de choisir. Sans plan, <code>VisionViewer.mountPlan()</code> insère le nôtre dans votre page, et la vue 3D s'ouvre depuis lui.</p>
+          <p>Le <a href="https://docs.visionviewer.net">guide d'intégration</a> donne le code, avec des exemples à exécuter sur place.</p>
+        </div></div></div>
+      </article>
+      <article class="acc">
+        <h3><button class="acc__head" type="button" id="q4-head" aria-expanded="false" aria-controls="q4">
+          <span class="acc__title" data-q>Nous n'avons pas de plan de salle. Est-ce un obstacle&nbsp;?</span>
+          <i class="acc__sign" aria-hidden="true"></i>
+        </button></h3>
+        <div class="acc__panel" id="q4" role="region" aria-labelledby="q4-head"><div class="acc__inner"><div class="acc__body" data-a>
+          <p>Non. Nous le construisons&nbsp;: à distance, à partir de quelques photos de la salle, ou sur place, où un ingénieur VisionViewer relève l'écran, le gradin, les rangées et les espacements.</p>
+        </div></div></div>
+      </article>
+      <article class="acc">
+        <h3><button class="acc__head" type="button" id="q5-head" aria-expanded="false" aria-controls="q5">
+          <span class="acc__title" data-q>La vue 3D ralentit-elle la réservation sur téléphone&nbsp;?</span>
+          <i class="acc__sign" aria-hidden="true"></i>
+        </button></h3>
+        <div class="acc__panel" id="q5" role="region" aria-labelledby="q5-head"><div class="acc__inner"><div class="acc__body" data-a>
+          <p>Nous la mesurons sur un téléphone émulé, en 4G lente&nbsp;: le plan de salle est utilisable en 0,65&nbsp;seconde, et la vue 3D affiche sa première image en 0,87&nbsp;seconde (mesures du 17&nbsp;novembre 2026).</p>
+          <p>La méthode et ses limites sont dans <a href="/blog/un-plan-de-salle-en-moins-d-une-seconde">notre article sur la vitesse</a>.</p>
+        </div></div></div>
+      </article>
+      <article class="acc">
+        <h3><button class="acc__head" type="button" id="q6-head" aria-expanded="false" aria-controls="q6">
+          <span class="acc__title" data-q>Que savez-vous de nos spectateurs&nbsp;?</span>
+          <i class="acc__sign" aria-hidden="true"></i>
+        </button></h3>
+        <div class="acc__panel" id="q6" role="region" aria-labelledby="q6-head"><div class="acc__inner"><div class="acc__body" data-a>
+          <p>Rien qui permette de les reconnaître&nbsp;: ni compte, ni cookie, ni stockage dans leur navigateur. Nous comptons seulement, par jour et par salle, les plans affichés, les vues 3D ouvertes et les places retenues.</p>
+          <p>Le détail est dans notre <a href="/confidentialite">politique de confidentialité</a>.</p>
+        </div></div></div>
+      </article>
+      <article class="acc">
+        <h3><button class="acc__head" type="button" id="q7-head" aria-expanded="false" aria-controls="q7">
+          <span class="acc__title" data-q>Combien coûte VisionViewer&nbsp;?</span>
+          <i class="acc__sign" aria-hidden="true"></i>
+        </button></h3>
+        <div class="acc__panel" id="q7" role="region" aria-labelledby="q7-head"><div class="acc__inner"><div class="acc__body" data-a>
+          <p>Le prix est établi sur devis, pour vos salles. Écrivez-nous à <a href="mailto:{{contact}}">{{contact}}</a> avec le nom de l'une d'elles&nbsp;: nous vous la montrons dans VisionViewer.</p>
+        </div></div></div>
+      </article>
+      <article class="acc">
+        <h3><button class="acc__head" type="button" id="q8-head" aria-expanded="false" aria-controls="q8">
+          <span class="acc__title" data-q>Peut-on l'essayer avant de s'engager&nbsp;?</span>
+          <i class="acc__sign" aria-hidden="true"></i>
+        </button></h3>
+        <div class="acc__panel" id="q8" role="region" aria-labelledby="q8-head"><div class="acc__inner"><div class="acc__body" data-a>
+          <p>Oui. La <a href="/demo">démo</a> est en ligne, sans inscription&nbsp;: choisissez un fauteuil, puis ouvrez la vue 3D. Pour l'essayer dans votre propre page, une clé de test fonctionne tout de suite sur le poste de votre développeur.</p>
+        </div></div></div>
+      </article>
+      <!--@/faq-->
     </div>
   </div></section>
 

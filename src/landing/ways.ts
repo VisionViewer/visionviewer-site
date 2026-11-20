@@ -3,6 +3,7 @@
  * L'ouverture elle-même est animée par landing.css ; ici, l'état, et la tenue de la page pendant
  * qu'elle se déplie.
  */
+import { t } from './langue'
 
 /** Durée du dépliage, en millisecondes : celle de `.acc__panel` dans landing.css, avec une marge. */
 const UNFOLD = 700
@@ -71,9 +72,9 @@ export function setupWays(root: HTMLElement): void {
         selection?.removeAllRanges()
         selection?.addRange(range)
       }
-      button.textContent = copied ? 'Copié' : 'Sélectionné'
+      button.textContent = copied ? t('Copié', 'Copied') : t('Sélectionné', 'Selected')
       window.clearTimeout(reset)
-      reset = window.setTimeout(() => (button.textContent = 'Copier'), 1800)
+      reset = window.setTimeout(() => (button.textContent = t('Copier', 'Copy')), 1800)
     })
   }
 }

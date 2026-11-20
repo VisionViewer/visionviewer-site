@@ -3,7 +3,8 @@
  * et que la démo. Dessin repris de la maquette (visionviewer-landing.html), rendu adaptable :
  * la coupe se dessine à la largeur disponible, pour tenir en entier sur un téléphone.
  */
-import { fr, type Hall } from './halls'
+import { en, fr, num, type Hall } from './halls'
+import { EN, t } from './langue'
 
 /** Échelle de la maquette, en pixels par mètre : celle des grands écrans */
 const FULL_SCALE = 52
@@ -66,17 +67,22 @@ export function drawCoupe(target: HTMLElement, hall: Hall, width = target.client
     svg += `<text x="${x}" y="${GROUND_Y + (narrow ? 22 : 28)}" text-anchor="middle"${r === row ? ' class="on"' : ''}>${hall.rows[r]}</text>`
   }
   svg += `<circle cx="${X(eyeZ)}" cy="${Y(eyeY)}" r="${round(px(4.5, 3))}" fill="${GREEN}" style="filter:drop-shadow(0 0 8px ${GREEN})"/>`
-  svg += `<text transform="translate(${X(0) - (narrow ? 12 : 18)} ${Y(d.screenBottom + d.screenH / 2)}) rotate(-90)" text-anchor="middle">Écran ${fr(d.screenH, 2)} m</text>`
-  svg += `<text class="on" x="${X(eyeZ / 2)}" y="${round(Y((eyeY + top) / 2) - 12)}" text-anchor="middle">${fr(hall.distance, 1)} m</text>`
-  svg += `<text x="${X(end)}" y="${round(Y((rows - 1) * d.step) + (narrow ? 20 : 28))}" text-anchor="end">Pente ${fr(hall.slope)}°</text>`
+  svg += `<text transform="translate(${X(0) - (narrow ? 12 : 18)} ${Y(d.screenBottom + d.screenH / 2)}) rotate(-90)" text-anchor="middle">${t('Écran', 'Screen')} ${num(d.screenH, 2)} m</text>`
+  svg += `<text class="on" x="${X(eyeZ / 2)}" y="${round(Y((eyeY + top) / 2) - 12)}" text-anchor="middle">${num(hall.distance, 1)} m</text>`
+  svg += `<text x="${X(end)}" y="${round(Y((rows - 1) * d.step) + (narrow ? 20 : 28))}" text-anchor="end">${t('Pente', 'Slope')} ${num(hall.slope)}°</text>`
 
   // Le cadre suit la salle : du dessus de l'écran aux lettres des rangées
   const viewTop = Math.round(Math.min(narrow ? GROUND_Y : 100, Y(top) - (narrow ? 22 : 28)))
   const viewBottom = GROUND_Y + (narrow ? 34 : 45)
-  const label = `Coupe de la salle ${hall.name} : écran de ${fr(d.screenH, 2)} m à gauche, ${rows} rangs en gradin, champ de vision du fauteuil ${hall.selected} à ${fr(hall.distance, 1)} m`
+  const label = t(
+    `Coupe de la salle ${hall.name} : écran de ${num(d.screenH, 2)} m à gauche, ${rows} rangs en gradin, champ de vision du fauteuil ${hall.selected} à ${num(hall.distance, 1)} m`,
+    `Cross-section of ${hall.name}: ${num(d.screenH, 2)} m screen on the left, ${rows} stepped rows, field of view from seat ${hall.selected}, ${num(hall.distance, 1)} m away`,
+  )
   target.innerHTML = `<svg viewBox="0 ${viewTop} ${round(X(end) + right)} ${viewBottom - viewTop}" role="img" aria-label="${label}">${svg}</svg>`
 }
 
-/** Légende de la figure, citée telle quelle dans index.html. */
-export const coupeCaption = (hall: Hall) =>
-  `Fig. 1 — Coupe · ${hall.name} · ${hall.selected} · ${fr(hall.distance, 1)} m · ${fr(hall.angle)}°`
+/** Légende de la figure, citée telle quelle dans index.html et, en anglais, dans en.html. */
+export const coupeCaption = (hall: Hall, english = EN) =>
+  english
+    ? `Fig. 1 — Section · ${hall.name} · ${hall.selected} · ${en(hall.distance, 1)} m · ${en(hall.angle)}°`
+    : `Fig. 1 — Coupe · ${hall.name} · ${hall.selected} · ${fr(hall.distance, 1)} m · ${fr(hall.angle)}°`

@@ -46,6 +46,10 @@
 .prose a:hover,.prose a:focus-visible,.chapo a:hover,.chapo a:focus-visible{border-color:var(--green);outline:none}
 .prose code{font:400 .88em var(--f-mono);color:var(--ink)}
 .note{color:var(--dim);font-size:15px}
+/* Un extrait de code : une fenêtre au trait, comme sur la page de présentation. Trop large, il défile dans son cadre */
+.prose pre{margin:24px 0 30px;padding:18px 20px 20px;border:1px solid var(--line);overflow-x:auto;font:400 13px/1.75 var(--f-mono);color:var(--ink);tab-size:2}
+.prose pre code{font:inherit}
+.prose pre:focus-visible{outline:1px solid var(--ink);outline-offset:-1px}
 
 /* Un tableau : des étiquettes, des filets. Trop large pour l'écran, il défile dans son cadre */
 .tableau{margin:26px 0 30px;overflow-x:auto}
@@ -105,7 +109,19 @@
 .suite{display:flex;flex-wrap:wrap;align-items:center;gap:18px 28px;margin-top:72px;padding-top:30px;border-top:1px solid var(--line)}
 .suite p{flex:1 1 16em;margin:0;font-size:clamp(20px,2vw,26px);font-weight:400;letter-spacing:-.03em;line-height:1.15;color:var(--ink)}
 
+/* Au bas d'un article : les autres articles, sur toute la largeur de la page */
+.voir-aussi{margin-top:110px;padding-top:30px;border-top:1px solid var(--line)}
+.voir-aussi h2{margin-bottom:28px;font-size:clamp(24px,2.5vw,32px);font-weight:400;letter-spacing:-.03em}
+.voir-aussi .cards{grid-template-columns:repeat(3,minmax(0,1fr))}
+.voir-aussi .card h3{font-size:clamp(19px,1.7vw,23px)}
+.voir-aussi .card p{font-size:15px}
+
+/* Des questions et leurs réponses, dans un article : chaque réponse sous sa question */
+.prose [data-a]>p:last-child{margin-bottom:0}
+.prose [data-a]{margin-bottom:26px}
+
 @media (max-width:1000px){
+  .voir-aussi .cards{grid-template-columns:minmax(0,1fr)}
   .doc__body{grid-template-columns:minmax(0,1fr)}
   .sommaire{position:static;max-height:none;margin-bottom:56px;padding-bottom:28px;border-bottom:1px solid var(--line)}
   .rubrique{grid-template-columns:minmax(0,1fr)}

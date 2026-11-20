@@ -2,6 +2,7 @@
   "id": "salle-1",
   "name": "Salle 1",
   "description": "Onze rangs droits, avec des places doubles aux extrémités de deux rangs.",
+  "en": { "name": "Auditorium 1", "description": "Eleven straight rows, with double seats at both ends of two rows." },
   "screenLogo": "screens/votre-logo-ici.png",
   "rows": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"],
   "seatsPerRow": 15,

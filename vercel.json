@@ -15,6 +15,18 @@
       "destination": "/blog/:article.html"
     },
     {
+      "source": "/en",
+      "destination": "/en.html"
+    },
+    {
+      "source": "/en/blog",
+      "destination": "/en/blog.html"
+    },
+    {
+      "source": "/en/blog/:article",
+      "destination": "/en/blog/:article.html"
+    },
+    {
       "source": "/mentions-legales",
       "destination": "/mentions-legales.html"
     },

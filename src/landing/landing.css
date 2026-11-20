@@ -263,3 +263,18 @@
 @media (prefers-reduced-motion:reduce){
   .acc,.acc:before,.acc:after,.acc__panel,.acc__body>*,.acc__tag,.acc__sign:before,.acc__sign:after,.duo article,.duo .mono,.duo article:before,.duo article:after{transition:none !important}
 }
+
+/* Questions fréquentes : le menu dépliant de l'intégration, une question par cadre. Un titre de
+   question est plus long qu'un titre de façon : il est plus petit, et le signe reste à sa hauteur. */
+.faq{margin-top:70px;text-align:left}
+.faq .acc__title{font-size:clamp(19px,1.8vw,24px);line-height:1.2}
+.faq .acc__sign{grid-row:1}
+.faq .acc__body>p+p{margin-top:12px}
+.faq .acc__body a{color:var(--green);border-bottom:1px solid color-mix(in srgb,var(--green) 38%,transparent);transition:border-color .2s}
+.faq .acc__body a:hover,.faq .acc__body a:focus-visible{border-color:var(--green);outline:none}
+.faq .acc__body code{font:400 .88em var(--f-mono);color:var(--ink)}
+/* Sous les chiffres : le lien vers leurs sources */
+.more{margin:34px 0 0;text-align:left}
+@media (max-width:820px){.faq{margin-top:48px}}
+/* Barre haute : cinq liens au menu depuis le lien de langue */
+@media (max-width:1040px){.bar nav{gap:18px}}

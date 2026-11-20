@@ -1,0 +1,8 @@
+# VisionViewer — https://visionviewer.net
+# Le site est ouvert aux moteurs de recherche et aux assistants (ChatGPT, Claude, Perplexity, Gemini…).
+# Les pages légales se retirent elles-mêmes des résultats (balise « noindex ») tant que leurs
+# mentions sont à compléter : elles doivent rester lisibles ici pour que cette balise soit lue.
+User-agent: *
+Allow: /
+
+Sitemap: https://visionviewer.net/sitemap.xml

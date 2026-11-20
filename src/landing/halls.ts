@@ -6,6 +6,7 @@
 import { layouts } from '../data/rooms'
 import { isSelectable, type RoomLayout, type Slot } from '../lib/room'
 import { EYE_HEIGHT, viewMetrics } from '../lib/view'
+import { EN } from './langue'
 
 export interface HallSeat {
   id: string
@@ -58,8 +59,11 @@ export interface Hall {
   slope: number
 }
 
-function toHall(layout: RoomLayout): Hall {
+function toHall(layout: RoomLayout, english: boolean): Hall {
   const { config } = layout
+  // En anglais, le nom et la description traduits de la salle (champ `en` de son JSON), s'ils existent
+  const name = (english && config.en?.name) || config.name
+  const description = english ? config.en?.description : config.description
   const d = config.dimensions
   const slots = layout.rows.flatMap((row) => row.slots).filter((slot) => slot.kind !== 'empty')
 
@@ -75,9 +79,8 @@ function toHall(layout: RoomLayout): Hall {
   const metrics = viewMetrics(layout, selected)
 
   return {
-    name: config.name,
-    description:
-      config.description ?? `${layout.rows.length} rangs, ${layout.seatCount} places.`,
+    name,
+    description: description ?? (english ? `${layout.rows.length} rows, ${layout.seatCount} seats.` : `${layout.rows.length} rangs, ${layout.seatCount} places.`),
     places: layout.seatCount,
     rows: layout.rows.map((row) => row.label),
     seats: slots.map((slot) => ({
@@ -118,11 +121,19 @@ function toHall(layout: RoomLayout): Hall {
   }
 }
 
-export const halls: Hall[] = layouts.map(toHall)
+/** Les salles, décrites en français ou en anglais. */
+export const hallsIn = (english: boolean): Hall[] => layouts.map((layout) => toHall(layout, english))
+
+/** Les salles, dans la langue de la page. */
+export const halls: Hall[] = hallsIn(EN)
 
 /** Nombre à la française : virgule décimale. */
 export const fr = (value: number, digits = 0) => value.toFixed(digits).replace('.', ',')
+/** Nombre à l'anglaise : point décimal. */
+export const en = (value: number, digits = 0) => value.toFixed(digits)
+/** Nombre dans la langue de la page. */
+export const num = EN ? en : fr
 
 /** « 9,40 × 3,93 m » */
-export const screenSize = (hall: Hall) =>
-  `${fr(hall.dim.screenW, 2)} × ${fr(hall.dim.screenH, 2)} m`
+export const screenSize = (hall: Hall, format = num) =>
+  `${format(hall.dim.screenW, 2)} × ${format(hall.dim.screenH, 2)} m`

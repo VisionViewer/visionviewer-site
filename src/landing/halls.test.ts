@@ -1,11 +1,15 @@
 import { describe, expect, it } from 'vitest'
 import page from '../../index.html?raw'
+import pageEn from '../../en.html?raw'
 import { layouts } from '../data/rooms'
 import { coupeCaption } from './coupe'
-import { fr, halls, screenSize } from './halls'
+import { en, fr, halls, hallsIn, screenSize } from './halls'
 
 const text = page.replace(/&nbsp;/g, ' ')
+const textEn = pageEn.replace(/&nbsp;/g, ' ')
 const salle = halls[0]
+/** La même salle, telle que la page anglaise la décrit */
+const auditorium = hallsIn(true)[0]
 
 describe('Salles de la page de présentation', () => {
   it('sont celles de la démo, avec les mêmes fauteuils et les mêmes spectateurs', () => {
@@ -52,5 +56,32 @@ describe('Texte de la page de présentation', () => {
     expect(text).toContain(`${salle.selected} s'allume`)
     expect(text).toContain(`De ${salle.front} à ${salle.back}`)
     expect(text).toContain(coupeCaption(salle))
+  })
+})
+
+// La page anglaise (en.html) est la traduction de index.html : mêmes salles, mêmes chiffres,
+// écrits avec un point décimal.
+describe('Texte de la page de présentation en anglais', () => {
+  it('décrit les salles en anglais, sans changer leurs chiffres', () => {
+    expect(auditorium).toMatchObject({ name: 'Auditorium 1', places: salle.places, selected: salle.selected, distance: salle.distance, angle: salle.angle })
+    for (const hall of hallsIn(true)) expect(hall.description, hall.name).not.toMatch(/rangs|places|salle/)
+  })
+
+  it('cite les chiffres de la première salle de la démo', () => {
+    const d = auditorium.dim
+    expect(textEn).toContain(`${auditorium.name}. Eleven rows, ${auditorium.places} seats.`)
+    expect(textEn).toContain(
+      `A ${screenSize(auditorium, en)} screen, an ${en(auditorium.slope)}° slope, ${en(d.rowGap, 2)} m between rows, ${auditorium.pmrCount} wheelchair spaces.`,
+    )
+    expect(textEn).toContain(`<dd id="sName">${auditorium.name}</dd>`)
+    expect(textEn).toContain(`<dd id="sPlaces">${auditorium.places}</dd>`)
+    expect(textEn).toContain(`<dd id="sScreen">${screenSize(auditorium, en)}</dd>`)
+    expect(textEn).toContain(`<p id="sDesc">${auditorium.description}</p>`)
+  })
+
+  it('cite les fauteuils d’où la scène regarde l’écran', () => {
+    expect(textEn).toContain(`${auditorium.selected} lights up`)
+    expect(textEn).toContain(`From ${auditorium.front} to ${auditorium.back}`)
+    expect(textEn).toContain(coupeCaption(auditorium, true))
   })
 })

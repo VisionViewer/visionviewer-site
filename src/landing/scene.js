@@ -6,7 +6,7 @@
  */
 import * as THREE from 'three';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
-import {halls} from './halls';
+import {halls, num} from './halls';
 
 const $ = id => document.getElementById(id);
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
@@ -286,7 +286,7 @@ $('replay').addEventListener('click', () => scrollTo({top: 0, behavior: reduce ?
 
 /* ---------- overlays ---------- */
 const caps = [['c1', .1, .14, .26, .3], ['c2', .31, .34, .4, .43], ['c3', .44, .47, .55, .59], ['c4', .62, .65, .69, .72], ['c5', .73, .76, .85, .88], ['c7', .97, 1, 1.18, 1.21], ['c6', 1.215, 1.24, 2, 3]].map(([id, ...k]) => [$(id), ...k]);
-const fmt = (x, d) => x.toFixed(d).replace('.', ',');
+const fmt = num;                                        // virgule en français, point en anglais
 const v1 = new THREE.Vector3(), v2 = new THREE.Vector3(), proj = new THREE.Vector3();
 const el = {hero: $('hero'), sub: $('sub'), hud: $('hud'), hSeat: $('hSeat'), hDist: $('hDist'), hAng: $('hAng'), tag: $('tagSeat'), hint: $('hint'), tc: $('tc'), sName: $('sName'), sPlaces: $('sPlaces'), sScreen: $('sScreen'), sDesc: $('sDesc')};
 

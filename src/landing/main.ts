@@ -6,6 +6,7 @@
 import { DEMO_PATH, shareableDemoUrl } from '../lib/links'
 import { drawCoupe } from './coupe'
 import { halls } from './halls'
+import { t } from './langue'
 import { setupTouchLight } from './lit'
 import { setupWays } from './ways'
 
@@ -38,13 +39,15 @@ const demoUrl = shareableDemoUrl()
 if (demoUrl && !window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
   import('../lib/qr').then(({ qrSvg }) => {
     const qr = $('qr')
-    qr.innerHTML = qrSvg(demoUrl, 'QR code vers la démo')
+    qr.innerHTML = qrSvg(demoUrl, t('QR code vers la démo', 'QR code to the demo'))
     qr.classList.add('on')
   })
 }
 
 // Section Intégration : les deux façons de se brancher, en menu dépliant
 setupWays($('integrations'))
+// Les questions fréquentes : le même menu dépliant, une réponse ouverte à la fois
+setupWays($('faq'))
 
 // Les cadres au contour vert : au doigt, ils s'allument au toucher
 setupTouchLight(Array.from(document.querySelectorAll<HTMLElement>('.duo article, .acc')))
@@ -56,8 +59,8 @@ const copy = $('copy')
 const CONTACT = address.textContent ?? ''
 copy.addEventListener('click', () => {
   const copied = () => {
-    copy.textContent = 'Adresse copiée'
-    window.setTimeout(() => (copy.textContent = "Copier l'adresse"), 1800)
+    copy.textContent = t('Adresse copiée', 'Address copied')
+    window.setTimeout(() => (copy.textContent = t("Copier l'adresse", 'Copy the address')), 1800)
   }
   // Sans accès au presse-papiers, l'adresse est sélectionnée : il reste à la copier
   const select = () => {
@@ -66,7 +69,7 @@ copy.addEventListener('click', () => {
     const selection = window.getSelection()
     selection?.removeAllRanges()
     selection?.addRange(range)
-    copy.textContent = 'Adresse sélectionnée'
+    copy.textContent = t('Adresse sélectionnée', 'Address selected')
   }
   try {
     navigator.clipboard.writeText(CONTACT).then(copied, select)

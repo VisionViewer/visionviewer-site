@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--@include head-->
+    <title>How to add a 3D seat view to a cinema’s online ticketing — VisionViewer</title>
+    <meta name="description" content="What it takes to show moviegoers the view from their seat: the auditorium’s dimensions, one tag, one call. Two integrations, with no change of ticketing system." />
+    <meta name="vv:rubrique" content="guide" />
+    <meta name="vv:date" content="2026-11-20" />
+    <meta name="vv:lecture" content="7" />
+    <meta name="vv:traduction" content="/blog/ajouter-une-vue-depuis-le-fauteuil-a-sa-billetterie" />
+    <meta property="og:title" content="How to add a view from the seat to your online ticketing" />
+    <meta property="og:description" content="What it takes to show moviegoers the view from their seat: the auditorium’s dimensions, one tag, one call. Two integrations, with no change of ticketing system." />
+  </head>
+  <body>
+    <!--@include header-->
+    <main class="doc">
+      <header class="doc__head">
+        <span class="mono"><a href="/en/blog">← Blog</a> · {{article.signature}}</span>
+        <h1>How to add a view from the seat to your online ticketing</h1>
+        <p class="chapo">Showing the moviegoer what they will see from their seat requires neither a new ticketing system nor a new seat map. Here is what you need to gather, the two ways to integrate it, and what stays on your side.</p>
+      </header>
+      <div class="doc__body">
+        <!--@sommaire-->
+        <div class="prose">
+          <h2 id="en-bref">In short</h2>
+          <ul>
+            <li><strong>One tag and one call.</strong> The SDK loads with a <code>&lt;script&gt;</code> tag; one call opens the 3D view, or inserts the seat map.</li>
+            <li><strong>Two integrations.</strong> The 3D view only if you already have a seat map; the 2D seat map plus the 3D view if you do not.</li>
+            <li><strong>Your ticketing system does not change.</strong> Showtimes, availability and payment stay with you: VisionViewer only stores the shape of the auditoriums.</li>
+            <li><strong>An auditorium is described by about ten measurements</strong>: the screen, the first row, the spacing between rows, the width of the seats, the height of each step.</li>
+            <li><strong>A test key works right away</strong> on your developer’s machine, before anything goes live.</li>
+          </ul>
+
+          <h2 id="definition">What a view from the seat is</h2>
+          <p>A view from the seat shows the screen as you see it sitting in one specific seat, before you buy that seat. In VisionViewer, it is a computed 3D image: the camera is placed at the eyes of a seated moviegoer, 1.15&nbsp;m above the floor of their row, looking at the center of the screen.</p>
+          <p>It is not a photo taken in the auditorium. The view is computed for every seat from the auditorium’s dimensions: there is nothing to photograph, and no seat is left out. It follows the moviegoer’s selection: for three seats, they see the screen from the middle one.</p>
+
+          <h2 id="prerequis">What you need to gather</h2>
+          <div class="tableau" tabindex="0">
+            <table>
+              <thead>
+                <tr><th>Item</th><th>What it is for</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>A public key (<code>apiKey</code>)</td><td>It identifies your cinema in the page. It is not a secret: it can appear in the page’s code.</td></tr>
+                <tr><td>One identifier per auditorium (<code>roomId</code>)</td><td>The name under which the shape of the auditorium is stored.</td></tr>
+                <tr><td>Your domains</td><td>The view and the seat map only display on the domains declared for your key, staging included.</td></tr>
+                <tr><td>Your seat identifiers</td><td>Your page speaks in its own identifiers. If your ticketing system calls G9 “7-9”, the mapping is recorded once, auditorium by auditorium.</td></tr>
+                <tr><td>The dimensions of each auditorium</td><td>They are what gives the right view: see below.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>The dimensions of an auditorium</h3>
+          <ul>
+            <li><strong>The screen</strong>: its width, its height, the height of its bottom edge above the floor of the first row, and its curvature if it is curved.</li>
+            <li><strong>The distance</strong> from the screen to the first row.</li>
+            <li><strong>The stepped floor</strong>: the spacing between two rows, and the height each row gains. That is what decides what you see over the heads in front.</li>
+            <li><strong>The seats</strong>: their width, and the gap between two neighboring seats. A 56&nbsp;cm seat and a 90&nbsp;cm club seat do not make the same auditorium.</li>
+            <li><strong>The layout</strong>: aisles, wheelchair spaces, double seats and positions with no seat.</li>
+          </ul>
+          <p>You have neither these dimensions nor a seat map? We survey them: remotely, from a few photos, or on site.</p>
+          <p class="note">Today, the model describes straight rows, on a floor with a regular slope and on a single level. Curved rows and balconies are not supported yet.</p>
+
+          <h2 id="vue-3d-seule">Integration 1: the 3D view only</h2>
+          <p>You already have a seat map. It stays as it is: you add a button to it.</p>
+          <ol>
+            <li>The moviegoer picks their seats on your seat map.</li>
+            <li>Your button calls <code>VisionViewer.open()</code>, with those seats and the seats already sold.</li>
+            <li>The 3D view opens full screen, on top of your page. The moviegoer moves their group of seats around to compare: the group keeps its shape and its number of seats.</li>
+            <li>Confirming returns the seats being viewed to your page (<code>onConfirm</code>); going back to the seat map closes the view without changing anything.</li>
+          </ol>
+<pre tabindex="0"><code>&lt;script src="https://app.visionviewer.net/sdk/visionviewer.js"&gt;&lt;/script&gt;
+
+&lt;button id="view-3d"&gt;3D view&lt;/button&gt;
+
+&lt;script&gt;
+  document.querySelector('#view-3d').onclick = () =&gt;
+    VisionViewer.open({
+      apiKey: 'vv_test_…',
+      roomId: 'salle-1',
+      selected: ['G1', 'G2', 'G3'],   // the seats picked on your seat map
+      occupied: ['G8', 'G9'],         // seats already sold
+      onConfirm: (seats) =&gt; cart.replace(seats),
+    })
+&lt;/script&gt;</code></pre>
+
+          <h2 id="plan-et-vue">Integration 2: the 2D seat map and the 3D view</h2>
+          <p>You have no seat map. You set aside a block in your booking page; <code>VisionViewer.mountPlan()</code> inserts ours there, in a light or a dark theme.</p>
+          <ol>
+            <li>The seat map shows in your page, with the auditorium drawn at its final size.</li>
+            <li>The moviegoer picks up to nine seats in it, side by side or one in front of the other.</li>
+            <li>The seat map’s 3D button opens the same view.</li>
+            <li>Your page receives every change of selection (<code>onChange</code>), and carries on with the order.</li>
+          </ol>
+<pre tabindex="0"><code>&lt;script src="https://app.visionviewer.net/sdk/visionviewer.js"&gt;&lt;/script&gt;
+
+&lt;div id="seat-map"&gt;&lt;/div&gt;
+
+&lt;script&gt;
+  VisionViewer.mountPlan('#seat-map', {
+    apiKey: 'vv_test_…',
+    roomId: 'salle-1',
+    occupied: ['G8', 'G9'],           // seats already sold
+    onChange: ({ selected }) =&gt; cart.replace(selected),
+  })
+&lt;/script&gt;</code></pre>
+
+          <h2 id="billetterie">What stays on your side</h2>
+          <ul>
+            <li><strong>Sales.</strong> The list of sold seats (<code>occupied</code>) is a snapshot, taken when the view opens. If a seat is sold while the moviegoer is looking, your page sends the new list (<code>update</code>); if that seat was selected, it is removed, and your page is told. In every case, your ticketing system decides at payment.</li>
+            <li><strong>Showtimes, prices, payment.</strong> VisionViewer knows nothing about them: it only knows the shape of your auditoriums.</li>
+            <li><strong>Your moviegoers.</strong> No account, no cookie, no storage in their browser.</li>
+          </ul>
+
+          <h2 id="essayer">Trying it before going live</h2>
+          <p>A <strong>test key</strong> (<code>vv_test_…</code>) works right away on <code>localhost</code>, on any port, and on your declared domains. It displays a “test version” notice.</p>
+          <p>The <strong>live key</strong> (<code>vv_live_…</code>) only works on your declared domains, with no notice. A key is revoked in one click.</p>
+
+          <h2 id="vitesse">What about the speed of your page?</h2>
+          <p>The code of the 3D view is downloaded ahead of time, at idle, while the moviegoer looks at the seat map. It never is if the visitor has asked to save data.</p>
+          <p>On an emulated phone, on slow 4G, the seat map is usable in 0.65&nbsp;seconds, and the 3D view shows its first frame in 0.87&nbsp;seconds (measured on November&nbsp;17, 2026). The method and its limits are in <a href="/en/blog/a-seat-map-in-under-a-second">our article on speed</a>.</p>
+
+          <h2 id="mesurer">What you will be able to measure</h2>
+          <p>VisionViewer counts, per day and per auditorium: seat maps displayed, 3D views opened, seats chosen from the 3D view and, if your confirmation page reports them (<code>reportOrder</code>), orders.</p>
+          <p>These counters describe usage. On their own, they do not prove a gain in sales: they have to be set against your own numbers. We will publish the first results in our <a href="/en/blog#etudes-de-cas">case studies</a>, with the agreement of the cinemas concerned.</p>
+
+          <h2 id="questions">Frequently asked questions</h2>
+          <!--@faq-->
+          <h3 data-q>Do you need to change ticketing software to add a view from the seat?</h3>
+          <div data-a><p>No. The view is added to your booking page with one tag and one call. Your ticketing system keeps the showtimes, the availability and the payment.</p></div>
+          <h3 data-q>What do you need to provide for an auditorium to be modeled?</h3>
+          <div data-a><p>The auditorium’s dimensions: the screen, the distance to the first row, the spacing between rows, the height of each step, the width of the seats, and the seat layout. With no seat map or dimensions, we survey them from photos, or on site.</p></div>
+          <h3 data-q>What happens if a seat is sold while the moviegoer is looking at the 3D view?</h3>
+          <div data-a><p>Your page sends the new list of sold seats. If the seat was selected, it is removed from the selection, and your page is told. Your ticketing system decides at payment.</p></div>
+          <h3 data-q>Can the integration be tested without putting the site online?</h3>
+          <div data-a><p>Yes. A test key works right away on <code>localhost</code>, on the developer’s machine, and displays a “test version” notice.</p></div>
+          <!--@/faq-->
+
+          <h2 id="sources">Going further</h2>
+          <ul class="sources">
+            <li>The <a href="https://docs.visionviewer.net">VisionViewer integration guide</a> (in French): every option of the SDK, with examples you can run in place.</li>
+            <li>The <a href="/demo">demo</a>: a seat map, then the 3D view from the chosen seat. Its interface is in French.</li>
+          </ul>
+
+          <div class="suite">
+            <p>Write to us with the name of one of your auditoriums: we will show it to you in VisionViewer.</p>
+            <a class="btn" href="/en#contact">Write to us<span class="arr" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+      <!--@voir-aussi-->
+    </main>
+    <!--@include footer-->
+  </body>
+</html>

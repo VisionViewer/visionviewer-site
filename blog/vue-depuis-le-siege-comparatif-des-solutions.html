@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <!--@include head-->
+    <title>Vue depuis le siège et plan de salle interactif : comparatif des solutions — VisionViewer</title>
+    <meta name="description" content="Plan 2D, photo, panorama 360°, vue 3D calculée : quatorze outils qui montrent la vue depuis le siège, comparés d’après ce que publient leurs éditeurs. Et pour un cinéma ?" />
+    <meta name="vv:rubrique" content="guide" />
+    <meta name="vv:date" content="2026-11-20" />
+    <meta name="vv:lecture" content="9" />
+    <meta name="vv:traduction" content="/en/blog/view-from-seat-software-compared" />
+    <meta property="og:title" content="Vue depuis le siège et plan de salle interactif : comparatif des solutions" />
+    <meta property="og:description" content="Plan 2D, photo, panorama 360°, vue 3D calculée : quatorze outils qui montrent la vue depuis le siège, comparés d’après ce que publient leurs éditeurs. Et pour un cinéma ?" />
+  </head>
+  <body>
+    <!--@include header-->
+    <main class="doc">
+      <header class="doc__head">
+        <span class="mono"><a href="/blog">← Blog</a> · {{article.signature}}</span>
+        <h1>Vue depuis le siège et plan de salle interactif&nbsp;: comparatif des solutions</h1>
+        <p class="chapo">Plusieurs outils montrent à un acheteur ce qu’il verra depuis sa place. Ils ne le font pas de la même façon, ni pour les mêmes salles. Voici quatorze d’entre eux, décrits d’après ce que leurs éditeurs publient, et ce que cela change pour un cinéma.</p>
+      </header>
+      <div class="doc__body">
+        <!--@sommaire-->
+        <div class="prose">
+          <h2 id="en-bref">En bref</h2>
+          <ul>
+            <li><strong>Quatre façons de montrer la vue</strong>&nbsp;: le plan de salle en 2D, la photo prise depuis le siège, le panorama à 360° tiré d’une maquette numérique de la salle, et la vue 3D calculée fauteuil par fauteuil.</li>
+            <li><strong>Les outils de vue depuis le siège s’adressent d’abord aux stades, aux arènes et aux théâtres.</strong> Sur les pages que nous avons consultées, aucun de ces éditeurs ne cite le cinéma.</li>
+            <li><strong>Les billetteries de cinéma fournissent un plan de salle en 2D.</strong> Parmi celles que nous avons consultées, une seule, Compeso, annonce une vue à 360° depuis le siège choisi, dans son application mobile.</li>
+            <li><strong>Deux éditeurs de plans de salle publient leurs tarifs</strong>&nbsp;: Seats.io et Seatmap.pro. Les autres répondent sur devis.</li>
+            <li><strong>VisionViewer est notre produit</strong>&nbsp;: il calcule une vue 3D depuis chaque fauteuil d’une salle de cinéma, et s’ajoute à la billetterie existante.</li>
+          </ul>
+
+          <h2 id="methode">Qui écrit, et comment</h2>
+          <p>VisionViewer est notre produit&nbsp;: ce comparatif est écrit par une partie intéressée. Pour qu’il reste vérifiable, nous nous en tenons à une règle. Chaque affirmation sur un autre produit reprend ce que son éditeur écrit lui-même sur une page publique, donnée en lien. Ces pages ont été consultées les 19 et 20&nbsp;novembre 2026.</p>
+          <p>Nous n’avons essayé aucun de ces produits, et nous n’en jugeons aucun. «&nbsp;Non publié&nbsp;» veut dire que nous n’avons pas trouvé l’information sur les pages consultées, rien de plus. Une erreur, un changement&nbsp;? Écrivez-nous à <a href="mailto:{{contact}}">{{contact}}</a>&nbsp;: nous corrigeons.</p>
+
+          <h2 id="approches">Quatre façons de montrer la vue</h2>
+          <h3>Le plan de salle en 2D</h3>
+          <p>Le plan montre où se trouve le fauteuil&nbsp;: sa rangée, sa distance à l’allée, sa position par rapport à l’écran. Il ne montre pas ce qu’on y voit. C’est ce que fournissent les billetteries, et c’est par lui que tout commence.</p>
+          <h3>La photo prise depuis le siège</h3>
+          <p>Une photo montre la salle telle qu’elle est, avec sa lumière et ses matières. Il faut en prendre une par place, ou par section, et la reprendre quand la salle change.</p>
+          <h3>Le panorama à 360° d’une maquette numérique</h3>
+          <p>La salle est d’abord reconstruite en 3D, à partir de plans d’architecte ou d’un relevé au laser. On en tire, pour chaque siège, une image ou un panorama où l’acheteur tourne la tête. C’est l’approche des grands lieux&nbsp;: stades, arènes, opéras.</p>
+          <h3>La vue 3D calculée fauteuil par fauteuil</h3>
+          <p>La salle est décrite par ses cotes&nbsp;: écran, gradin, rangées, fauteuils. La vue se calcule dans le navigateur, pour le fauteuil choisi, au moment où le spectateur le choisit. C’est l’approche de VisionViewer, pour les salles de cinéma.</p>
+
+          <h2 id="tableau">Le comparatif</h2>
+          <div class="tableau" tabindex="0">
+            <table>
+              <thead>
+                <tr><th>Produit</th><th>Ce qu’il montre</th><th>Pour qui, d’après son site</th><th>Tarifs</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>3D Digital Venue</td><td>Maquette numérique du lieu, plans 2D et 3D, panorama à 360° depuis les sièges</td><td>Stades, arènes, théâtres, circuits</td><td>Non publiés</td></tr>
+                <tr><td>PACIFA 3D</td><td>Rendu 3D du lieu, vue à 360° depuis le siège choisi</td><td>Clubs sportifs, culture et musique, événements</td><td>Non publiés</td></tr>
+                <tr><td>Seat Preevue</td><td>Images photoréalistes depuis chaque siège, tirées d’une maquette numérique&nbsp;; images fixes et panoramas à 360°</td><td>Arts, événements, médias et divertissement</td><td>Licence annuelle selon la capacité, sur devis</td></tr>
+                <tr><td>Ticketmaster Virtual Venue</td><td>Outil 3D, vues à 360° depuis la section choisie</td><td>Les lieux clients de Ticketmaster</td><td>Non publiés</td></tr>
+                <tr><td>TickX View from Seat</td><td>Vue à 360° à la première personne, siège par siège</td><td>Théâtres et salles de spectacle</td><td>Non publiés</td></tr>
+                <tr><td>A View From My Seat</td><td>Photos prises par les spectateurs depuis leur place</td><td>Le public des stades, arènes et théâtres</td><td>Gratuit pour le public</td></tr>
+                <tr><td>Seats.io</td><td>Plan de salle interactif&nbsp;; mode 3D tiré du plan 2D, avec la vue depuis chaque siège</td><td>Plateformes de billetterie et exploitants de lieux</td><td>Publics&nbsp;: à partir de 450&nbsp;€ par an, puis au siège utilisé</td></tr>
+                <tr><td>Seatmap.pro</td><td>Plan de salle 2D interactif&nbsp;; des photos par section, à la place d’un modèle 3D</td><td>Salles de concert, théâtres, arènes, plateformes</td><td>Publics&nbsp;: de 0 à 20&nbsp;000&nbsp;€ par an</td></tr>
+                <tr><td>Vista</td><td>Plan de salle&nbsp;: l’API donne la disposition et les disponibilités, l’interface les dessine</td><td>Cinémas</td><td>Non publiés</td></tr>
+                <tr><td>Veezi</td><td>Choix du siège dans la vente en ligne</td><td>Cinémas indépendants</td><td>Sur devis</td></tr>
+                <tr><td>Monnaie Services</td><td>Vente sur plan de salle, activable à la séance</td><td>Cinémas</td><td>Non publiés</td></tr>
+                <tr><td>Compeso</td><td>Choix interactif du siège&nbsp;; dans l’application, vue à 360° depuis le siège choisi</td><td>Cinémas</td><td>Non publiés</td></tr>
+                <tr><td>CinemaView</td><td>Simulateur 3D de salles types, pas de salles réelles</td><td>Le public des cinémas</td><td>Gratuit</td></tr>
+                <tr><td>VisionViewer</td><td>Vue 3D calculée depuis chaque fauteuil, aux cotes de la salle&nbsp;; plan 2D si le cinéma n’en a pas</td><td>Cinémas</td><td>Sur devis</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="note">Pages consultées les 19 et 20&nbsp;novembre 2026. Les liens sont dans les <a href="#sources">sources</a>.</p>
+
+          <h2 id="grands-lieux">Les outils des stades, des arènes et des théâtres</h2>
+          <p><strong>3D Digital Venue</strong> (Barcelone, groupe Mobile Media Content) reconstruit le lieu en maquette numérique à l’échelle, et en tire des plans et des panoramas à 360° depuis les sièges. Ses contenus s’intègrent aux canaux de vente par une API propre, appelée DVM. Son site cite les stades, les arènes, les théâtres et les circuits.</p>
+          <p><strong>PACIFA 3D</strong> propose une vue réaliste à 360° depuis le siège choisi, et une API à intégrer à une plateforme de billetterie. Son site s’adresse aux clubs sportifs, à la culture et à la musique, et aux événements.</p>
+          <p><strong>Seat Preevue</strong>, de l’éditeur londonien Preevue, fournit des vues photoréalistes depuis chaque siège d’une salle. Elles sont tirées d’une maquette numérique, construite à partir d’un relevé au laser pour un bâtiment existant, ou de plans d’architecte pour un bâtiment à venir. L’éditeur annonce des intégrations avec Tessitura, Spektrix, Seats.io et AudienceView, et une licence annuelle selon la capacité du lieu.</p>
+          <p><strong>Virtual Venue</strong> est l’outil 3D de Ticketmaster&nbsp;: l’acheteur y explore des vues à 360° depuis la section choisie. C’est une fonction de la billetterie Ticketmaster. En juin 2025, l’éditeur annonçait son arrivée dans une première arène hors d’Amérique du Nord, Co-op Live.</p>
+          <p><strong>TickX</strong> (Manchester) présente une vue à 360° à la première personne, où l’acheteur clique sur un siège pour explorer la salle. Sa page ne précise pas s’il s’agit de photos ou d’un modèle 3D.</p>
+          <p><strong>A View From My Seat</strong> part du public&nbsp;: ce sont les spectateurs qui partagent les photos prises depuis leur place, dans plus de 6&nbsp;000 stades, arènes et théâtres selon sa fiche d’application.</p>
+
+          <h2 id="plans">Les plans de salle interactifs</h2>
+          <p><strong>Seats.io</strong> (Belgique) fournit des plans de salle interactifs aux plateformes de billetterie. Son mode 3D se tire d’un plan 2D existant, sans modélisation, et permet d’entrer dans la vue de n’importe quel siège&nbsp;; sur un appareil trop lent, le plan repasse en 2D. Ses tarifs sont publics&nbsp;: la première formule coûte 450&nbsp;€ par an pour 2&nbsp;500 sièges utilisés, puis la facturation se fait au siège utilisé.</p>
+          <p><strong>Seatmap.pro</strong> (Chypre) fournit des plans 2D interactifs, à intégrer par un paquet npm, une iframe ou une API. Plutôt qu’un modèle 3D, chaque section peut porter jusqu’à dix photos, par exemple la vue depuis ses sièges. Ses tarifs sont publics, de la formule gratuite à 20&nbsp;000&nbsp;€ par an pour une installation chez le client.</p>
+
+          <h2 id="cinema">Et pour un cinéma&nbsp;?</h2>
+          <p>Les outils qui précèdent ne citent pas le cinéma sur les pages que nous avons consultées. Cela ne veut pas dire qu’ils ne s’y prêtent pas&nbsp;: seulement que leurs éditeurs parlent d’autres salles.</p>
+          <p>Du côté des billetteries de cinéma, le plan de salle est en 2D. <strong>Vista</strong> (Nouvelle-Zélande) fournit par son API la disposition des sièges et leur disponibilité&nbsp;; c’est l’interface du cinéma qui les dessine. <strong>Veezi</strong>, du même groupe, permet le choix du siège dans sa vente en ligne, pour les cinémas indépendants. En France, <strong>Monnaie Services</strong> propose la vente sur plan de salle, activable séance par séance.</p>
+          <p><strong>Compeso</strong> (Allemagne) fait exception&nbsp;: la page de son application mobile annonce une vue à 360° depuis le siège choisi, pour vérifier la vue sur l’écran avant d’acheter. Elle ne dit pas si cette vue est une photo, un panorama ou un rendu 3D.</p>
+          <p>Enfin, <strong>CinemaView</strong> est un simulateur gratuit, pour le public&nbsp;: il montre l’écran depuis les sièges de salles types (IMAX, Dolby Cinema, ScreenX, 4DX). Son auteur précise que ce sont des salles de référence, pas des salles réelles&nbsp;; nous n’y avons trouvé aucune intégration à une billetterie.</p>
+
+          <h2 id="visionviewer">Où se place VisionViewer</h2>
+          <p>VisionViewer montre à chaque spectateur la vue depuis sa place de cinéma, en 3D, avant le paiement. Ce qu’il fait, et ce qu’il ne fait pas&nbsp;:</p>
+          <ul>
+            <li><strong>Il est fait pour le cinéma</strong>, et pour lui seul&nbsp;: un écran, un gradin, des rangées. Ni stade, ni théâtre à balcons.</li>
+            <li><strong>La vue est calculée, pas photographiée.</strong> Elle rend la géométrie de la salle&nbsp;: la distance, l’angle, la hauteur de l’écran depuis le fauteuil. Elle ne rend pas sa décoration.</li>
+            <li><strong>Chaque salle est décrite par ses cotes.</strong> Aujourd’hui, le modèle décrit des rangées droites, sur un gradin à pente régulière et un seul niveau.</li>
+            <li><strong>Il s’ajoute à la billetterie</strong>, par une balise et un appel. Les séances, les disponibilités et le paiement restent chez le cinéma. Le détail est dans notre <a href="/blog/ajouter-une-vue-depuis-le-fauteuil-a-sa-billetterie">guide d’intégration pas à pas</a>.</li>
+            <li><strong>Nous n’avons pas encore de résultats de cinémas à publier.</strong> Nous ne prêtons à VisionViewer aucun gain que nous n’avons pas mesuré.</li>
+          </ul>
+
+          <h2 id="choisir">Les questions à se poser avant de choisir</h2>
+          <ul>
+            <li><strong>Quelle salle&nbsp;?</strong> Un stade de 60&nbsp;000 places et une salle de 150 fauteuils n’appellent pas le même outil.</li>
+            <li><strong>D’où vient le modèle de la salle&nbsp;?</strong> Des photos, un relevé au laser, des plans d’architecte, ou quelques cotes&nbsp;: le coût et le délai en dépendent.</li>
+            <li><strong>Qui garde le plan de salle&nbsp;?</strong> Certains outils remplacent le plan existant, d’autres s’y ajoutent.</li>
+            <li><strong>Avec quelle billetterie&nbsp;?</strong> Une fonction propre à une billetterie, une intégration déjà prête, ou une API à brancher.</li>
+            <li><strong>Sur téléphone, en combien de temps&nbsp;?</strong> Une vue qui tarde fait hésiter au pire moment. Demandez des mesures.</li>
+            <li><strong>À quel prix, et sur quelle base&nbsp;?</strong> Au siège vendu, à la capacité du lieu, à l’année, ou sur devis.</li>
+          </ul>
+
+          <h2 id="questions">Questions fréquentes</h2>
+          <!--@faq-->
+          <h3 data-q>Existe-t-il une vue depuis le siège pour les salles de cinéma&nbsp;?</h3>
+          <div data-a><p>Oui. VisionViewer calcule une vue 3D depuis chaque fauteuil d’une salle de cinéma, dans le parcours de réservation. L’éditeur de billetterie Compeso annonce aussi une vue à 360° depuis le siège choisi, dans son application mobile. La plupart des autres outils de vue depuis le siège s’adressent aux stades, aux arènes et aux théâtres.</p></div>
+          <h3 data-q>Quelle différence entre un panorama à 360° et une vue 3D calculée&nbsp;?</h3>
+          <div data-a><p>Le panorama est une image préparée d’avance pour un siège, à partir d’une maquette numérique ou d’une photo. La vue 3D calculée est produite dans le navigateur au moment où le spectateur choisit sa place, à partir des cotes de la salle.</p></div>
+          <h3 data-q>Faut-il remplacer son plan de salle pour ajouter une vue depuis le siège&nbsp;?</h3>
+          <div data-a><p>Cela dépend de l’outil. Certains fournissent le plan de salle lui-même. D’autres, comme VisionViewer, s’ajoutent au plan existant par un bouton, et n’en fournissent un que si le cinéma n’en a pas.</p></div>
+          <h3 data-q>Combien coûte un plan de salle interactif&nbsp;?</h3>
+          <div data-a><p>Deux éditeurs publient leurs tarifs. Chez Seats.io, la première formule coûte 450&nbsp;€ par an pour 2&nbsp;500 sièges utilisés. Chez Seatmap.pro, les formules vont de 0 à 20&nbsp;000&nbsp;€ par an. Les autres éditeurs consultés répondent sur devis. Tarifs relevés le 20&nbsp;novembre 2026.</p></div>
+          <!--@/faq-->
+
+          <h2 id="limites">Ce que nous n’avons pas pu vérifier</h2>
+          <ul>
+            <li>Nous n’avons essayé aucun de ces produits&nbsp;: ce comparatif décrit ce que les éditeurs annoncent, pas ce que nous avons constaté.</li>
+            <li>Le site d’A View From My Seat ne s’est pas ouvert à nos outils&nbsp;: ce que nous en disons vient de sa fiche sur l’App Store.</li>
+            <li>La page de TickX ne dit pas si sa vue repose sur des photos ou sur un modèle 3D. Celle de Compeso non plus.</li>
+            <li>Cette liste n’est pas exhaustive&nbsp;: d’autres éditeurs existent, notamment parmi les billetteries de cinéma.</li>
+            <li>Les tarifs et les fonctions changent. Ceux-ci valent pour les 19 et 20&nbsp;novembre 2026.</li>
+          </ul>
+
+          <h2 id="sources">Sources</h2>
+          <ul class="sources">
+            <li>3D Digital Venue&nbsp;: <a href="https://3ddigitalvenue.com/" rel="noopener noreferrer">page d’accueil</a>.</li>
+            <li>PACIFA 3D&nbsp;: <a href="https://www.pacifa-decision.com/" rel="noopener noreferrer">page d’accueil</a>.</li>
+            <li>Preevue&nbsp;: <a href="https://www.preevue.com/ticketing/seat-preevue-view-from-seat" rel="noopener noreferrer">Seat Preevue</a>.</li>
+            <li>Ticketmaster Business&nbsp;: <a href="https://business.ticketmaster.co.uk/co-op-live-becomes-first-european-arena-to-launch-virtual-venue-with-ticketmaster/" rel="noopener noreferrer">annonce de Virtual Venue à Co-op Live</a>, 25&nbsp;juin 2025.</li>
+            <li>TickX&nbsp;: <a href="https://www.tickx.com/solutions/view-from-seat" rel="noopener noreferrer">View from Seat</a>.</li>
+            <li>A View From My Seat&nbsp;: <a href="https://apps.apple.com/us/app/a-view-from-my-seat/id488541199" rel="noopener noreferrer">fiche de l’application sur l’App Store</a>.</li>
+            <li>Seats.io&nbsp;: <a href="https://www.seats.io/3d" rel="noopener noreferrer">mode 3D</a> et <a href="https://www.seats.io/pricing" rel="noopener noreferrer">tarifs</a>.</li>
+            <li>Seatmap.pro&nbsp;: <a href="https://seatmap.pro/features/" rel="noopener noreferrer">fonctions</a> et <a href="https://seatmap.pro/pricing/" rel="noopener noreferrer">tarifs</a>.</li>
+            <li>Vista&nbsp;: <a href="https://developer.vista.co/digital-platform/seating" rel="noopener noreferrer">documentation du plan de salle</a>.</li>
+            <li>Veezi&nbsp;: <a href="https://www.veezi.com/features/v-tix-internet-ticketing" rel="noopener noreferrer">vente en ligne V-Tix</a>.</li>
+            <li>Monnaie Services&nbsp;: <a href="https://www.monnaie-services.com/cinema.php" rel="noopener noreferrer">billetterie de cinéma</a>.</li>
+            <li>Compeso&nbsp;: <a href="https://compeso.com/en/solutions/cinema-app/" rel="noopener noreferrer">application de cinéma</a>.</li>
+            <li>CinemaView&nbsp;: <a href="https://cinemaview.in/en/about" rel="noopener noreferrer">présentation</a>.</li>
+          </ul>
+
+          <div class="suite">
+            <p>Le plus simple reste de voir ce que verrait votre spectateur.</p>
+            <a class="btn" href="/demo">Essayez la démo<span class="arr" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+      <!--@voir-aussi-->
+    </main>
+    <!--@include footer-->
+  </body>
+</html>

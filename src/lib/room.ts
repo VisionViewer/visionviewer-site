@@ -66,6 +66,8 @@ export interface RoomConfig {
   screenLogo?: string
   /** Une phrase qui décrit la salle, affichée par la page de présentation */
   description?: string
+  /** Le nom et la description de la salle en anglais, pour la page de présentation en anglais (`en.html`) */
+  en?: { name?: string; description?: string }
   dimensions: RoomDimensions
 }
 

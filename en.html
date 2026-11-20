@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#040405" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="VisionViewer" />
+
+    <!-- Le titre et la description sont ce qu'un moteur de recherche affiche : ils disent le produit, le lieu (un cinéma) et le moment (avant l'achat) -->
+    <title>VisionViewer — The 3D view from every seat in your cinema</title>
+    <meta name="description" content="VisionViewer shows every moviegoer the 3D view from their seat before they pay. It plugs into your cinema's seat map and online booking flow." />
+    <meta property="og:site_name" content="VisionViewer" />
+    <meta property="og:title" content="VisionViewer — The 3D view from every seat in your cinema" />
+    <meta property="og:description" content="VisionViewer shows every moviegoer the 3D view from their seat before they pay. It plugs into your cinema's seat map and online booking flow." />
+    <!-- Aperçu du lien (messageries, e-mail). L'adresse canonique, la traduction et les données structurées sont posées par tools/pages.ts -->
+    <meta property="og:image" content="https://visionviewer.net/og-visionviewer.jpg" />
+    <meta property="og:image:width" content="800" />
+    <meta property="og:image:height" content="420" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://visionviewer.net/og-visionviewer.jpg" />
+
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- Polices du premier écran, demandées en même temps que la page -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/node_modules/@fontsource-variable/inter-tight/files/inter-tight-latin-wght-normal.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2" />
+    <link rel="stylesheet" href="/src/landing/landing.css" />
+    <!-- Sans JavaScript, pas de scène à faire défiler : la page se réduit à son ouverture et à ses sections -->
+    <noscript><style>#track{height:auto}.stage{position:relative}.foot{display:none}.acc__panel{grid-template-rows:1fr;visibility:visible}.acc__body>*{opacity:1;transform:none}.acc__sign,.code__copy{display:none}</style></noscript>
+  </head>
+  <body>
+    <!--
+      Page de présentation VisionViewer, en anglais : la traduction de index.html, dont elle garde
+      la structure, les identifiants, les styles et les scripts (src/landing/). Un texte changé
+      dans l'une se reporte dans l'autre ; `npm test` vérifie les chiffres des deux.
+    -->
+<div id="track">
+  <main class="stage" id="stage">
+    <canvas id="gl" aria-hidden="true"></canvas>
+
+    <header class="bar">
+      <a class="logo" href="#top" id="top"><img src="/logo.svg" alt="VisionViewer" width="127" height="40"></a>
+      <nav class="mono" aria-label="Sections">
+        <a href="#sur-mesure">Tailored</a>
+        <a href="#integration">Integration</a>
+        <a href="#demo">Demo</a>
+        <a href="/en/blog">Blog</a>
+        <a href="{{traduction}}" hreflang="fr" lang="fr" title="Version française">FR</a>
+      </nav>
+      <a class="btn demo-link" href="/demo">Try it now<span class="arr" aria-hidden="true">→</span></a>
+    </header>
+
+    <div id="hero"><h1>Show every moviegoer the view from their seat.</h1></div>
+    <p id="sub">VisionViewer rebuilds each of your cinema auditoriums in 3D, to its real dimensions, and plugs straight into your website and mobile app.</p>
+
+    <section class="cap" id="c1"><h2>Each auditorium is modeled as it is.</h2><p>Rows, slope, spacing, screen: every point sits at the auditorium's real dimensions.</p></section>
+    <section class="cap" id="c2"><h2>Auditorium 1. Eleven rows, 157 seats.</h2><p>A 9.40 × 3.93 m screen, an 11° slope, 1.10 m between rows, 5 wheelchair spaces.</p></section>
+    <section class="cap" id="c3"><h2>The moviegoer picks a seat.</h2><p>G9 lights up, and its field of view is drawn all the way to the screen.</p></section>
+    <section class="cap" id="c4"><h2>They see what they will see.</h2><p>Eye height, center of the screen, the rows in front: the view from their seat, not from a generic auditorium.</p></section>
+    <section class="cap" id="c5"><h2>Front row or back of the room?</h2><p>From A1 to K15, distance and angle are recomputed for every seat.</p></section>
+    <section class="cap" id="c7"><h2>Fits the layout of each of your auditoriums.</h2>
+      <dl class="stats"><div><dt class="mono">Auditorium</dt><dd id="sName">Auditorium 1</dd></div><div><dt class="mono">Seats</dt><dd id="sPlaces">157</dd></div><div><dt class="mono">Screen</dt><dd id="sScreen">9.40 × 3.93 m</dd></div></dl>
+      <p id="sDesc">Eleven straight rows, with double seats at both ends of two rows.</p></section>
+    <section class="cap" id="c6"><h2>They choose, then carry on with their order.</h2><p>The view opens from your seat map, without leaving the booking flow.</p></section>
+
+    <dl id="hud">
+      <div><dt class="mono">Seat</dt><dd id="hSeat">G9</dd></div>
+      <div><dt class="mono">Distance</dt><dd id="hDist">—</dd></div>
+      <div><dt class="mono">Angle</dt><dd id="hAng">—</dd></div>
+    </dl>
+    <div class="mono" id="tagSeat">G9</div>
+
+    <div class="foot mono"><span id="hint">Scroll</span><span id="tc">00:00:00:00</span></div>
+  </main>
+</div>
+
+<div class="after">
+  <section id="sur-mesure"><div class="wrap">
+    <span class="mono"><b>01</b>Tailored</span>
+    <h2>No two auditoriums are alike.</h2>
+    <p class="lead">VisionViewer adapts to your auditoriums, one by one. The moviegoer sees the view of their own auditorium, not of a generic one.</p>
+
+    <figure class="fig">
+      <div class="scroll" id="coupe"></div>
+      <figcaption class="mono">Fig. 1 — Section · Auditorium 1 · G9 · 10.6 m · 48°</figcaption>
+    </figure>
+
+    <ul class="spec">
+      <li class="th mono">What we capture from each of your auditoriums</li>
+      <li><h3>Slope</h3><p>The rake of the seating, step by step.</p></li>
+      <li><h3>Seat layout</h3><p>Rows, aisles, wheelchair spaces, missing seats.</p></li>
+      <li><h3>Spacing</h3><p>Between rows and from one seat to the next.</p></li>
+      <li><h3>Screen</h3><p>Width, height, position, flat or curved.</p></li>
+      <li><h3>Double seats</h3><p>Love seats and benches.</p></li>
+      <li><h3>Your logo</h3><p>Projected on the screen of your auditoriums, in the 3D view.</p></li>
+    </ul>
+
+    <div class="noplan" id="plan">
+      <h3>No seat map yet? We build it.</h3>
+      <div class="duo">
+        <article><span class="mono">Option 1 · remote</span><h4>From your photos</h4><p>You send us a few photos of the auditorium. We rebuild the 2D seat map, the numbering and the dimensions.</p></article>
+        <article><span class="mono">Option 2 · on site</span><h4>A VisionViewer engineer comes to you</h4><p>They measure the auditorium on site: screen, stepped floor, rows and spacing. You have nothing to prepare.</p></article>
+      </div>
+    </div>
+  </div></section>
+
+  <section id="integration"><div class="wrap">
+    <span class="mono"><b>02</b>Integration</span>
+    <h2>Plugs straight into your website and your mobile app.</h2>
+    <p class="lead">The moviegoer compares seats, chooses, then carries on with their order. They never leave your booking flow.</p>
+    <div class="flow">
+      <article><span class="mono">On your side</span><h3>Your seat map</h3><a class="hint" href="#plan">No seat map? We build it.</a></article>
+      <span class="arr" aria-hidden="true">→</span>
+      <article class="us"><span class="mono">VisionViewer</span><h3>The view from the seat</h3></article>
+      <span class="arr" aria-hidden="true">→</span>
+      <article><span class="mono">On your side</span><h3>The rest of the order</h3></article>
+    </div>
+    <p class="mono where">Website · Mobile app</p>
+
+    <div class="ways" id="integrations">
+      <span class="mono">Two ways to integrate · one tag, one call</span>
+
+      <article class="acc">
+        <h3><button class="acc__head" type="button" id="way-a-head" aria-expanded="false" aria-controls="way-a">
+          <span class="mono acc__tag">A · You already have a seat map</span>
+          <span class="acc__title">3D view only</span>
+          <span class="acc__hint">A button in your page</span>
+          <i class="acc__sign" aria-hidden="true"></i>
+        </button></h3>
+        <div class="acc__panel" id="way-a" role="region" aria-labelledby="way-a-head"><div class="acc__inner"><div class="acc__body">
+          <p>Your seat map stays as it is. You add a button: the 3D view opens full screen, from the seats the moviegoer has just picked.</p>
+          <ol class="steps">
+            <li><span class="mono">Step 1</span>They pick their seats on your seat map.</li>
+            <li><span class="mono">Step 2</span>They open the 3D view and move their seats around to compare.</li>
+            <li><span class="mono">Step 3</span>They return to your seat map with their choice, and carry on with their order.</li>
+          </ol>
+          <figure class="code">
+            <figcaption><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="mono">your-page.html</span><button class="mono code__copy" type="button">Copy</button></figcaption>
+<pre tabindex="0"><code>&lt;script src="https://app.visionviewer.net/sdk/visionviewer.js"&gt;&lt;/script&gt;
+
+&lt;button id="view-3d"&gt;3D view&lt;/button&gt;
+
+&lt;script&gt;
+  document.querySelector('#view-3d').onclick = () =&gt;
+    <b>VisionViewer.open</b>({
+      apiKey: 'vv_test_…',
+      roomId: 'salle-1',
+      selected: ['G1', 'G2', 'G3'],   <i>// the seats picked on your seat map</i>
+      occupied: ['G8', 'G9'],         <i>// seats already sold</i>
+      onConfirm: (seats) =&gt; cart.replace(seats),
+    })
+&lt;/script&gt;</code></pre>
+          </figure>
+        </div></div></div>
+      </article>
+
+      <article class="acc">
+        <h3><button class="acc__head" type="button" id="way-b-head" aria-expanded="false" aria-controls="way-b">
+          <span class="mono acc__tag">B · You have no seat map</span>
+          <span class="acc__title">2D seat map + 3D view</span>
+          <span class="acc__hint">A block in your page</span>
+          <i class="acc__sign" aria-hidden="true"></i>
+        </button></h3>
+        <div class="acc__panel" id="way-b" role="region" aria-labelledby="way-b-head"><div class="acc__inner"><div class="acc__body">
+          <p>You set aside a block in your booking page. Our seat map is inserted there: the moviegoer picks their seats in it, then opens the 3D view.</p>
+          <ol class="steps">
+            <li><span class="mono">Step 1</span>Our seat map shows in your page, in a light or a dark theme.</li>
+            <li><span class="mono">Step 2</span>They pick up to nine seats in it, then compare them in 3D.</li>
+            <li><span class="mono">Step 3</span>Your page receives their choice, and carries on with the order.</li>
+          </ol>
+          <figure class="code">
+            <figcaption><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="mono">your-page.html</span><button class="mono code__copy" type="button">Copy</button></figcaption>
+<pre tabindex="0"><code>&lt;script src="https://app.visionviewer.net/sdk/visionviewer.js"&gt;&lt;/script&gt;
+
+&lt;div id="seat-map"&gt;&lt;/div&gt;
+
+&lt;script&gt;
+  <b>VisionViewer.mountPlan</b>('#seat-map', {
+    apiKey: 'vv_test_…',
+    roomId: 'salle-1',
+    occupied: ['G8', 'G9'],           <i>// seats already sold</i>
+    onChange: ({ selected }) =&gt; cart.replace(selected),
+  })
+&lt;/script&gt;</code></pre>
+          </figure>
+        </div></div></div>
+      </article>
+    </div>
+  </div></section>
+
+  <section id="chiffres"><div class="wrap tight">
+    <span class="mono">In numbers</span>
+    <h2>The seat matters before the purchase.</h2>
+    <div class="kpis" id="kpis" tabindex="0" aria-label="Key figures, scroll horizontally">
+      <!-- Le chiffre « 1 sur 2 » de la page française n'est pas repris ici : il n'a pas pu être relu dans sa source (widget/dossier/decisions.md) -->
+      <article><b>No.&nbsp;1</b><p>Reserved seating is the top reason given for buying a ticket online or in an app.</p><span class="mono">Fandango, Moviegoing Trends &amp; Insights · United States, 2024</span></article>
+      <article><b>28<small>%</small></b><p>of online buyers chose their cinema because it lets them reserve their seat.</p><span class="mono">Vertigo Research · Webedia Movies Pro · United States, 2018</span></article>
+      <article><b>72<small>%</small></b><p>of moviegoers who find their showtime on the cinema's website complete their purchase there.</p><span class="mono">Vertigo Research · Webedia Movies Pro · United States, 2018</span></article>
+    </div>
+    <div class="knav"><button type="button" id="kPrev" aria-label="Previous figure">←</button><button type="button" id="kNext" aria-label="Next figure">→</button></div>
+    <p class="more"><a class="hint" href="/en/blog/reserved-seating-what-the-studies-say">The sources behind these figures, and their limits</a></p>
+  </div></section>
+
+  <section id="demo"><div class="wrap">
+    <span class="mono"><b>03</b>Demo</span>
+    <h2>Try it yourself.</h2>
+    <div class="try">
+      <article class="by-qr">
+        <span class="mono">On your phone</span>
+        <div class="qr" id="qr"><span class="mono">QR code<br>shown on the live site</span></div>
+        <h3>The demo is best judged in hand.</h3>
+        <p>Scan the code: it opens on your phone, where the moviegoer will book.</p>
+      </article>
+      <article>
+        <span class="mono"><span class="on-desk">On a computer</span><span class="on-touch">On this device</span></span>
+        <div class="desk on-desk" aria-hidden="true"><i></i><i></i><i></i></div>
+        <h3><span class="on-desk">Or right here, in your browser.</span><span class="on-touch">Right here, in your browser.</span></h3>
+        <p>The same demo, with the 3D view full screen. Its interface is in French.</p>
+        <a class="btn big demo-link" href="/demo">Try it now<span class="arr" aria-hidden="true">→</span></a>
+      </article>
+    </div>
+  </div></section>
+
+  <!-- Les questions fréquentes. Entre les deux repères, tools/pages.ts lit chaque question (data-q) et
+       sa réponse (data-a), et les reprend dans les données structurées de la page (FAQPage) -->
+  <section id="questions"><div class="wrap">
+    <span class="mono">Frequently asked questions</span>
+    <h2>The questions a cinema asks.</h2>
+    <div class="faq" id="faq">
+      <!--@faq-->
+      <article class="acc">
+        <h3><button class="acc__head" type="button" id="q1-head" aria-expanded="false" aria-controls="q1">
+          <span class="acc__title" data-q>What is VisionViewer?</span>
+          <i class="acc__sign" aria-hidden="true"></i>
+        </button></h3>
+        <div class="acc__panel" id="q1" role="region" aria-labelledby="q1-head"><div class="acc__inner"><div class="acc__body" data-a>
+          <p>VisionViewer is a tool for cinemas: it shows every moviegoer the view from their seat, in 3D, during online booking and before payment. Each auditorium is rebuilt to its real dimensions: rows, slope of the seating, spacing, screen.</p>
+        </div></div></div>
+      </article>
+      <article class="acc">
+        <h3><button class="acc__head" type="button" id="q2-head" aria-expanded="false" aria-controls="q2">
+          <span class="acc__title" data-q>Do we need to change our ticketing system or our seat map?</span>
+          <i class="acc__sign" aria-hidden="true"></i>
+        </button></h3>
+        <div class="acc__panel" id="q2" role="region" aria-labelledby="q2-head"><div class="acc__inner"><div class="acc__body" data-a>
+          <p>No. VisionViewer is added to your booking page. Your ticketing system keeps the showtimes, the availability and the payment; we only store the shape of your auditoriums. If you already have a seat map, it stays as it is: you add a button to it.</p>
+        </div></div></div>
+      </article>
+      <article class="acc">
+        <h3><button class="acc__head" type="button" id="q3-head" aria-expanded="false" aria-controls="q3">
+          <span class="acc__title" data-q>How does it integrate with a cinema website?</span>
+          <i class="acc__sign" aria-hidden="true"></i>
+        </button></h3>
+        <div class="acc__panel" id="q3" role="region" aria-labelledby="q3-head"><div class="acc__inner"><div class="acc__body" data-a>
+          <p>One tag loads the SDK, then one call is enough. With your own seat map, <code>VisionViewer.open()</code> opens the 3D view on the seats the moviegoer has just picked. Without one, <code>VisionViewer.mountPlan()</code> inserts ours in your page, and the 3D view opens from it.</p>
+          <p>The <a href="https://docs.visionviewer.net">integration guide</a> (in French) gives the code, with examples you can run in place.</p>
+        </div></div></div>
+      </article>
+      <article class="acc">
+        <h3><button class="acc__head" type="button" id="q4-head" aria-expanded="false" aria-controls="q4">
+          <span class="acc__title" data-q>We have no seat map. Is that a problem?</span>
+          <i class="acc__sign" aria-hidden="true"></i>
+        </button></h3>
+        <div class="acc__panel" id="q4" role="region" aria-labelledby="q4-head"><div class="acc__inner"><div class="acc__body" data-a>
+          <p>No. We build it: remotely, from a few photos of the auditorium, or on site, where a VisionViewer engineer measures the screen, the stepped floor, the rows and the spacing.</p>
+        </div></div></div>
+      </article>
+      <article class="acc">
+        <h3><button class="acc__head" type="button" id="q5-head" aria-expanded="false" aria-controls="q5">
+          <span class="acc__title" data-q>Does the 3D view slow down booking on a phone?</span>
+          <i class="acc__sign" aria-hidden="true"></i>
+        </button></h3>
+        <div class="acc__panel" id="q5" role="region" aria-labelledby="q5-head"><div class="acc__inner"><div class="acc__body" data-a>
+          <p>We measure it on an emulated phone, on slow 4G: the seat map is usable in 0.65&nbsp;seconds, and the 3D view shows its first frame in 0.87&nbsp;seconds (measured on November&nbsp;17, 2026).</p>
+          <p>The method and its limits are in <a href="/en/blog/a-seat-map-in-under-a-second">our article on speed</a>.</p>
+        </div></div></div>
+      </article>
+      <article class="acc">
+        <h3><button class="acc__head" type="button" id="q6-head" aria-expanded="false" aria-controls="q6">
+          <span class="acc__title" data-q>What do you know about our moviegoers?</span>
+          <i class="acc__sign" aria-hidden="true"></i>
+        </button></h3>
+        <div class="acc__panel" id="q6" role="region" aria-labelledby="q6-head"><div class="acc__inner"><div class="acc__body" data-a>
+          <p>Nothing that could identify them: no account, no cookie, no storage in their browser. We only count, per day and per auditorium, the seat maps displayed, the 3D views opened and the seats chosen.</p>
+          <p>The details are in our <a href="/confidentialite" hreflang="fr">privacy policy</a> (in French).</p>
+        </div></div></div>
+      </article>
+      <article class="acc">
+        <h3><button class="acc__head" type="button" id="q7-head" aria-expanded="false" aria-controls="q7">
+          <span class="acc__title" data-q>How much does VisionViewer cost?</span>
+          <i class="acc__sign" aria-hidden="true"></i>
+        </button></h3>
+        <div class="acc__panel" id="q7" role="region" aria-labelledby="q7-head"><div class="acc__inner"><div class="acc__body" data-a>
+          <p>Pricing is by quote, for your auditoriums. Write to us at <a href="mailto:{{contact}}">{{contact}}</a> with the name of one of them: we will show it to you in VisionViewer.</p>
+        </div></div></div>
+      </article>
+      <article class="acc">
+        <h3><button class="acc__head" type="button" id="q8-head" aria-expanded="false" aria-controls="q8">
+          <span class="acc__title" data-q>Can we try it before committing?</span>
+          <i class="acc__sign" aria-hidden="true"></i>
+        </button></h3>
+        <div class="acc__panel" id="q8" role="region" aria-labelledby="q8-head"><div class="acc__inner"><div class="acc__body" data-a>
+          <p>Yes. The <a href="/demo">demo</a> is online, with no sign-up: pick a seat, then open the 3D view. To try it in your own page, a test key works right away on your developer's machine.</p>
+        </div></div></div>
+      </article>
+      <!--@/faq-->
+    </div>
+  </div></section>
+
+  <!-- Le contact et le pied de page partagent une même lueur rouge, qui monte du bas de la page -->
+  <div class="fin">
+    <section id="contact" class="cta"><div class="wrap">
+      <h2>Why not in your cinema?</h2>
+      <p class="lead">Write to us with the name of one of your auditoriums. We will show it to you in VisionViewer.</p>
+      <div class="mail">
+        <a class="addr" id="addr" href="mailto:{{contact}}">{{contact}}</a>
+        <button class="btn" type="button" id="copy">Copy the address</button>
+      </div>
+      <button class="link" type="button" id="replay">Replay from the start</button>
+    </div></section>
+
+    <!-- Le pied de page commun à toutes les pages du site : src/pages/partials/footer.html -->
+    <!--@include footer-->
+  </div>
+</div>
+
+
+
+    <script type="module" src="/src/landing/main.ts"></script>
+  </body>
+</html>

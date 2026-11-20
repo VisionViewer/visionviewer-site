@@ -2,6 +2,7 @@
   "id": "grande-salle",
   "name": "Grande salle",
   "description": "Dix-huit rangs droits, deux allées, un écran de dix-huit mètres.",
+  "en": { "name": "Main auditorium", "description": "Eighteen straight rows, two aisles, an eighteen-meter screen." },
   "screenLogo": "screens/votre-logo-ici.png",
   "rows": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R"],
   "seatsPerRow": 24,

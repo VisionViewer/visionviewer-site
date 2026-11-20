@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <!--@include head-->
+    <title>Vue 3D depuis le fauteuil : l’ajouter à la billetterie en ligne d’un cinéma — VisionViewer</title>
+    <meta name="description" content="Ce qu’il faut pour montrer à vos spectateurs la vue depuis leur place : les cotes de la salle, une balise, un appel. Deux intégrations, sans changer de billetterie." />
+    <meta name="vv:rubrique" content="guide" />
+    <meta name="vv:date" content="2026-11-20" />
+    <meta name="vv:lecture" content="7" />
+    <meta name="vv:traduction" content="/en/blog/add-a-3d-seat-view-to-cinema-ticketing" />
+    <meta property="og:title" content="Ajouter une vue depuis le fauteuil à votre billetterie en ligne" />
+    <meta property="og:description" content="Ce qu’il faut pour montrer à vos spectateurs la vue depuis leur place : les cotes de la salle, une balise, un appel. Deux intégrations, sans changer de billetterie." />
+  </head>
+  <body>
+    <!--@include header-->
+    <main class="doc">
+      <header class="doc__head">
+        <span class="mono"><a href="/blog">← Blog</a> · {{article.signature}}</span>
+        <h1>Ajouter une vue depuis le fauteuil à votre billetterie en ligne</h1>
+        <p class="chapo">Montrer au spectateur ce qu’il verra depuis sa place ne demande ni de changer de billetterie, ni de refaire votre plan de salle. Voici ce qu’il faut réunir, les deux façons de l’intégrer, et ce qui reste chez vous.</p>
+      </header>
+      <div class="doc__body">
+        <!--@sommaire-->
+        <div class="prose">
+          <h2 id="en-bref">En bref</h2>
+          <ul>
+            <li><strong>Une balise et un appel.</strong> Le SDK se charge par une balise <code>&lt;script&gt;</code>&nbsp;; un appel ouvre la vue 3D, ou insère le plan de salle.</li>
+            <li><strong>Deux intégrations.</strong> La vue 3D seule si vous avez déjà un plan de salle&nbsp;; le plan 2D et la vue 3D si vous n’en avez pas.</li>
+            <li><strong>Votre billetterie ne change pas.</strong> Séances, disponibilités et paiement restent chez vous&nbsp;: VisionViewer ne garde que la forme des salles.</li>
+            <li><strong>Une salle se décrit en une dizaine de cotes</strong>&nbsp;: l’écran, le premier rang, l’écart entre les rangées, la largeur des fauteuils, la hauteur de marche.</li>
+            <li><strong>Une clé de test fonctionne tout de suite</strong> sur le poste de votre développeur, avant toute mise en ligne.</li>
+          </ul>
+
+          <h2 id="definition">Ce qu’est une vue depuis le fauteuil</h2>
+          <p>Une vue depuis le fauteuil montre l’écran tel qu’on le voit assis à une place précise, avant d’acheter cette place. Dans VisionViewer, c’est une image 3D calculée&nbsp;: la caméra est placée aux yeux d’un spectateur assis, à 1,15&nbsp;m au-dessus du sol de sa rangée, et regarde le centre de l’écran.</p>
+          <p>Ce n’est pas une photo prise dans la salle. La vue se calcule pour chaque fauteuil à partir des cotes de la salle&nbsp;: il n’y a rien à photographier, et aucune place n’est oubliée. Elle suit la sélection du spectateur&nbsp;: pour trois places, il voit l’écran depuis celle du milieu.</p>
+
+          <h2 id="prerequis">Ce qu’il faut réunir</h2>
+          <div class="tableau" tabindex="0">
+            <table>
+              <thead>
+                <tr><th>Élément</th><th>À quoi il sert</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Une clé publique (<code>apiKey</code>)</td><td>Elle identifie votre cinéma dans la page. Ce n’est pas un secret&nbsp;: elle peut figurer dans le code de la page.</td></tr>
+                <tr><td>Un identifiant par salle (<code>roomId</code>)</td><td>Le nom sous lequel la forme de la salle est enregistrée.</td></tr>
+                <tr><td>Vos domaines</td><td>La vue et le plan ne s’affichent que sur les domaines déclarés pour votre clé, préproduction comprise.</td></tr>
+                <tr><td>Vos identifiants de sièges</td><td>Votre page parle dans ses propres identifiants. Si votre billetterie nomme G9 «&nbsp;7-9&nbsp;», la correspondance est enregistrée une fois, salle par salle.</td></tr>
+                <tr><td>Les cotes de chaque salle</td><td>Ce sont elles qui donnent la bonne vue&nbsp;: voir ci-dessous.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Les cotes d’une salle</h3>
+          <ul>
+            <li><strong>L’écran</strong>&nbsp;: sa largeur, sa hauteur, la hauteur de son bord bas au-dessus du sol du premier rang, et sa courbure s’il est incurvé.</li>
+            <li><strong>La distance</strong> de l’écran au premier rang.</li>
+            <li><strong>Le gradin</strong>&nbsp;: l’écart entre deux rangées, et la hauteur que gagne chaque rang. C’est elle qui décide de ce que l’on voit par-dessus les têtes.</li>
+            <li><strong>Les fauteuils</strong>&nbsp;: leur largeur, et l’espace entre deux fauteuils voisins. Un fauteuil de 56&nbsp;cm et un fauteuil club de 90&nbsp;cm ne donnent pas la même salle.</li>
+            <li><strong>La disposition</strong>&nbsp;: les allées, les emplacements PMR, les places doubles et les emplacements sans fauteuil.</li>
+          </ul>
+          <p>Vous n’avez ni ces cotes, ni plan de salle&nbsp;? Nous les relevons&nbsp;: à distance, à partir de quelques photos, ou sur place.</p>
+          <p class="note">Aujourd’hui, le modèle décrit des rangées droites, sur un gradin à pente régulière et sur un seul niveau. Les rangées courbes et les balcons ne sont pas encore pris en charge.</p>
+
+          <h2 id="vue-3d-seule">Intégration 1&nbsp;: la vue 3D seule</h2>
+          <p>Vous avez déjà un plan de salle. Il ne change pas&nbsp;: vous y ajoutez un bouton.</p>
+          <ol>
+            <li>Le spectateur choisit ses places sur votre plan.</li>
+            <li>Votre bouton appelle <code>VisionViewer.open()</code>, avec ces places et les sièges déjà vendus.</li>
+            <li>La vue 3D s’ouvre en plein écran, par-dessus votre page. Le spectateur déplace son groupe de places pour comparer&nbsp;: le groupe garde sa forme et son nombre de places.</li>
+            <li>«&nbsp;Choisir ces places&nbsp;» rend à votre page les places regardées (<code>onConfirm</code>)&nbsp;; «&nbsp;Plan&nbsp;» referme la vue sans rien changer.</li>
+          </ol>
+<pre tabindex="0"><code>&lt;script src="https://app.visionviewer.net/sdk/visionviewer.js"&gt;&lt;/script&gt;
+
+&lt;button id="vue-3d"&gt;Vue 3D&lt;/button&gt;
+
+&lt;script&gt;
+  document.querySelector('#vue-3d').onclick = () =&gt;
+    VisionViewer.open({
+      apiKey: 'vv_test_…',
+      roomId: 'salle-1',
+      selected: ['G1', 'G2', 'G3'],   // les places choisies sur votre plan
+      occupied: ['G8', 'G9'],         // les sièges déjà vendus
+      onConfirm: (seats) =&gt; panier.remplacer(seats),
+    })
+&lt;/script&gt;</code></pre>
+
+          <h2 id="plan-et-vue">Intégration 2&nbsp;: le plan 2D et la vue 3D</h2>
+          <p>Vous n’avez pas de plan de salle. Vous réservez un bloc dans votre page de réservation&nbsp;; <code>VisionViewer.mountPlan()</code> y insère le nôtre, en thème clair ou sombre.</p>
+          <ol>
+            <li>Le plan s’affiche dans votre page, la salle dessinée à sa taille définitive.</li>
+            <li>Le spectateur y choisit jusqu’à neuf places, côte à côte ou l’une devant l’autre.</li>
+            <li>Le bouton «&nbsp;Voir en 3D&nbsp;» du plan ouvre la même vue.</li>
+            <li>Votre page reçoit chaque changement de sélection (<code>onChange</code>), et continue la commande.</li>
+          </ol>
+<pre tabindex="0"><code>&lt;script src="https://app.visionviewer.net/sdk/visionviewer.js"&gt;&lt;/script&gt;
+
+&lt;div id="plan-de-salle"&gt;&lt;/div&gt;
+
+&lt;script&gt;
+  VisionViewer.mountPlan('#plan-de-salle', {
+    apiKey: 'vv_test_…',
+    roomId: 'salle-1',
+    occupied: ['G8', 'G9'],           // les sièges déjà vendus
+    onChange: ({ selected }) =&gt; panier.remplacer(selected),
+  })
+&lt;/script&gt;</code></pre>
+
+          <h2 id="billetterie">Ce qui reste chez vous</h2>
+          <ul>
+            <li><strong>Les ventes.</strong> La liste des sièges vendus (<code>occupied</code>) est une photo, prise à l’ouverture. Si un siège se vend pendant que le spectateur regarde, votre page envoie la nouvelle liste (<code>update</code>)&nbsp;; s’il était choisi, il est retiré, et votre page en est informée. Dans tous les cas, votre billetterie tranche au paiement.</li>
+            <li><strong>Les séances, les tarifs, le paiement.</strong> VisionViewer n’en sait rien&nbsp;: il ne connaît que la forme de vos salles.</li>
+            <li><strong>Vos spectateurs.</strong> Ni compte, ni cookie, ni stockage dans leur navigateur.</li>
+          </ul>
+
+          <h2 id="essayer">Essayer avant la mise en ligne</h2>
+          <p>Une <strong>clé de test</strong> (<code>vv_test_…</code>) fonctionne tout de suite sur <code>localhost</code>, quel que soit le port, et sur vos domaines déclarés. Elle affiche la mention «&nbsp;Version de test · VisionViewer&nbsp;».</p>
+          <p>La <strong>clé définitive</strong> (<code>vv_live_…</code>) ne fonctionne que sur vos domaines déclarés, sans mention. Une clé se révoque d’un clic.</p>
+
+          <h2 id="vitesse">Et la vitesse de votre page&nbsp;?</h2>
+          <p>Le code de la vue 3D est téléchargé d’avance, au repos, pendant que le spectateur regarde le plan. Il ne l’est jamais si le visiteur a demandé à économiser ses données.</p>
+          <p>Sur un téléphone émulé, en 4G lente, le plan est utilisable en 0,65&nbsp;seconde, et la vue 3D affiche sa première image en 0,87&nbsp;seconde (mesures du 17&nbsp;novembre 2026). La méthode et ses limites sont dans <a href="/blog/un-plan-de-salle-en-moins-d-une-seconde">notre article sur la vitesse</a>.</p>
+
+          <h2 id="mesurer">Ce que vous pourrez mesurer</h2>
+          <p>VisionViewer compte, par jour et par salle&nbsp;: les plans affichés, les vues 3D ouvertes, les places retenues depuis la vue 3D et, si votre page de confirmation les signale (<code>reportOrder</code>), les commandes.</p>
+          <p>Ces compteurs décrivent un usage. À eux seuls, ils ne prouvent pas un gain de ventes&nbsp;: il faut les rapprocher de vos propres chiffres. Nous publierons les premiers résultats dans nos <a href="/blog#etudes-de-cas">études de cas</a>, avec l’accord des cinémas concernés.</p>
+
+          <h2 id="questions">Questions fréquentes</h2>
+          <!--@faq-->
+          <h3 data-q>Faut-il changer de logiciel de billetterie pour ajouter une vue depuis le fauteuil&nbsp;?</h3>
+          <div data-a><p>Non. La vue s’ajoute à votre page de réservation par une balise et un appel. Votre billetterie garde les séances, les disponibilités et le paiement.</p></div>
+          <h3 data-q>Que faut-il fournir pour qu’une salle soit modélisée&nbsp;?</h3>
+          <div data-a><p>Les cotes de la salle&nbsp;: l’écran, la distance au premier rang, l’écart entre les rangées, la hauteur de marche, la largeur des fauteuils, et la disposition des places. Sans plan ni cotes, nous les relevons à partir de photos, ou sur place.</p></div>
+          <h3 data-q>Que se passe-t-il si un siège se vend pendant que le spectateur regarde la vue 3D&nbsp;?</h3>
+          <div data-a><p>Votre page envoie la nouvelle liste des sièges vendus. Si le siège était choisi, il est retiré de la sélection, et votre page en est informée. Votre billetterie tranche au paiement.</p></div>
+          <h3 data-q>Peut-on tester l’intégration sans mettre son site en ligne&nbsp;?</h3>
+          <div data-a><p>Oui. Une clé de test fonctionne tout de suite sur <code>localhost</code>, sur le poste du développeur, et affiche la mention «&nbsp;Version de test&nbsp;».</p></div>
+          <!--@/faq-->
+
+          <h2 id="sources">Pour aller plus loin</h2>
+          <ul class="sources">
+            <li>Le <a href="https://docs.visionviewer.net">guide d’intégration de VisionViewer</a>&nbsp;: toutes les options du SDK, avec des exemples à exécuter sur place.</li>
+            <li>La <a href="/demo">démo</a>&nbsp;: un plan de salle, puis la vue 3D depuis le fauteuil choisi.</li>
+          </ul>
+
+          <div class="suite">
+            <p>Écrivez-nous avec le nom d’une de vos salles&nbsp;: nous vous la montrons dans VisionViewer.</p>
+            <a class="btn" href="/#contact">Nous écrire<span class="arr" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+      <!--@voir-aussi-->
+    </main>
+    <!--@include footer-->
+  </body>
+</html>

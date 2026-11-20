@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--@include head-->
+    <title>A cinema seat map in under a second, on a phone over 4G — VisionViewer</title>
+    <meta name="description" content="In a booking flow, every second of waiting costs. How we measure the speed of VisionViewer’s seat map and 3D seat view, what we fixed, and where we stand." />
+    <meta name="vv:rubrique" content="article" />
+    <meta name="vv:date" content="2026-11-18" />
+    <meta name="vv:lecture" content="6" />
+    <meta name="vv:traduction" content="/blog/un-plan-de-salle-en-moins-d-une-seconde" />
+    <meta property="og:title" content="A seat map in under a second, on a phone over 4G" />
+    <meta property="og:description" content="In a booking flow, every second of waiting costs. How we measure the speed of VisionViewer’s seat map and 3D seat view, what we fixed, and where we stand." />
+  </head>
+  <body>
+    <!--@include header-->
+    <main class="doc">
+      <header class="doc__head">
+        <span class="mono"><a href="/en/blog">← Blog</a> · {{article.signature}}</span>
+        <h1>A seat map in under a second, on a phone over 4G</h1>
+        <p class="chapo">VisionViewer is added to a booking page: it has no right to slow it down. Here is how we measure its speed, what we fixed, and where we stand, including where the target is not yet met.</p>
+      </header>
+      <div class="doc__body">
+        <!--@sommaire-->
+        <div class="prose">
+          <h2 id="en-bref">In short</h2>
+          <div class="chiffres">
+            <div><b>0.33<small>s</small></b><p>for the auditorium to be visible in the cinema’s page.</p><span class="mono">First visit · slow 4G</span></div>
+            <div><b>0.65<small>s</small></b><p>for the seat map to be usable. It used to take 2.8.</p><span class="mono">First visit · slow 4G</span></div>
+            <div><b>0.87<small>s</small></b><p>for the first frame of the 3D view opened from the seat map. It used to take 2.9.</p><span class="mono">First visit · slow 4G</span></div>
+            <div><b>0.00</b><p>layout shift: the seat map arrives at its final size.</p><span class="mono">Layout shift score, down from 0.15</span></div>
+          </div>
+
+          <h2 id="objectif">The target</h2>
+          <p>We set ourselves two targets, on a mid-range phone over 4G: a seat map usable in 0.3 seconds, and a 3D view in one second. With two clarifications that came from use:</p>
+          <ul>
+            <li>on the seat map, what matters first is that <strong>the auditorium is visible as soon as the page opens</strong>;</li>
+            <li>in the 3D view, what bothers people is <strong>the wait before the image appears</strong>, not the fly-over of the auditorium that leads to the seat.</li>
+          </ul>
+
+          <h2 id="mesure">How we measure</h2>
+          <p>A real browser opens the product as it is deployed, inside a booking page, as on a customer’s site. It emulates a phone: slow 4G (9&nbsp;Mbit/s, 170&nbsp;ms round trip) and a processor four times slower than the machine’s. Each path is replayed several times; we keep the median.</p>
+          <p>We measure three paths: the seat map, the 3D view opened from the seat map, and the 3D view opened on its own, for a cinema that already has its own seat map. And two moments: the first visit, with nothing cached, then the same visitor returning a few minutes later.</p>
+
+          <h2 id="avant-apres">Before, after</h2>
+          <div class="tableau" tabindex="0">
+            <table>
+              <thead>
+                <tr><th>First visit, slow 4G</th><th>Before</th><th>After</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>The auditorium is visible</td><td>—</td><td>0.33 s</td></tr>
+                <tr><td>The seat map is usable</td><td>2.8 s</td><td>0.65 s</td></tr>
+                <tr><td>3D view from the seat map, first frame</td><td>2.9 s</td><td>0.87 s</td></tr>
+                <tr><td>3D view on its own, first frame</td><td>3.9 s</td><td>1.26 s</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>In better conditions, the times drop further: on good 4G, the seat map is usable in 0.46 seconds and the 3D view shows its first frame in 0.77 seconds. On a computer, 0.17 and 0.33 seconds. And for a visitor who returns within five minutes, on slow 4G, 0.28 and 0.61 seconds.</p>
+          <p>A large auditorium changes almost nothing: with more than 400 seats, the seat map is usable in 0.75 seconds.</p>
+
+          <h2 id="corrections">What saved time</h2>
+          <h3>The page arrives complete</h3>
+          <p>At first, the page asked for its auditorium after loading, then discovered its files one after another. Now the auditorium travels with the page, and every file is announced up front: they all leave together. The page itself is served as close to the visitor as possible, with no computation: 0.05 seconds instead of 0.8.</p>
+          <h3>The seat map arrives drawn</h3>
+          <p>The auditorium is drawn before the code is even loaded: rows, seats, screen, at their final size. The seats do not have their color yet, because we do not know yet which ones are sold: nothing suggests a seat is free before we know it. When the code takes over, nothing moves.</p>
+          <h3>The 3D view gets ready while the moviegoer chooses</h3>
+          <p>While the moviegoer looks at the seat map, the 3D view downloads its code in the background, at idle. On click, it no longer waits for the network. It does not do so if the visitor has asked to save data.</p>
+          <h3>A 0.3-second wait, removed</h3>
+          <p>The last fix had to do with neither the network nor the server: the interface library held back the display of the scene by 300 milliseconds at every opening. We load the scene differently.</p>
+
+          <h2 id="tenir">What keeps that time from being lost again</h2>
+          <p>Speed gained is lost again, fix after fix. Every build of VisionViewer therefore ends with weight and time thresholds. If they are exceeded, the deployment is refused. A threshold is the latest measurement plus a margin: a fix that saves time tightens it.</p>
+
+          <h2 id="limites">What remains to be done, and what we do not know</h2>
+          <ul>
+            <li><strong>The 0.3-second target is not met.</strong> The auditorium is visible at 0.33 seconds, but the seat map is only usable at 0.65. The 3D view opened on its own is at 1.26 seconds, for a target of one second.</li>
+            <li><strong>These are emulated measurements.</strong> The network and the processor are throttled, but the graphics card is a computer’s. We have not yet measured on real phones, nor in Safari.</li>
+            <li><strong>One opening in fifty takes one second longer</strong>, the time for the graphics card to prepare the scene for the first time.</li>
+          </ul>
+          <p>We will publish measurements on real devices when we have them.</p>
+
+          <div class="suite">
+            <p>The simplest is still to open it on your phone.</p>
+            <a class="btn" href="/demo">Try the demo<span class="arr" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+      <!--@voir-aussi-->
+    </main>
+    <!--@include footer-->
+  </body>
+</html>

@@ -1,6 +1,6 @@
 # VisionViewer
 
-Prototype mobile-first : sélection de fauteuils de cinéma, avec une vue 3D de l'écran depuis chaque siège. Le site a la présentation (`/`), la démo (`/demo`), le blog (`/blog`) et les pages légales (`/mentions-legales`, `/confidentialite`, `/cgu`, `/cgv`, `/sla`, `/dpa`).
+Prototype mobile-first : sélection de fauteuils de cinéma, avec une vue 3D de l'écran depuis chaque siège. Le site a la présentation (`/`), la démo (`/demo`), le blog (`/blog`) et les pages légales (`/mentions-legales`, `/confidentialite`, `/cgu`, `/cgv`, `/sla`, `/dpa`). La présentation et le blog existent aussi en anglais (`/en`, `/en/blog`).
 
 React · Vite · TypeScript · Three.js (`@react-three/fiber`, `@react-three/drei`) · Motion. Aucun backend : les salles sont des fichiers JSON.
 
@@ -18,7 +18,7 @@ Puis ouvrir http://localhost:5173 pour la présentation, ou http://localhost:517
 | `npm run dev -- --host` | expose le serveur sur le réseau local, pour tester sur un vrai téléphone |
 | `npm run build` | vérifie les types puis génère `dist/` ; rappelle les mentions légales encore « À compléter » |
 | `npm run preview` | sert `dist/` avec les en-têtes de sécurité de `vercel.json` (http://localhost:4173) : c'est là que la politique de contenu s'éprouve |
-| `npm test` | tests du calcul des salles (positions, rangée K, indicateurs) et des pages (liens, règles de `vercel.json`, blog) |
+| `npm test` | tests du calcul des salles (positions, rangée K, indicateurs) et des pages (liens, règles de `vercel.json`, blog, référencement, traductions) |
 | `npm run deploy` | construit ici puis met en ligne sur Vercel, sans passer par GitHub (en secours : voir « Démo en ligne ») |
 
 ## Ajouter une salle
@@ -74,7 +74,7 @@ Dans la démo, les deux salles projettent un logo au centre de l'écran : l'empl
 
 ## Démo en ligne
 
-Le site est publié sur https://visionviewer.net (non référencé par les moteurs de recherche).
+Le site est publié sur https://visionviewer.net. Il est ouvert aux moteurs de recherche et aux assistants, pages légales exceptées : voir « Référencement ».
 
 **Publier** : envoyer sur la branche `main` de ce dépôt. Vercel (projet `visionviewer`) construit alors le site et le met en ligne ; une autre branche donne une préversion, réservée aux comptes Vercel de l'équipe.
 
@@ -82,13 +82,15 @@ Le site est publié sur https://visionviewer.net (non référencé par les moteu
 - **Démo** (`/demo`, fichier `demo.html`) : l'application de réservation. Sur téléphone, elle occupe tout l'écran, avec un bandeau pour changer de salle et revenir à la présentation. Sur ordinateur, elle est présentée dans un téléphone, à côté d'un panneau qui porte le choix de la salle et le QR code.
 - **De l'une à l'autre** : les boutons « Essayez maintenant » de la présentation et les QR codes (section « Démo » de la présentation, panneau de la démo sur ordinateur) mènent à `/demo`, sur le plan de salle : au visiteur de choisir son fauteuil, puis d'ouvrir la vue 3D. Les QR codes ne s'affichent pas en local : un téléphone n'a pas accès à `localhost`.
 - L'adresse `/demo` repose sur une règle de réécriture vers `demo.html` (`vercel.json`), comme celle de chaque page légale et du blog. L'ancienne adresse `/?demo` y redirige.
-- Si le site change de domaine, mettre à jour les balises `og:` de `index.html` et de `demo.html`.
+- Si le site change de domaine, mettre à jour `SITE` dans `tools/pages.ts` (adresses canoniques, plan du site, données structurées), `public/robots.txt`, et l'adresse de l'image `og:image` dans `index.html`, `en.html`, `demo.html` et `src/pages/partials/head.html`.
 
 ### Modifier la présentation
 
-- Le texte est dans `index.html`, les styles dans `src/landing/landing.css` (ceux de la maquette, plus quelques ajouts regroupés en fin de fichier).
+- Le texte est dans `index.html`, les styles dans `src/landing/landing.css` (ceux de la maquette, plus quelques ajouts regroupés en fin de fichier). **`en.html` est sa traduction** : même structure, mêmes identifiants, mêmes scripts. Un texte changé dans l'une se reporte dans l'autre.
+- Les **questions fréquentes** (section « Questions fréquentes ») sont écrites dans la page, entre `<!--@faq-->` et `<!--@/faq-->` : chaque question porte `data-q`, chaque réponse `data-a`. `tools/pages.ts` les reprend dans les données structurées. Autant de questions en français qu'en anglais : `npm test` le vérifie.
 - **Les salles de la page sont celles de la démo** : `src/landing/halls.ts` lit les JSON de `src/data/rooms/`. La scène 3D (`scene.js`, repris de la maquette, en JavaScript) et la coupe de la Fig. 1 (`coupe.ts`) montrent donc les mêmes fauteuils, les mêmes places doubles et les mêmes spectateurs que la démo : la première salle est racontée, la deuxième sert à la transformation finale.
-- Les chiffres écrits dans le texte de `index.html` (places, écran, pente, légende de la coupe) se modifient à la main. `npm test` signale ceux qui ne correspondent plus au JSON de la première salle.
+- Les chiffres écrits dans le texte de `index.html` et de `en.html` (places, écran, pente, légende de la coupe) se modifient à la main. `npm test` signale ceux qui ne correspondent plus au JSON de la première salle. En anglais, le nom et la description d'une salle viennent du champ `en` de son JSON, et les nombres s'écrivent avec un point.
+- Ce que les scripts écrivent eux-mêmes (« Copié », une étiquette de la coupe) passe par `t('français', 'english')` de `src/landing/langue.ts`, qui lit la langue de la page.
 - `src/landing/main.ts` porte le reste : liens vers la démo, QR code, carrousel des chiffres et copie de l'adresse de contact. L'adresse elle-même est dans `src/pages/societe.json`.
 - Sur écran tactile, la section « Démo » n'affiche pas de QR code, seulement le bouton. Sans WebGL, la scène est retirée et la page reste lisible.
 - Le fauteuil géant de l'ouverture est décrit dans `scene.js` (fonctions `seatBack`, `seatCushion`, `seatArm`, `seatFrame`) : dossier, assise, accoudoirs à porte-gobelet, flancs. La coupe de la Fig. 1 se redessine à la largeur disponible, pour tenir en entier sur un téléphone.
@@ -109,12 +111,35 @@ Ce sont des fichiers HTML sans script : les pages légales à la racine (`mentio
 | `{{contact}}`, `{{societe.siege}}`, `{{version}}`… | les valeurs de `src/pages/societe.json`. Une valeur à `null` s'affiche « À compléter » |
 | `<!--@sommaire-->` | un lien par section de la page (`<h2 id="…">`) |
 | `<!--@articles enquete \| texte si vide-->` | les articles de cette rubrique, les plus récents d'abord (dans `blog.html`) |
+| `<!--@voir-aussi-->` | au bas d'un article : les trois autres articles les plus récents de sa langue |
+| `<!--@faq-->` … `<!--@/faq-->` | rien dans la page ; les questions (`data-q`) et les réponses (`data-a`) qu'ils encadrent passent dans les données structurées |
+| `{{traduction}}` | l'adresse de la même page dans l'autre langue ; à défaut, la page d'accueil de l'autre langue |
+
+Une page en anglais (`en.html`, `en/…`) prend `header.en.html` et `footer.en.html`, et ses dates, ses rubriques et son sommaire s'écrivent en anglais.
 
 - **La société est en cours de formation** : ce que `societe.json` ne dit pas encore (siège, capital, RCS, TVA, directeur de la publication, téléphones) est à renseigner avant de publier. `npm run build` le rappelle.
-- **Un article** dit lui-même, dans son en-tête, sa rubrique (`vv:rubrique` : `enquete`, `article`, `etude-de-cas`), sa date (`vv:date`) et son temps de lecture (`vv:lecture`) ; son résumé est sa description. Le copier, changer ces valeurs : il apparaît dans le blog.
+- **Un article** dit lui-même, dans son en-tête, sa rubrique (`vv:rubrique` : `enquete`, `guide`, `article`, `etude-de-cas`), sa date (`vv:date`), son temps de lecture (`vv:lecture`) et l'adresse de sa traduction (`vv:traduction`) ; son résumé est sa description. Le copier, changer ces valeurs : il apparaît dans le blog. Modifié après coup, il dit quand (`vv:maj`).
+- **Chaque article existe en français (`blog/`) et en anglais (`en/blog/`)**, chacun nommant l'autre. `npm test` refuse un article sans traduction.
 - **Une page nouvelle** a besoin de sa règle dans `vercel.json`, sans quoi elle répond 404 en ligne. `npm test` le vérifie, comme il vérifie qu'aucun lien ne mène nulle part.
 - **Aucun script écrit dans une page** : la politique de contenu de `vercel.json` ne laisse passer que des fichiers.
 - La charte commune à ces pages et à la présentation (couleurs, polices, bouton, pied de page) est dans `src/styles/commun.css` ; leur mise en page propre dans `src/pages/pages.css`.
+
+## Référencement
+
+Le site est fait pour être trouvé, par un moteur de recherche comme par un assistant (ChatGPT, Claude, Perplexity). Presque tout est posé par `tools/pages.ts`, à la construction :
+
+| Quoi | Où |
+| --- | --- |
+| Adresse canonique, `og:url`, `og:type`, langue et traduction (`hreflang`) | dans l'en-tête de chaque page |
+| Données structurées (schema.org) : l'éditeur et le produit sur la présentation, `BlogPosting` et fil d'Ariane sur un article, `FAQPage` là où il y a des questions | dans l'en-tête, en JSON-LD |
+| `sitemap.xml` | écrit dans `dist/` : toutes les pages, sauf celles qui se déclarent `noindex` |
+| `llms.txt` | écrit dans `dist/` : le résumé du site pour un assistant. Son début est `src/pages/llms.md`, la liste des pages est tirée des pages |
+| `robots.txt` | `public/robots.txt` : tout est ouvert, et le plan du site y est annoncé |
+
+- **Une page se retire des moteurs elle-même**, par `<meta name="robots" content="noindex, follow" />` dans son en-tête : c'est le cas des six pages légales, tant que leurs mentions sont « À compléter ». Elle sort alors du plan du site et de `llms.txt`.
+- **Le titre et la description** d'une page sont ce qu'un moteur affiche. `npm test` refuse un titre ou une description en double, un titre de plus de 90 caractères, une description de moins de 110 ou de plus de 170.
+- **Les données structurées sont le seul « script » écrit dans une page** : rien ne s'y exécute, la politique de contenu les laisse passer.
+- **Rien ne mesure l'audience** : le site ne pose ni cookie ni outil de mesure. Ce que les moteurs voient se lit dans la Search Console de Google et dans Bing Webmaster Tools, une fois le site déclaré (voir `widget/dossier/procedures.md`).
 
 ## Logo
 
@@ -125,10 +150,13 @@ Le kit du logo est dans `logo/` : toutes les versions en SVG et en PNG, les icô
 ```
 index.html, demo.html           la présentation et la démo
 blog.html, blog/*.html          le blog et ses articles
+en.html, en/blog.html, en/blog/*.html
+                                la présentation, le blog et ses articles en anglais
 mentions-legales.html, confidentialite.html, cgu.html, cgv.html, sla.html, dpa.html
                                 les pages légales
-tools/pages.ts                  ce que ces pages ont en commun, posé à la construction
-src/pages/                      leur feuille de style, leurs morceaux communs, les mentions de la société
+tools/pages.ts                  ce que ces pages ont en commun, posé à la construction, et leur référencement
+src/pages/                      leur feuille de style, leurs morceaux communs (et leur version anglaise), les mentions de la société, le début de llms.txt
+public/robots.txt               ce que les moteurs ont le droit de lire : tout
 src/styles/commun.css           la charte commune à la présentation, aux pages légales et au blog
 vercel.json                     une règle par adresse, et les en-têtes de sécurité
 public/screens/mire.png         image de test, à projeter au besoin (`screenImage`)
@@ -140,7 +168,7 @@ src/lib/room.ts                 schéma JSON + calcul du plan 2D et des position
 src/lib/view.ts                 position des yeux, distance, angle de vision
 src/lib/links.ts, src/lib/qr.ts adresses des deux pages, QR code
 src/components/                 écran de réservation, plan 2D, sélecteur de salle, panneau de démo (ordinateur)
-src/landing/                    page de présentation : styles, scène 3D, coupe, comportements
+src/landing/                    page de présentation : styles, scène 3D, coupe, comportements, langue (langue.ts)
 src/components/seat-view/       vue 3D : interface, salle, fauteuils instanciés, caméra
 src/styles/tokens.css           couleurs et typographie : écran de réservation (--c-*) et habillage VisionViewer (--v-*)
 ```
