@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--@include head-->
+    <!-- Hors des moteurs de recherche tant que les mentions de la société sont « À compléter » -->
+    <meta name="robots" content="noindex, follow" />
+    <title>Service level agreement (SLA) — VisionViewer</title>
+    <meta name="description" content="Target availability, support, maintenance and service credits: what VisionViewer commits to for its cinema customers." />
+    <meta property="og:title" content="Service level agreement (SLA) — VisionViewer" />
+    <meta property="og:description" content="Target availability, support, maintenance and service credits: what VisionViewer commits to for its cinema customers." />
+  </head>
+  <body>
+    <!--@include header-->
+    <main class="doc">
+      <header class="doc__head">
+        <span class="mono">Customers · SLA · version of {{version}}</span>
+        <h1>Service level agreement</h1>
+        <p class="chapo">What VisionViewer commits to for a cinema customer: the availability of the service, the support, the maintenance, and what happens when the commitment is not met.</p>
+      </header>
+      <div class="doc__body">
+        <!--@sommaire-->
+        <div class="prose">
+          <p class="note">This English version is a courtesy translation. Only the <a href="/fr/sla" hreflang="fr">French version</a> is binding.</p>
+          <!--@include avis-->
+
+          <h2 id="resume">In short</h2>
+          <div class="chiffres">
+            <div><b>99.5<small>%</small></b><p>target availability, each month, for live keys.</p></div>
+            <div><b>4<small>h</small></b><p>at most, in business hours, to respond to a critical incident.</p></div>
+          </div>
+          <p>This agreement is part of the contract entered into with each customer, together with the <a href="/en/terms-of-sale">terms of sale</a>. It applies to <strong>live keys</strong> (<code>vv_live_…</code>). The test keys, the demo and the integration guide are provided with no commitment.</p>
+
+          <h2 id="perimetre">What is covered</h2>
+          <p>What a cinema’s booking flow needs in order to display VisionViewer:</p>
+          <ul>
+            <li>the integration file (SDK) loaded by the cinema’s website;</li>
+            <li>the page of the 3D view and that of the seat map, with their auditorium;</li>
+            <li>the cinema’s logo, projected on the screen of its auditoriums.</li>
+          </ul>
+          <p>The usage statistics are provided on a best-effort basis, with no availability commitment: a failing statistic never prevents the display.</p>
+
+          <h2 id="disponibilite">Availability</h2>
+          <p>VisionViewer targets an availability of <strong>99.5% per calendar month</strong>, that is, at most 3&nbsp;hours and 36&nbsp;minutes of unavailability over a thirty-day month.</p>
+          <p>The service is considered unavailable when, for more than five consecutive minutes, the 3D view or the seat map cannot be displayed for any of a customer’s visitors, for a reason attributable to VisionViewer. The unavailability is recorded by VisionViewer, or reported by the customer and then confirmed.</p>
+          <p>The availability for the month is the ratio of the minutes during which the service was available to the number of minutes in the month, apart from the exclusions below.</p>
+
+          <h2 id="exclusions">What is not counted</h2>
+          <ul>
+            <li>scheduled maintenance, announced at least 48&nbsp;hours in advance and carried out outside peak hours;</li>
+            <li>a force majeure event, or a general outage of the Internet or of a network operator;</li>
+            <li>what comes from the customer’s website: an integration that does not follow the guide, a domain not declared for the key, a key revoked at the customer’s request;</li>
+            <li>traffic that exceeds the service’s rate limits, or an attack targeting the customer’s website;</li>
+            <li>a suspension for non-payment, under the terms of the contract.</li>
+          </ul>
+
+          <h2 id="repli">If VisionViewer does not respond</h2>
+          <p>The service is designed never to block a sale on its own.</p>
+          <ul>
+            <li><strong>3D view only</strong>: your seat map and your order do not depend on us. Only the “3D view” button fails, with a message and a way to close it.</li>
+            <li><strong>2D seat map + 3D view</strong>: seat selection goes through our seat map. If it is not displayed, your page is notified (<code>onError</code>): plan a fallback, for example automatic seat assignment.</li>
+          </ul>
+          <p>In both cases, your ticketing system alone remains in control of availability and payment.</p>
+
+          <h2 id="support">Support</h2>
+          <p>Support can be reached at <a href="mailto:{{contact}}">{{contact}}</a>, Monday to Friday, from 9&nbsp;a.m. to 6&nbsp;p.m. (Paris time), excluding French public holidays.</p>
+          <div class="tableau" tabindex="0">
+            <table>
+              <thead>
+                <tr><th>Severity</th><th>What it is</th><th>Response</th><th>Target resolution</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Critical</td><td>The view or the seat map is no longer displayed for any of your visitors</td><td>4&nbsp;business hours</td><td>1&nbsp;business day</td></tr>
+                <tr><td>Major</td><td>A function is degraded, or an auditorium is displayed incorrectly</td><td>1&nbsp;business day</td><td>5&nbsp;business days</td></tr>
+                <tr><td>Minor</td><td>An inconvenience with no effect on booking, a question</td><td>3&nbsp;business days</td><td>In an upcoming release</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>The response is the time within which we acknowledge receipt and begin handling the report. A report is handled all the faster if it gives the auditorium, the key, the time and a screenshot.</p>
+
+          <h2 id="avoirs">If the commitment is not met</h2>
+          <p>When the availability for a month is below the commitment, the customer may request a service credit on the fee for that month:</p>
+          <div class="tableau" tabindex="0">
+            <table>
+              <thead>
+                <tr><th>Availability for the month</th><th>Service credit</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>From 99.0% to less than 99.5%</td><td>5% of the fee for the month</td></tr>
+                <tr><td>From 98.0% to less than 99.0%</td><td>10% of the fee for the month</td></tr>
+                <tr><td>Less than 98.0%</td><td>20% of the fee for the month</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>The service credit is requested in writing within thirty days after the month concerned, and is applied to the next invoice. It is the sole remedy owed in respect of availability.</p>
+
+          <h2 id="maintenance">Maintenance and changes</h2>
+          <ul>
+            <li>Fixes and changes to the service are released without any action by the customer.</li>
+            <li>A modified auditorium (renovation work, new seats) is updated on request, under the terms of the quote.</li>
+            <li>A change to the SDK that would require modifying the customer’s integration is announced at least three months in advance.</li>
+          </ul>
+
+          <h2 id="reversibilite">Your data</h2>
+          <p>On request, and at the end of the contract, VisionViewer gives the customer the data of its auditoriums (geometry, seat mapping, logo) in a readable format.</p>
+
+          <h2 id="revision">Revision</h2>
+          <p>This agreement may change. A change that would reduce it applies to a contract in force only at its renewal, after the customer has been informed two months before the end of the term.</p>
+        </div>
+      </div>
+    </main>
+    <!--@include footer-->
+  </body>
+</html>

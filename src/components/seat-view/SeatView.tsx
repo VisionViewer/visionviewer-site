@@ -22,6 +22,7 @@ import {
   MoveHorizontal,
   TriangleAlert,
 } from 'lucide-react'
+import { t } from '../../lib/langue'
 import { neighborSeat, type Direction, type RoomLayout, type Slot } from '../../lib/room'
 import type { Point } from '../BookingScreen'
 import './SeatView.css'
@@ -73,7 +74,10 @@ export default function SeatView({ layout, slot, origin, onBack, onChoose }: Sea
   // Siège regardé : celui d'ouverture, puis ses voisins si l'on se déplace depuis la vue
   const [currentId, setCurrentId] = useState(slot.id)
   const current = layout.slots.get(currentId) ?? slot
-  const viewTitle = current.span === 2 ? 'Vue depuis la place double' : 'Vue depuis le fauteuil'
+  const viewTitle = t({
+    en: current.span === 2 ? 'View from double seat' : 'View from seat',
+    fr: current.span === 2 ? 'Vue depuis la place double' : 'Vue depuis le fauteuil',
+  })
   const neighbors = useMemo(
     () => ({
       forward: neighborSeat(layout, current, 'forward'),
@@ -182,7 +186,7 @@ export default function SeatView({ layout, slot, origin, onBack, onChoose }: Sea
               <i />
               <i />
             </span>
-            <span>Installation dans la salle…</span>
+            <span>{t({ en: 'Taking your seat…', fr: 'Installation dans la salle…' })}</span>
           </m.div>
         )}
       </AnimatePresence>
@@ -190,10 +194,14 @@ export default function SeatView({ layout, slot, origin, onBack, onChoose }: Sea
       {failed && (
         <div className="seat-view__error" role="alert">
           <TriangleAlert aria-hidden size={30} strokeWidth={1.8} />
-          <strong>La vue 3D n'a pas pu s'afficher</strong>
+          <strong>
+            {t({ en: "The 3D view couldn't be displayed", fr: "La vue 3D n'a pas pu s'afficher" })}
+          </strong>
           <span>
-            Cet appareil ou ce navigateur ne permet pas d'afficher la salle en 3D. Vous pouvez
-            tout de même choisir ce siège.
+            {t({
+              en: "This device or browser can't display the auditorium in 3D. You can still choose this seat.",
+              fr: "Cet appareil ou ce navigateur ne permet pas d'afficher la salle en 3D. Vous pouvez tout de même choisir ce siège.",
+            })}
           </span>
         </div>
       )}
@@ -211,7 +219,7 @@ export default function SeatView({ layout, slot, origin, onBack, onChoose }: Sea
           onClick={onBack}
         >
           <ArrowLeft aria-hidden size={20} strokeWidth={2.4} />
-          Plan
+          {t({ en: 'Seat map', fr: 'Plan' })}
         </m.button>
 
         <m.div className="hud-title" variants={hudItem} aria-live="polite">
@@ -234,7 +242,10 @@ export default function SeatView({ layout, slot, origin, onBack, onChoose }: Sea
         <m.button
           type="button"
           className="glass-btn glass-btn--icon"
-          aria-label="Recentrer le regard sur l'écran"
+          aria-label={t({
+            en: 'Recenter the view on the screen',
+            fr: "Recentrer le regard sur l'écran",
+          })}
           variants={hudItem}
           whileTap={{ scale: 0.9, rotate: -30 }}
           disabled={failed}
@@ -264,7 +275,7 @@ export default function SeatView({ layout, slot, origin, onBack, onChoose }: Sea
                   >
                     <MoveHorizontal aria-hidden size={18} strokeWidth={2.2} />
                   </m.span>
-                  Glissez pour tourner la tête
+                  {t({ en: 'Drag to look around', fr: 'Glissez pour tourner la tête' })}
                 </m.p>
               )}
             </AnimatePresence>
@@ -277,7 +288,10 @@ export default function SeatView({ layout, slot, origin, onBack, onChoose }: Sea
                 key="seat-nav"
                 className="seat-nav"
                 role="group"
-                aria-label="Comparer avec un siège voisin"
+                aria-label={t({
+                  en: 'Compare with a nearby seat',
+                  fr: 'Comparer avec un siège voisin',
+                })}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
@@ -285,19 +299,24 @@ export default function SeatView({ layout, slot, origin, onBack, onChoose }: Sea
               >
                 <NavButton
                   area="forward"
-                  label="Rangée de devant"
+                  label={t({ en: 'Row in front', fr: 'Rangée de devant' })}
                   target={neighbors.forward}
                   onMove={moveTo}
                 >
                   <ChevronUp aria-hidden size={22} strokeWidth={2.6} />
                 </NavButton>
-                <NavButton area="left" label="Siège de gauche" target={neighbors.left} onMove={moveTo}>
+                <NavButton
+                  area="left"
+                  label={t({ en: 'Seat to the left', fr: 'Siège de gauche' })}
+                  target={neighbors.left}
+                  onMove={moveTo}
+                >
                   <ChevronLeft aria-hidden size={22} strokeWidth={2.6} />
                 </NavButton>
                 <span className="seat-nav__center" aria-hidden />
                 <NavButton
                   area="right"
-                  label="Siège de droite"
+                  label={t({ en: 'Seat to the right', fr: 'Siège de droite' })}
                   target={neighbors.right}
                   onMove={moveTo}
                 >
@@ -305,7 +324,7 @@ export default function SeatView({ layout, slot, origin, onBack, onChoose }: Sea
                 </NavButton>
                 <NavButton
                   area="back"
-                  label="Rangée de derrière"
+                  label={t({ en: 'Row behind', fr: 'Rangée de derrière' })}
                   target={neighbors.back}
                   onMove={moveTo}
                 >
@@ -324,7 +343,7 @@ export default function SeatView({ layout, slot, origin, onBack, onChoose }: Sea
           onClick={() => onChoose(current.id)}
         >
           <Check aria-hidden size={22} strokeWidth={2.8} />
-          Choisir ce siège
+          {t({ en: 'Choose this seat', fr: 'Choisir ce siège' })}
         </m.button>
       </div>
     </m.div>
@@ -354,7 +373,11 @@ function NavButton({
     <button
       type="button"
       className={`seat-nav__btn seat-nav__btn--${area}`}
-      aria-label={target ? `${label} : ${target.id}` : `${label} : aucun fauteuil libre`}
+      aria-label={
+        target
+          ? t({ en: `${label}: ${target.id}`, fr: `${label} : ${target.id}` })
+          : t({ en: `${label}: no seat available`, fr: `${label} : aucun fauteuil libre` })
+      }
       disabled={!target}
       onClick={() => onMove(area)}
     >

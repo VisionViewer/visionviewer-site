@@ -4,9 +4,9 @@
  * cités dans la page. Page et démo décrivent donc toujours les mêmes salles.
  */
 import { layouts } from '../data/rooms'
-import { isSelectable, type RoomLayout, type Slot } from '../lib/room'
+import { LANGUE, nombre, t } from '../lib/langue'
+import { isSelectable, roomTexts, type RoomLayout, type Slot } from '../lib/room'
 import { EYE_HEIGHT, viewMetrics } from '../lib/view'
-import { EN } from './langue'
 
 export interface HallSeat {
   id: string
@@ -59,11 +59,10 @@ export interface Hall {
   slope: number
 }
 
-function toHall(layout: RoomLayout, english: boolean): Hall {
+function toHall(layout: RoomLayout, langue: string): Hall {
   const { config } = layout
-  // En anglais, le nom et la description traduits de la salle (champ `en` de son JSON), s'ils existent
-  const name = (english && config.en?.name) || config.name
-  const description = english ? config.en?.description : config.description
+  // Le nom et la description de la salle dans cette langue (champ `traductions` de son JSON)
+  const { name, description } = roomTexts(config, langue)
   const d = config.dimensions
   const slots = layout.rows.flatMap((row) => row.slots).filter((slot) => slot.kind !== 'empty')
 
@@ -80,7 +79,7 @@ function toHall(layout: RoomLayout, english: boolean): Hall {
 
   return {
     name,
-    description: description ?? (english ? `${layout.rows.length} rows, ${layout.seatCount} seats.` : `${layout.rows.length} rangs, ${layout.seatCount} places.`),
+    description: description ?? t({ en: `${layout.rows.length} rows, ${layout.seatCount} seats.`, fr: `${layout.rows.length} rangs, ${layout.seatCount} places.` }, langue),
     places: layout.seatCount,
     rows: layout.rows.map((row) => row.label),
     seats: slots.map((slot) => ({
@@ -121,19 +120,12 @@ function toHall(layout: RoomLayout, english: boolean): Hall {
   }
 }
 
-/** Les salles, décrites en français ou en anglais. */
-export const hallsIn = (english: boolean): Hall[] => layouts.map((layout) => toHall(layout, english))
+/** Les salles, décrites dans une langue. */
+export const hallsIn = (langue: string): Hall[] => layouts.map((layout) => toHall(layout, langue))
 
 /** Les salles, dans la langue de la page. */
-export const halls: Hall[] = hallsIn(EN)
+export const halls: Hall[] = hallsIn(LANGUE)
 
-/** Nombre à la française : virgule décimale. */
-export const fr = (value: number, digits = 0) => value.toFixed(digits).replace('.', ',')
-/** Nombre à l'anglaise : point décimal. */
-export const en = (value: number, digits = 0) => value.toFixed(digits)
-/** Nombre dans la langue de la page. */
-export const num = EN ? en : fr
-
-/** « 9,40 × 3,93 m » */
-export const screenSize = (hall: Hall, format = num) =>
-  `${format(hall.dim.screenW, 2)} × ${format(hall.dim.screenH, 2)} m`
+/** « 9,40 × 3,93 m » en français, « 9.40 × 3.93 m » en anglais */
+export const screenSize = (hall: Hall, langue: string = LANGUE) =>
+  `${nombre(hall.dim.screenW, 2, langue)} × ${nombre(hall.dim.screenH, 2, langue)} m`

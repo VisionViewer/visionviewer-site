@@ -1,54 +1,70 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "vite",
-  "rewrites": [
+  "redirects": [
     {
-      "source": "/demo",
-      "destination": "/demo.html"
+      "source": "/",
+      "destination": "/en",
+      "permanent": true
     },
     {
       "source": "/blog",
-      "destination": "/blog.html"
+      "destination": "/fr/blog",
+      "permanent": true
     },
     {
       "source": "/blog/:article",
-      "destination": "/blog/:article.html"
+      "destination": "/fr/blog/:article",
+      "permanent": true
     },
     {
-      "source": "/en",
-      "destination": "/en.html"
-    },
-    {
-      "source": "/en/blog",
-      "destination": "/en/blog.html"
-    },
-    {
-      "source": "/en/blog/:article",
-      "destination": "/en/blog/:article.html"
+      "source": "/demo",
+      "destination": "/fr/demo",
+      "permanent": true
     },
     {
       "source": "/mentions-legales",
-      "destination": "/mentions-legales.html"
+      "destination": "/fr/mentions-legales",
+      "permanent": true
     },
     {
       "source": "/confidentialite",
-      "destination": "/confidentialite.html"
+      "destination": "/fr/confidentialite",
+      "permanent": true
     },
     {
       "source": "/cgu",
-      "destination": "/cgu.html"
+      "destination": "/fr/cgu",
+      "permanent": true
     },
     {
       "source": "/cgv",
-      "destination": "/cgv.html"
+      "destination": "/fr/cgv",
+      "permanent": true
     },
     {
       "source": "/sla",
-      "destination": "/sla.html"
+      "destination": "/fr/sla",
+      "permanent": true
     },
     {
       "source": "/dpa",
-      "destination": "/dpa.html"
+      "destination": "/fr/dpa",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/:langue",
+      "destination": "/:langue.html"
+    },
+    {
+      "source": "/:langue/:page",
+      "destination": "/:langue/:page.html"
+    },
+    {
+      "source": "/:langue/blog/:article",
+      "destination": "/:langue/blog/:article.html"
     }
   ],
   "headers": [

@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { ArrowLeft } from 'lucide-react'
+import { t } from '../lib/langue'
 import { HOME_PATH, LOGO_URL, shareableDemoUrl } from '../lib/links'
 import { qrShape } from '../lib/qr'
 import type { RoomLayout } from '../lib/room'
@@ -27,20 +28,22 @@ export default function DemoAside({ layouts, activeId, onChange }: DemoAsideProp
         </a>
         <a className="demo-aside__back" href={HOME_PATH}>
           <ArrowLeft aria-hidden size={15} strokeWidth={1.8} />
-          Présentation
+          {t({ en: 'Overview', fr: 'Présentation' })}
         </a>
       </header>
 
       <div className="demo-aside__intro">
-        <span className="demo-aside__mono">Démo</span>
-        <h1>Essayez-le vous-même.</h1>
+        <span className="demo-aside__mono">{t({ en: 'Demo', fr: 'Démo' })}</span>
+        <h1>{t({ en: 'Try it yourself.', fr: 'Essayez-le vous-même.' })}</h1>
         <p>
-          Choisissez un fauteuil sur le plan, puis ouvrez «&nbsp;Vue 3D&nbsp;»&nbsp;: vous voyez
-          l'écran depuis cette place.
+          {t({
+            en: 'Pick a seat on the seat map, then open “3D view”: you see the screen from that seat.',
+            fr: "Choisissez un fauteuil sur le plan, puis ouvrez «\u00a0Vue 3D\u00a0»\u00a0: vous voyez l'écran depuis cette place.",
+          })}
         </p>
         <div className="demo-aside__room">
           <span className="demo-aside__mono" aria-hidden>
-            Salle
+            {t({ en: 'Auditorium', fr: 'Salle' })}
           </span>
           <RoomSwitch id="aside" layouts={layouts} activeId={activeId} onChange={onChange} />
         </div>
@@ -53,14 +56,19 @@ export default function DemoAside({ layouts, activeId, onChange }: DemoAsideProp
           <div className="demo-aside__qr demo-aside__qr--off demo-aside__mono">
             QR code
             <br />
-            affiché sur la version en ligne
+            {t({ en: 'shown on the live site', fr: 'affiché sur la version en ligne' })}
           </div>
         )}
         <div>
-          <span className="demo-aside__mono">Sur votre téléphone</span>
-          <h2>La démo se juge mieux en main.</h2>
+          <span className="demo-aside__mono">
+            {t({ en: 'On your phone', fr: 'Sur votre téléphone' })}
+          </span>
+          <h2>{t({ en: 'The demo is best judged in hand.', fr: 'La démo se juge mieux en main.' })}</h2>
           <p>
-            Scannez le code&nbsp;: elle s'ouvre sur votre téléphone, là où le spectateur réservera.
+            {t({
+              en: 'Scan the code: it opens on your phone, where the moviegoer will book.',
+              fr: "Scannez le code\u00a0: elle s'ouvre sur votre téléphone, là où le spectateur réservera.",
+            })}
           </p>
         </div>
       </div>
@@ -76,7 +84,7 @@ function QrCode({ value }: { value: string }) {
       className="demo-aside__qr"
       viewBox={`${-quiet} ${-quiet} ${size} ${size}`}
       role="img"
-      aria-label="QR code vers la démo"
+      aria-label={t({ en: 'QR code to the demo', fr: 'QR code vers la démo' })}
       shapeRendering="crispEdges"
     >
       <rect x={-quiet} y={-quiet} width={size} height={size} fill="#fff" />

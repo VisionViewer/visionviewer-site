@@ -6,7 +6,8 @@
  */
 import * as THREE from 'three';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
-import {halls, num} from './halls';
+import {nombre} from '../lib/langue';
+import {halls} from './halls';
 
 const $ = id => document.getElementById(id);
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
@@ -279,14 +280,16 @@ addEventListener('resize', resize); resize();
 /* ---------- entrées ---------- */
 let target = 0, p = 0, mxT = 0, myT = 0, mx = 0, my = 0;
 const track = $('track');
-const readScroll = () => { target = clamp(scrollY / (track.offsetHeight - innerHeight)) * PMAX; };
+// Dans une fenêtre sans hauteur (un onglet ouvert en arrière-plan), la course du défilement est nulle : 0 / 0
+// donnerait « pas un nombre », et la scène s'arrêterait à sa première image. Elle reste alors à son début.
+const readScroll = () => { const course = track.offsetHeight - innerHeight; target = course > 0 ? clamp(scrollY / course) * PMAX : 0; };
 addEventListener('scroll', readScroll, {passive: true}); readScroll(); p = target;
 addEventListener('pointermove', e => { if (e.pointerType === 'touch') return; mxT = e.clientX / W * 2 - 1; myT = e.clientY / H * 2 - 1; }, {passive: true});
 $('replay').addEventListener('click', () => scrollTo({top: 0, behavior: reduce ? 'auto' : 'smooth'}));
 
 /* ---------- overlays ---------- */
 const caps = [['c1', .1, .14, .26, .3], ['c2', .31, .34, .4, .43], ['c3', .44, .47, .55, .59], ['c4', .62, .65, .69, .72], ['c5', .73, .76, .85, .88], ['c7', .97, 1, 1.18, 1.21], ['c6', 1.215, 1.24, 2, 3]].map(([id, ...k]) => [$(id), ...k]);
-const fmt = num;                                        // virgule en français, point en anglais
+const fmt = nombre;                                     // dans la langue de la page : virgule en français, point en anglais
 const v1 = new THREE.Vector3(), v2 = new THREE.Vector3(), proj = new THREE.Vector3();
 const el = {hero: $('hero'), sub: $('sub'), hud: $('hud'), hSeat: $('hSeat'), hDist: $('hDist'), hAng: $('hAng'), tag: $('tagSeat'), hint: $('hint'), tc: $('tc'), sName: $('sName'), sPlaces: $('sPlaces'), sScreen: $('sScreen'), sDesc: $('sDesc')};
 

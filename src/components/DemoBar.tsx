@@ -1,7 +1,8 @@
 import * as m from 'motion/react-m'
 import { ArrowLeft } from 'lucide-react'
+import { LANGUE, t } from '../lib/langue'
 import { HOME_PATH, LOGO_URL } from '../lib/links'
-import type { RoomLayout } from '../lib/room'
+import { roomTexts, type RoomLayout } from '../lib/room'
 import './DemoBar.css'
 
 interface RoomSwitchProps {
@@ -15,7 +16,11 @@ interface RoomSwitchProps {
 /** Sélecteur de salle — hors maquette, uniquement pour la démo. */
 export function RoomSwitch({ id, layouts, activeId, onChange }: RoomSwitchProps) {
   return (
-    <div className="segmented" role="radiogroup" aria-label="Salle de démonstration">
+    <div
+      className="segmented"
+      role="radiogroup"
+      aria-label={t({ en: 'Demo auditorium', fr: 'Salle de démonstration' })}
+    >
       {layouts.map((layout) => {
         const active = layout.config.id === activeId
         return (
@@ -34,7 +39,7 @@ export function RoomSwitch({ id, layouts, activeId, onChange }: RoomSwitchProps)
                 transition={{ type: 'spring', stiffness: 480, damping: 38 }}
               />
             )}
-            <span className="segmented__label">{layout.config.name}</span>
+            <span className="segmented__label">{roomTexts(layout.config, LANGUE).name}</span>
             <span className="segmented__meta">{layout.seatCount}</span>
           </button>
         )
@@ -50,7 +55,9 @@ export default function DemoBar(switchProps: Omit<RoomSwitchProps, 'id'>) {
       <a className="demo-bar__about" href={HOME_PATH}>
         <ArrowLeft aria-hidden size={16} strokeWidth={2} />
         <img src={LOGO_URL} alt="VisionViewer" width={86} height={27} />
-        <span className="visually-hidden"> : retour à la présentation</span>
+        <span className="visually-hidden">
+          {t({ en: ': back to the overview', fr: ' : retour à la présentation' })}
+        </span>
       </a>
       <RoomSwitch id="bar" {...switchProps} />
     </div>

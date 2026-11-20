@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--@include head-->
+    <!-- Hors des moteurs de recherche tant que les mentions de la société sont « À compléter » -->
+    <meta name="robots" content="noindex, follow" />
+    <meta name="vv:page" content="privacy" />
+    <title>Privacy and cookies — VisionViewer</title>
+    <meta name="description" content="The personal data VisionViewer processes, why it processes it, how long it keeps it, and how to exercise your rights under the GDPR." />
+    <meta property="og:title" content="Privacy and cookies — VisionViewer" />
+    <meta property="og:description" content="The personal data VisionViewer processes, why it processes it, how long it keeps it, and how to exercise your rights under the GDPR." />
+  </head>
+  <body>
+    <!--@include header-->
+    <main class="doc">
+      <header class="doc__head">
+        <span class="mono">Legal · GDPR · version of {{version}}</span>
+        <h1>Privacy and cookies</h1>
+        <p class="chapo">VisionViewer shows an auditorium, not a moviegoer. We create no account, we track no one, and nothing is written to the browser of the person viewing an auditorium. Here is, precisely, the little that we process.</p>
+      </header>
+      <div class="doc__body">
+        <!--@sommaire-->
+        <div class="prose">
+          <p class="note">This English version is a courtesy translation. Only the <a href="/fr/confidentialite" hreflang="fr">French version</a> is binding.</p>
+          <!--@include avis-->
+
+          <h2 id="responsable">Who is responsible</h2>
+          <p>{{societe.denomination}}, a {{societe.statut}}, with its registered office at {{societe.siege}}, is the controller of the processing described here, for its own websites (visionviewer.net, app.visionviewer.net, docs.visionviewer.net) and for the relationship with its customers and prospects.</p>
+          <p>When the 3D view or the seat map is displayed <strong>on a cinema’s website</strong>, that cinema is the controller; VisionViewer acts on its behalf, as a processor, under the terms of the <a href="/en/dpa">data processing agreement</a>.</p>
+          <p>We have not appointed a data protection officer: our activity does not require one. A single address for any question: <a href="mailto:{{contact}}">{{contact}}</a>.</p>
+
+          <h2 id="traitements">What we process, and why</h2>
+          <div class="tableau" tabindex="0">
+            <table>
+              <thead>
+                <tr><th>What</th><th>Data</th><th>Why, and on what basis</th><th>How long</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Your messages</td>
+                  <td>Name, email address, company, content of the message you send us</td>
+                  <td>To reply to you, to prepare a demonstration. Legitimate interest, then pre-contractual measures if a project gets under way.</td>
+                  <td>Three years after our last exchange</td>
+                </tr>
+                <tr>
+                  <td>Customers and prospects</td>
+                  <td>Name of the cinema, name and email address of a contact person, follow-up notes, domains declared for its keys</td>
+                  <td>To provide the service, to manage the keys and the auditoriums, to invoice. Performance of the contract and accounting obligations.</td>
+                  <td>The term of the contract, then five years; ten years for accounting records</td>
+                </tr>
+                <tr>
+                  <td>Technical logs</td>
+                  <td>IP address, date and time, requested address, browser</td>
+                  <td>To run the websites, to protect them, to diagnose an outage, to rate-limit requests. Legitimate interest.</td>
+                  <td>The log retention period of our hosting provider. For rate limiting, the IP address is kept only in memory, for as long as the limit lasts.</td>
+                </tr>
+                <tr>
+                  <td>Back office access</td>
+                  <td>A session cookie, for VisionViewer administrators only</td>
+                  <td>To protect the administration tool. Legitimate interest.</td>
+                  <td>Twelve hours</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>We make no automated decisions, and we neither sell nor rent any data.</p>
+
+          <h2 id="absences">What we do not collect</h2>
+          <ul>
+            <li><strong>No moviegoer account</strong>: no name, no email address, no identifier of the person viewing an auditorium.</li>
+            <li><strong>No audience measurement and no advertising</strong>: no third-party analytics tool, no advertising tracker, on any of our websites.</li>
+            <li><strong>No ticketing</strong>: no showtimes, no availability, no sales, no payments. All of that stays with the cinema.</li>
+            <li><strong>Nothing in the moviegoer’s browser</strong>: the 3D view and the seat map write neither a cookie nor local storage there.</li>
+          </ul>
+
+          <h2 id="widget">On a cinema’s website</h2>
+          <p>A cinema that integrates VisionViewer displays, on its booking page, a 3D view and sometimes a seat map served by app.visionviewer.net. As with any resource loaded on the web, the visitor’s browser then sends our hosting provider its IP address and the name of the browser: this is the only personal information we receive.</p>
+          <p>Our statistics are <strong>counts per day</strong>, per cinema and per auditorium: seat maps displayed, 3D views opened, seats selected, orders reported by the cinema’s website. None of these counters relates to a person. Of an order reference that the cinema chooses to send us, we keep only a hash, not the reference itself, so as not to count the same order twice.</p>
+          <p>The seats chosen by the visitor travel between the cinema’s page and our pages, in the visitor’s browser. We do not link them to anyone.</p>
+
+          <h2 id="cookies">Cookies and trackers</h2>
+          <p>We use only what is strictly necessary for the function requested: these items are exempt from consent, and so no banner is shown to you.</p>
+          <div class="tableau" tabindex="0">
+            <table>
+              <thead>
+                <tr><th>Where</th><th>Name</th><th>Role</th><th>Duration</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>visionviewer.net</td><td>None</td><td>No cookie, no local storage</td><td>—</td></tr>
+                <tr><td>3D view and seat map, on a cinema’s website</td><td>None</td><td>No cookie, no local storage</td><td>—</td></tr>
+                <tr><td>Demo and guide (app. and docs.)</td><td><code>vv-theme</code> (local storage)</td><td>Remembering the light or dark theme you chose</td><td>Until you clear it</td></tr>
+                <tr><td>Back office</td><td><code>vv_admin</code> (cookie)</td><td>Session of VisionViewer administrators</td><td>12&nbsp;hours</td></tr>
+                <tr><td>Back office</td><td><code>sidebar_state</code> (cookie)</td><td>Remembering whether the menu is open or collapsed</td><td>7&nbsp;days</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="destinataires">Who has access</h2>
+          <p>The people at VisionViewer who need it, and the providers that host our services, each for its own task only:</p>
+          <div class="tableau" tabindex="0">
+            <table>
+              <thead>
+                <tr><th>Provider</th><th>Role</th><th>Location</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Vercel Inc.</td><td>Hosting of the websites, delivery of the pages, technical logs</td><td>United States; our server runs in Frankfurt (Germany)</td></tr>
+                <tr><td>Turso</td><td>Database: auditoriums, logos, counters, customer records</td><td>Frankfurt (Germany)</td></tr>
+                <tr><td>OVH SAS</td><td>Domain name and email service</td><td>France</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="transferts">Transfers outside the European Union</h2>
+          <p>Vercel and Turso are companies established in the United States. When personal data is accessible to them outside the European Union, this transfer is governed by the European Commission’s standard contractual clauses and, for the providers that adhere to it, by the EU–U.S. Data Privacy Framework.</p>
+
+          <h2 id="droits">Your rights</h2>
+          <p>You can request access to your data, its rectification, its erasure, the restriction of its processing, its portability, and you can object to its processing. You can also tell us what should become of it after your death.</p>
+          <p>Write to <a href="mailto:{{contact}}">{{contact}}</a>: we reply within one month. If the request concerns your visit to a cinema’s website, contact that cinema first, as it is the controller of that processing; we help it reply to you.</p>
+          <p>If our reply does not satisfy you, you can lodge a complaint with the CNIL, the French data protection authority (Commission nationale de l’informatique et des libertés), 3 place de Fontenoy, TSA 80715, 75334 Paris Cedex 07, or at <a href="https://www.cnil.fr" rel="noopener noreferrer">cnil.fr</a>.</p>
+
+          <h2 id="securite">Security</h2>
+          <ul>
+            <li>All exchanges go through an encrypted connection (HTTPS).</li>
+            <li>The 3D view and the seat map are displayed only on the websites declared for the cinema’s key, and accept messages only from the page that embeds them.</li>
+            <li>A key can be revoked at any time.</li>
+            <li>The back office is accessible only to VisionViewer administrators, through a time-limited session.</li>
+          </ul>
+
+          <h2 id="modifications">Changes to this policy</h2>
+          <p>This page describes our practices as of the date shown at the top. If they change, the page is updated before the change, and our customers are notified of it when it concerns them.</p>
+        </div>
+      </div>
+    </main>
+    <!--@include footer-->
+  </body>
+</html>

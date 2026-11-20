@@ -3,10 +3,10 @@
  * Liens vers la démo, QR code, coupe de la salle, menu de l'intégration, adresse de contact,
  * carrousel des chiffres.
  */
+import { t } from '../lib/langue'
 import { DEMO_PATH, shareableDemoUrl } from '../lib/links'
 import { drawCoupe } from './coupe'
 import { halls } from './halls'
-import { t } from './langue'
 import { setupTouchLight } from './lit'
 import { setupWays } from './ways'
 
@@ -39,7 +39,7 @@ const demoUrl = shareableDemoUrl()
 if (demoUrl && !window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
   import('../lib/qr').then(({ qrSvg }) => {
     const qr = $('qr')
-    qr.innerHTML = qrSvg(demoUrl, t('QR code vers la démo', 'QR code to the demo'))
+    qr.innerHTML = qrSvg(demoUrl, t({ en: 'QR code to the demo', fr: 'QR code vers la démo' }))
     qr.classList.add('on')
   })
 }
@@ -59,8 +59,8 @@ const copy = $('copy')
 const CONTACT = address.textContent ?? ''
 copy.addEventListener('click', () => {
   const copied = () => {
-    copy.textContent = t('Adresse copiée', 'Address copied')
-    window.setTimeout(() => (copy.textContent = t("Copier l'adresse", 'Copy the address')), 1800)
+    copy.textContent = t({ en: 'Address copied', fr: 'Adresse copiée' })
+    window.setTimeout(() => (copy.textContent = t({ en: 'Copy the address', fr: "Copier l'adresse" })), 1800)
   }
   // Sans accès au presse-papiers, l'adresse est sélectionnée : il reste à la copier
   const select = () => {
@@ -69,7 +69,7 @@ copy.addEventListener('click', () => {
     const selection = window.getSelection()
     selection?.removeAllRanges()
     selection?.addRange(range)
-    copy.textContent = t('Adresse sélectionnée', 'Address selected')
+    copy.textContent = t({ en: 'Address selected', fr: 'Adresse sélectionnée' })
   }
   try {
     navigator.clipboard.writeText(CONTACT).then(copied, select)

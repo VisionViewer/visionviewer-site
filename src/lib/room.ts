@@ -66,8 +66,11 @@ export interface RoomConfig {
   screenLogo?: string
   /** Une phrase qui décrit la salle, affichée par la page de présentation */
   description?: string
-  /** Le nom et la description de la salle en anglais, pour la page de présentation en anglais (`en.html`) */
-  en?: { name?: string; description?: string }
+  /**
+   * Le nom et la description de la salle dans d'autres langues que celle du fichier, par code de
+   * langue : `{ "en": { "name": "Auditorium 1", "description": "…" } }`. Voir `roomTexts`.
+   */
+  traductions?: Record<string, { name?: string; description?: string }>
   dimensions: RoomDimensions
 }
 
@@ -342,4 +345,13 @@ export function neighborSeat(
     if (candidate) return candidate
   }
   return undefined
+}
+
+/**
+ * Le nom et la description d'une salle dans une langue : sa traduction (champ `traductions`), à
+ * défaut ses valeurs d'origine. Une description absente le reste : à l'appelant d'en écrire une.
+ */
+export function roomTexts(config: RoomConfig, langue: string): { name: string; description?: string } {
+  const traduction = config.traductions?.[langue]
+  return { name: traduction?.name ?? config.name, description: traduction ? traduction.description : config.description }
 }

@@ -1,6 +1,6 @@
 # VisionViewer
 
-Prototype mobile-first : sélection de fauteuils de cinéma, avec une vue 3D de l'écran depuis chaque siège. Le site a la présentation (`/`), la démo (`/demo`), le blog (`/blog`) et les pages légales (`/mentions-legales`, `/confidentialite`, `/cgu`, `/cgv`, `/sla`, `/dpa`). La présentation et le blog existent aussi en anglais (`/en`, `/en/blog`).
+Prototype mobile-first : sélection de fauteuils de cinéma, avec une vue 3D de l'écran depuis chaque siège. Le site existe en anglais et en français, chaque langue sous son préfixe : la présentation (`/en`, `/fr`), la démo (`/en/demo`, `/fr/demo`), le blog (`/en/blog`, `/fr/blog`) et les pages légales. `/` mène à l'anglais, la langue par défaut. Voir « Langues ».
 
 React · Vite · TypeScript · Three.js (`@react-three/fiber`, `@react-three/drei`) · Motion. Aucun backend : les salles sont des fichiers JSON.
 
@@ -11,7 +11,7 @@ npm install
 npm run dev
 ```
 
-Puis ouvrir http://localhost:5173 pour la présentation, ou http://localhost:5173/demo pour la démo (idéalement en mode mobile, ~390 px de large).
+Puis ouvrir http://localhost:5173/fr pour la présentation, ou http://localhost:5173/fr/demo pour la démo (idéalement en mode mobile, ~390 px de large). `/en` et `/en/demo` pour l'anglais ; `/` y redirige, comme en ligne.
 
 | Commande | Effet |
 | --- | --- |
@@ -31,6 +31,7 @@ Puis ouvrir http://localhost:5173 pour la présentation, ou http://localhost:517
 | --- | --- |
 | `id`, `name` | identifiant unique et nom affiché |
 | `description` | une phrase qui décrit la salle, affichée par la page de présentation (optionnel) |
+| `traductions` | le nom et la description de la salle dans d'autres langues, par code de langue : `{ "en": { "name": "Auditorium 1", "description": "…" } }` (optionnel ; sans traduction, la salle garde son nom) |
 | `rows` | lettres des rangées, **de l'écran vers le fond** |
 | `seatsPerRow` | nombre d'emplacements par rangée, numérotés à partir de 1 |
 | `seatOneSide` | côté du fauteuil n°1 **sur le plan** (écran en bas) : `"left"` (défaut) ou `"right"` |
@@ -78,19 +79,19 @@ Le site est publié sur https://visionviewer.net. Il est ouvert aux moteurs de r
 
 **Publier** : envoyer sur la branche `main` de ce dépôt. Vercel (projet `visionviewer`) construit alors le site et le met en ligne ; une autre branche donne une préversion, réservée aux comptes Vercel de l'équipe.
 
-- **Présentation** (`/`, fichier `index.html`) : la page VisionViewer, reprise de la maquette `visionviewer-landing.html`. Une salle en points de lumière se construit au défilement, puis viennent les sections « Sur mesure », « Intégration », les chiffres, « Démo » et le contact.
-- **Démo** (`/demo`, fichier `demo.html`) : l'application de réservation. Sur téléphone, elle occupe tout l'écran, avec un bandeau pour changer de salle et revenir à la présentation. Sur ordinateur, elle est présentée dans un téléphone, à côté d'un panneau qui porte le choix de la salle et le QR code.
-- **De l'une à l'autre** : les boutons « Essayez maintenant » de la présentation et les QR codes (section « Démo » de la présentation, panneau de la démo sur ordinateur) mènent à `/demo`, sur le plan de salle : au visiteur de choisir son fauteuil, puis d'ouvrir la vue 3D. Les QR codes ne s'affichent pas en local : un téléphone n'a pas accès à `localhost`.
-- L'adresse `/demo` repose sur une règle de réécriture vers `demo.html` (`vercel.json`), comme celle de chaque page légale et du blog. L'ancienne adresse `/?demo` y redirige.
-- Si le site change de domaine, mettre à jour `SITE` dans `tools/pages.ts` (adresses canoniques, plan du site, données structurées), `public/robots.txt`, et l'adresse de l'image `og:image` dans `index.html`, `en.html`, `demo.html` et `src/pages/partials/head.html`.
+- **Présentation** (`/fr`, fichier `fr.html` ; `/en`, fichier `en.html`) : la page VisionViewer, reprise de la maquette `visionviewer-landing.html`. Une salle en points de lumière se construit au défilement, puis viennent les sections « Sur mesure », « Intégration », les chiffres, « Démo », les questions fréquentes et le contact.
+- **Démo** (`/fr/demo`, fichier `fr/demo.html` ; `/en/demo`, fichier `en/demo.html`) : l'application de réservation, la même dans chaque langue, ses textes exceptés. Sur téléphone, elle occupe tout l'écran, avec un bandeau pour changer de salle et revenir à la présentation. Sur ordinateur, elle est présentée dans un téléphone, à côté d'un panneau qui porte le choix de la salle et le QR code.
+- **De l'une à l'autre** : les boutons « Essayez maintenant » de la présentation et les QR codes (section « Démo » de la présentation, panneau de la démo sur ordinateur) mènent à la démo **dans la langue de la page** (`src/lib/links.ts`), sur le plan de salle : au visiteur de choisir son fauteuil, puis d'ouvrir la vue 3D. Les QR codes ne s'affichent pas en local : un téléphone n'a pas accès à `localhost`.
+- Une adresse sans « .html » repose sur une règle de réécriture de `vercel.json` ; les anciennes adresses (`/`, `/demo`, `/blog`…) y sont redirigées. Voir « Langues ».
+- Si le site change de domaine, mettre à jour `SITE` dans `tools/pages.ts` (adresses canoniques, plan du site, données structurées), `public/robots.txt`, `src/pages/llms.md`, et l'adresse de l'image `og:image` dans `fr.html`, `en.html`, les deux `demo.html` et `src/pages/partials/head.html`.
 
 ### Modifier la présentation
 
-- Le texte est dans `index.html`, les styles dans `src/landing/landing.css` (ceux de la maquette, plus quelques ajouts regroupés en fin de fichier). **`en.html` est sa traduction** : même structure, mêmes identifiants, mêmes scripts. Un texte changé dans l'une se reporte dans l'autre.
+- Le texte est dans `fr.html` et `en.html`, les styles dans `src/landing/landing.css` (ceux de la maquette, plus quelques ajouts regroupés en fin de fichier). **Les présentations de toutes les langues sont la même page** : même structure, mêmes identifiants, mêmes scripts. Un texte changé dans l'une se reporte dans les autres.
 - Les **questions fréquentes** (section « Questions fréquentes ») sont écrites dans la page, entre `<!--@faq-->` et `<!--@/faq-->` : chaque question porte `data-q`, chaque réponse `data-a`. `tools/pages.ts` les reprend dans les données structurées. Autant de questions en français qu'en anglais : `npm test` le vérifie.
 - **Les salles de la page sont celles de la démo** : `src/landing/halls.ts` lit les JSON de `src/data/rooms/`. La scène 3D (`scene.js`, repris de la maquette, en JavaScript) et la coupe de la Fig. 1 (`coupe.ts`) montrent donc les mêmes fauteuils, les mêmes places doubles et les mêmes spectateurs que la démo : la première salle est racontée, la deuxième sert à la transformation finale.
-- Les chiffres écrits dans le texte de `index.html` et de `en.html` (places, écran, pente, légende de la coupe) se modifient à la main. `npm test` signale ceux qui ne correspondent plus au JSON de la première salle. En anglais, le nom et la description d'une salle viennent du champ `en` de son JSON, et les nombres s'écrivent avec un point.
-- Ce que les scripts écrivent eux-mêmes (« Copié », une étiquette de la coupe) passe par `t('français', 'english')` de `src/landing/langue.ts`, qui lit la langue de la page.
+- Les chiffres écrits dans le texte de `fr.html` et de `en.html` (places, écran, pente, légende de la coupe) se modifient à la main. `npm test` signale ceux qui ne correspondent plus au JSON de la première salle. Le nom et la description d'une salle viennent, pour chaque langue, du champ `traductions` de son JSON ; les nombres s'écrivent comme la langue de la page (« 9,40 », « 9.40 »).
+- Ce que les scripts écrivent eux-mêmes (« Copié », une étiquette de la coupe, les libellés de la démo) passe par `t({ en: 'Copied', fr: 'Copié' })` de `src/lib/langue.ts`, qui lit la langue de la page sur sa balise `<html lang>`. L'anglais s'écrit d'abord : c'est lui qui s'affiche quand un texte manque dans la langue de la page.
 - `src/landing/main.ts` porte le reste : liens vers la démo, QR code, carrousel des chiffres et copie de l'adresse de contact. L'adresse elle-même est dans `src/pages/societe.json`.
 - Sur écran tactile, la section « Démo » n'affiche pas de QR code, seulement le bouton. Sans WebGL, la scène est retirée et la page reste lisible.
 - Le fauteuil géant de l'ouverture est décrit dans `scene.js` (fonctions `seatBack`, `seatCushion`, `seatArm`, `seatFrame`) : dossier, assise, accoudoirs à porte-gobelet, flancs. La coupe de la Fig. 1 se redessine à la largeur disponible, pour tenir en entier sur un téléphone.
@@ -99,11 +100,11 @@ Le site est publié sur https://visionviewer.net. Il est ouvert aux moteurs de r
 
 - **Présentation** : le texte s'affiche avec la page. La scène 3D et three.js sont annoncés dès le HTML (plugin `preloadLandingScene` de `vite.config.ts`) et téléchargés en même temps que le reste, sans bloquer l'affichage. Le générateur de QR code n'est chargé que là où le code s'affiche.
 - **Démo** : le premier affichage ne charge que React et l'écran de réservation. Arrivent ensuite, à part : le moteur d'animation (`src/lib/motionFeatures.ts`, via `LazyMotion`), les bandeaux d'information (`src/lib/notify.ts`), le panneau de démo sur ordinateur, puis la vue 3D dès qu'un fauteuil est sélectionné.
-- Les polices du premier écran sont préchargées dans `index.html` et `demo.html`. Dans les composants de la démo, utiliser `m.div` (import `motion/react-m`) et non `motion.div` : `LazyMotion` est en mode strict et le signale.
+- Les polices du premier écran sont préchargées dans les pages de présentation et de démo de chaque langue. Dans les composants de la démo, utiliser `m.div` (import `motion/react-m`) et non `motion.div` : `LazyMotion` est en mode strict et le signale.
 
 ## Pages légales et blog
 
-Ce sont des fichiers HTML sans script : les pages légales à la racine (`mentions-legales.html`, `confidentialite.html`, `cgu.html`, `cgv.html`, `sla.html`, `dpa.html`), le blog dans `blog.html` et ses articles dans `blog/`. À la construction comme en développement, `tools/pages.ts` y remplace :
+Ce sont des fichiers HTML sans script, dans le dossier de leur langue : les pages légales (`fr/mentions-legales.html`, `fr/confidentialite.html`, `fr/cgu.html`, `fr/cgv.html`, `fr/sla.html`, `fr/dpa.html` ; en anglais `en/legal-notice.html`, `en/privacy.html`, `en/terms-of-use.html`, `en/terms-of-sale.html`, `en/sla.html`, `en/dpa.html`), le blog (`fr/blog.html`, `en/blog.html`) et ses articles (`fr/blog/`, `en/blog/`). À la construction comme en développement, `tools/pages.ts` y remplace :
 
 | Dans la page | Par |
 | --- | --- |
@@ -113,16 +114,50 @@ Ce sont des fichiers HTML sans script : les pages légales à la racine (`mentio
 | `<!--@articles enquete \| texte si vide-->` | les articles de cette rubrique, les plus récents d'abord (dans `blog.html`) |
 | `<!--@voir-aussi-->` | au bas d'un article : les trois autres articles les plus récents de sa langue |
 | `<!--@faq-->` … `<!--@/faq-->` | rien dans la page ; les questions (`data-q`) et les réponses (`data-a`) qu'ils encadrent passent dans les données structurées |
-| `{{traduction}}` | l'adresse de la même page dans l'autre langue ; à défaut, la page d'accueil de l'autre langue |
+| `<!--@langues-->`, `<!--@langues court-->` | les liens de langue : un par autre langue, vers la même page dans cette langue ; à défaut, vers sa présentation. Par son nom (« English ») dans le pied de page, par son code (« EN ») dans l'en-tête |
 
-Une page en anglais (`en.html`, `en/…`) prend `header.en.html` et `footer.en.html`, et ses dates, ses rubriques et son sommaire s'écrivent en anglais.
+Un morceau commun existe par langue (`header.fr.html`, `header.en.html`, `footer.…`, `avis.…`) ; `head.html` vaut pour toutes. Les dates, les rubriques, le sommaire et « À compléter » s'écrivent dans la langue de la page. Une mention de `societe.json` qui se traduit (la forme de la société) s'y écrit par langue : `{ "fr": "…", "en": "…" }`.
 
 - **La société est en cours de formation** : ce que `societe.json` ne dit pas encore (siège, capital, RCS, TVA, directeur de la publication, téléphones) est à renseigner avant de publier. `npm run build` le rappelle.
-- **Un article** dit lui-même, dans son en-tête, sa rubrique (`vv:rubrique` : `enquete`, `guide`, `article`, `etude-de-cas`), sa date (`vv:date`), son temps de lecture (`vv:lecture`) et l'adresse de sa traduction (`vv:traduction`) ; son résumé est sa description. Le copier, changer ces valeurs : il apparaît dans le blog. Modifié après coup, il dit quand (`vv:maj`).
-- **Chaque article existe en français (`blog/`) et en anglais (`en/blog/`)**, chacun nommant l'autre. `npm test` refuse un article sans traduction.
+- **Un article** dit lui-même, dans son en-tête, sa rubrique (`vv:rubrique` : `enquete`, `guide`, `article`, `etude-de-cas`), sa date (`vv:date`), son temps de lecture (`vv:lecture`) et sa clé (`vv:page`, la même dans chaque langue : c'est elle qui relie un article à ses traductions) ; son résumé est sa description. Le copier, changer ces valeurs : il apparaît dans le blog. Modifié après coup, il dit quand (`vv:maj`).
+- **Chaque article existe dans chaque langue** (`fr/blog/`, `en/blog/`), sous un nom de fichier écrit dans sa langue. `npm test` refuse un article sans traduction.
+- **Les pages légales anglaises sont des traductions de courtoisie** : chacune le dit en tête, et renvoie au texte français, qui seul fait foi. Un changement du texte français se reporte dans la traduction.
 - **Une page nouvelle** a besoin de sa règle dans `vercel.json`, sans quoi elle répond 404 en ligne. `npm test` le vérifie, comme il vérifie qu'aucun lien ne mène nulle part.
 - **Aucun script écrit dans une page** : la politique de contenu de `vercel.json` ne laisse passer que des fichiers.
 - La charte commune à ces pages et à la présentation (couleurs, polices, bouton, pied de page) est dans `src/styles/commun.css` ; leur mise en page propre dans `src/pages/pages.css`.
+
+## Langues
+
+Le site est en anglais et en français. **Chaque langue vit sous son préfixe, et il n'y a rien à la racine** :
+
+| Adresse | Fichier |
+| --- | --- |
+| `/en`, `/fr` | `en.html`, `fr.html` : la présentation |
+| `/en/demo`, `/fr/demo` | `en/demo.html`, `fr/demo.html` |
+| `/en/blog`, `/fr/blog` | `en/blog.html`, `fr/blog.html` |
+| `/en/blog/<article>`, `/fr/blog/<article>` | `en/blog/*.html`, `fr/blog/*.html` : le nom du fichier est écrit dans sa langue |
+| `/en/legal-notice`, `/fr/mentions-legales`… | les pages légales, dans le dossier de leur langue |
+| `/` | une redirection permanente (308) vers `/en`, la langue par défaut |
+
+- **Une adresse par langue et par page.** Chaque page est sa propre adresse canonique. Deux pages sont la même, dans deux langues, quand elles ont la même **clé** : leur chemin dans leur langue (`blog`, `demo`, `sla`), ou `<meta name="vv:page" content="…">` quand le nom du fichier change avec la langue (un article ; `mentions-legales` et `legal-notice`).
+- **Tous les liens d'une page restent dans sa langue**, et mènent droit à la page : aucun ne passe par une redirection. Seul le lien de langue (dans l'en-tête et le pied de page) en sort. `npm test` le vérifie.
+- **`/` redirige vers `/en` pour tout le monde.** Rien ne dépend de l'adresse IP, de la langue du navigateur ou d'un cookie : un robot, qui explore surtout depuis les États-Unis, ne verrait qu'une langue.
+- **Les anciennes adresses**, du temps où le français était à la racine (`/blog`, `/blog/<article>`, `/demo`, les six pages légales), redirigent en 308 vers la même page sous `/fr`. Elles sont dans `vercel.json`, avec les trois règles de réécriture qui servent chaque adresse sans « .html » (`/:langue`, `/:langue/:page`, `/:langue/blog/:article`).
+- **`npm run dev` et `npm run preview` servent les mêmes adresses que Vercel** : `tools/routes.ts` leur applique les redirections et les réécritures de `vercel.json`. Ce qu'ils ne peuvent pas éprouver, c'est Vercel lui-même : après une mise en ligne qui touche aux adresses, les vérifier en ligne (`widget/dossier/procedures.md`).
+- **Une page sans traduction** est permise (hors présentation, blog, démo et articles, que `npm test` exige dans chaque langue) : elle n'a pas de `hreflang`, et son lien de langue mène à la présentation de l'autre langue. Aujourd'hui, aucune page n'est dans ce cas.
+
+### Ajouter une langue
+
+Une langue se déclare **à un seul endroit** : `LANGUES`, dans `tools/pages.ts` (son nom, son code, ses formats de date, les libellés que l'outil écrit lui-même). La première déclarée est la langue par défaut. Rien d'autre ne la nomme dans le code : ni `vercel.json` (ses règles valent pour tout préfixe), ni les scripts (ils lisent la langue de la page), ni le plan du site, ni `llms.txt`.
+
+Le reste est du contenu, que `npm test` réclame tant qu'il manque. Pour l'espagnol :
+
+1. `es: { … }` dans `LANGUES`.
+2. `src/pages/partials/header.es.html` et `footer.es.html` (et `avis.es.html` si les pages légales sont traduites).
+3. `es.html`, `es/blog.html`, `es/demo.html`, et un article `es/blog/*.html` par article existant, avec la même clé `vv:page`.
+4. Les phrases de sa présentation dans `PHRASES` (`src/landing/halls.test.ts`), pour que ses chiffres soient vérifiés.
+5. Ce qui se traduit dans les données : `traductions.es` dans les salles (`src/data/rooms/*.json`), `es` dans `statut` (`src/pages/societe.json`).
+6. Au fil de l'eau : les textes des scripts, `t({ en: '…', fr: '…', es: '…' })`. Tant qu'un texte manque, c'est l'anglais qui s'affiche.
 
 ## Référencement
 
@@ -130,13 +165,14 @@ Le site est fait pour être trouvé, par un moteur de recherche comme par un ass
 
 | Quoi | Où |
 | --- | --- |
-| Adresse canonique, `og:url`, `og:type`, langue et traduction (`hreflang`) | dans l'en-tête de chaque page |
+| Adresse canonique (celle de la page, jamais celle de sa traduction), `og:url`, `og:type`, `og:locale` | dans l'en-tête de chaque page |
+| Traductions (`hreflang`) : une ligne par langue où la page existe, et `x-default` vers la langue par défaut | dans l'en-tête de chaque page traduite, et les mêmes dans `sitemap.xml` |
 | Données structurées (schema.org) : l'éditeur et le produit sur la présentation, `BlogPosting` et fil d'Ariane sur un article, `FAQPage` là où il y a des questions | dans l'en-tête, en JSON-LD |
 | `sitemap.xml` | écrit dans `dist/` : toutes les pages, sauf celles qui se déclarent `noindex` |
-| `llms.txt` | écrit dans `dist/` : le résumé du site pour un assistant. Son début est `src/pages/llms.md`, la liste des pages est tirée des pages |
+| `llms.txt` | écrit dans `dist/` : le résumé du site pour un assistant. Son début est `src/pages/llms.md`, la liste des pages est tirée des pages, langue après langue, la langue par défaut d'abord |
 | `robots.txt` | `public/robots.txt` : tout est ouvert, et le plan du site y est annoncé |
 
-- **Une page se retire des moteurs elle-même**, par `<meta name="robots" content="noindex, follow" />` dans son en-tête : c'est le cas des six pages légales, tant que leurs mentions sont « À compléter ». Elle sort alors du plan du site et de `llms.txt`.
+- **Une page se retire des moteurs elle-même**, par `<meta name="robots" content="noindex, follow" />` dans son en-tête : c'est le cas des six pages légales, dans chaque langue, tant que leurs mentions sont « À compléter ». Elle sort alors du plan du site et de `llms.txt`.
 - **Le titre et la description** d'une page sont ce qu'un moteur affiche. `npm test` refuse un titre ou une description en double, un titre de plus de 90 caractères, une description de moins de 110 ou de plus de 170.
 - **Les données structurées sont le seul « script » écrit dans une page** : rien ne s'y exécute, la politique de contenu les laisse passer.
 - **Rien ne mesure l'audience** : le site ne pose ni cookie ni outil de mesure. Ce que les moteurs voient se lit dans la Search Console de Google et dans Bing Webmaster Tools, une fois le site déclaré (voir `widget/dossier/procedures.md`).
@@ -148,17 +184,14 @@ Le kit du logo est dans `logo/` : toutes les versions en SVG et en PNG, les icô
 ## Structure
 
 ```
-index.html, demo.html           la présentation et la démo
-blog.html, blog/*.html          le blog et ses articles
-en.html, en/blog.html, en/blog/*.html
-                                la présentation, le blog et ses articles en anglais
-mentions-legales.html, confidentialite.html, cgu.html, cgv.html, sla.html, dpa.html
-                                les pages légales
-tools/pages.ts                  ce que ces pages ont en commun, posé à la construction, et leur référencement
-src/pages/                      leur feuille de style, leurs morceaux communs (et leur version anglaise), les mentions de la société, le début de llms.txt
+en.html, fr.html                la présentation, dans chaque langue (/en, /fr)
+en/, fr/                        le reste de chaque langue : demo.html, blog.html, blog/*.html, les pages légales
+tools/pages.ts                  les langues (LANGUES), ce que les pages ont en commun, leurs liens de langue et leur référencement
+tools/routes.ts                 les redirections et les réécritures de vercel.json, appliquées aussi en développement et sur le site construit
+src/pages/                      la feuille de style des pages, leurs morceaux communs par langue, les mentions de la société, le début de llms.txt
 public/robots.txt               ce que les moteurs ont le droit de lire : tout
 src/styles/commun.css           la charte commune à la présentation, aux pages légales et au blog
-vercel.json                     une règle par adresse, et les en-têtes de sécurité
+vercel.json                     les redirections (/ et les anciennes adresses), les réécritures, et les en-têtes de sécurité
 public/screens/mire.png         image de test, à projeter au besoin (`screenImage`)
 public/og-visionviewer.jpg      vignette du lien (messageries, e-mail)
 public/logo.svg, favicon.*      logo et icônes du site, tirés de logo/
@@ -166,9 +199,10 @@ logo/                           kit du logo et guide d'usage
 src/data/rooms/*.json           une salle par fichier
 src/lib/room.ts                 schéma JSON + calcul du plan 2D et des positions 3D
 src/lib/view.ts                 position des yeux, distance, angle de vision
-src/lib/links.ts, src/lib/qr.ts adresses des deux pages, QR code
+src/lib/langue.ts               la langue de la page, et les textes que les scripts écrivent dans cette langue
+src/lib/links.ts, src/lib/qr.ts adresses de la présentation et de la démo dans la langue de la page, QR code
 src/components/                 écran de réservation, plan 2D, sélecteur de salle, panneau de démo (ordinateur)
-src/landing/                    page de présentation : styles, scène 3D, coupe, comportements, langue (langue.ts)
+src/landing/                    page de présentation : styles, scène 3D, coupe, comportements
 src/components/seat-view/       vue 3D : interface, salle, fauteuils instanciés, caméra
 src/styles/tokens.css           couleurs et typographie : écran de réservation (--c-*) et habillage VisionViewer (--v-*)
 ```

@@ -11,7 +11,8 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from 'react'
 import { Accessibility, Minus, Plus, ZoomIn } from 'lucide-react'
-import type { RoomLayout, Slot } from '../lib/room'
+import { LANGUE, t } from '../lib/langue'
+import { roomTexts, type RoomLayout, type Slot } from '../lib/room'
 import { useSpringValue } from '../lib/useSpringValue'
 import './SeatPlan.css'
 
@@ -171,19 +172,26 @@ export default function SeatPlan({ layout, selectedId, onSelect, onPmr }: SeatPl
   const rowsBackToFront = useMemo(() => [...layout.rows].reverse(), [layout])
   const mirrored = layout.config.seatOneSide === 'right'
   const mapStyle = { width: baseWidth, '--cell': `${cell}px` } as CSSProperties
+  const roomName = roomTexts(layout.config, LANGUE).name
 
   return (
-    <section className="plan" aria-label={`Plan de la salle ${layout.config.name}`}>
+    <section
+      className="plan"
+      aria-label={t({ en: `${roomName} seat map`, fr: `Plan de la salle ${roomName}` })}
+    >
       <div className="plan__toolbar">
         <div className="plan__heading">
           <p className="plan__caption">
-            {layout.config.name} · {layout.seatCount} places
+            {t({
+              en: `${roomName} · ${layout.seatCount} seats`,
+              fr: `${roomName} · ${layout.seatCount} places`,
+            })}
           </p>
           {/* Visible uniquement sur écran tactile (voir SeatPlan.css) */}
           {tiny && (
             <p className="plan__hint">
               <ZoomIn aria-hidden size={14} strokeWidth={2.4} />
-              Touchez le plan pour zoomer
+              {t({ en: 'Tap the map to zoom in', fr: 'Touchez le plan pour zoomer' })}
             </p>
           )}
         </div>
@@ -191,7 +199,7 @@ export default function SeatPlan({ layout, selectedId, onSelect, onPmr }: SeatPl
           <button
             type="button"
             className="zoom-btn"
-            aria-label="Zoom arrière"
+            aria-label={t({ en: 'Zoom out', fr: 'Zoom arrière' })}
             disabled={step === 0}
             onClick={() => setStep(Math.max(0, step - 1))}
           >
@@ -200,7 +208,7 @@ export default function SeatPlan({ layout, selectedId, onSelect, onPmr }: SeatPl
           <button
             type="button"
             className="zoom-btn"
-            aria-label="Zoom avant"
+            aria-label={t({ en: 'Zoom in', fr: 'Zoom avant' })}
             disabled={step === ZOOM_STEPS.length - 1}
             onClick={() => setStep(Math.min(ZOOM_STEPS.length - 1, step + 1))}
           >
@@ -254,7 +262,7 @@ export default function SeatPlan({ layout, selectedId, onSelect, onPmr }: SeatPl
                   <svg viewBox="0 0 300 22" preserveAspectRatio="none">
                     <path d="M2 3 Q150 34 298 3" />
                   </svg>
-                  <span>ECRAN</span>
+                  <span>{t({ en: 'SCREEN', fr: 'ECRAN' })}</span>
                 </div>
               </>
             )}
@@ -288,7 +296,10 @@ const Seat = memo(function Seat({ slot, selected, mirrored, delay, onSelect, onP
         type="button"
         className="seat seat--pmr"
         style={style}
-        aria-label={`Emplacement PMR, rangée ${slot.row} : réservation à l'accueil`}
+        aria-label={t({
+          en: `Wheelchair space, row ${slot.row}: book at the box office`,
+          fr: `Emplacement PMR, rangée ${slot.row} : réservation à l'accueil`,
+        })}
         onClick={onPmr}
       >
         <span className="seat__shape">
@@ -301,14 +312,10 @@ const Seat = memo(function Seat({ slot, selected, mirrored, delay, onSelect, onP
   const double = slot.span === 2
   const state = slot.occupied ? 'occupied' : selected ? 'selected' : 'free'
   const stateLabel = slot.occupied
-    ? double
-      ? 'occupée'
-      : 'occupé'
+    ? t({ en: 'taken', fr: double ? 'occupée' : 'occupé' })
     : selected
-      ? double
-        ? 'sélectionnée'
-        : 'sélectionné'
-      : 'libre'
+      ? t({ en: 'selected', fr: double ? 'sélectionnée' : 'sélectionné' })
+      : t({ en: 'available', fr: 'libre' })
   // Numéros affichés de gauche à droite du plan
   const numbers = double
     ? mirrored
@@ -324,7 +331,10 @@ const Seat = memo(function Seat({ slot, selected, mirrored, delay, onSelect, onP
       data-seat-id={slot.id}
       disabled={slot.occupied}
       aria-pressed={slot.occupied ? undefined : selected}
-      aria-label={`${double ? 'Place double' : 'Fauteuil'} ${slot.id}, ${stateLabel}`}
+      aria-label={t({
+        en: `${double ? 'Double seat' : 'Seat'} ${slot.id}, ${stateLabel}`,
+        fr: `${double ? 'Place double' : 'Fauteuil'} ${slot.id}, ${stateLabel}`,
+      })}
       onClick={() => {
         // Petit retour haptique là où il existe (Android)
         if (!selected) navigator.vibrate?.(8)

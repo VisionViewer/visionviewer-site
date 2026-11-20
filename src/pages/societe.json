@@ -1,6 +1,9 @@
 {
   "denomination": "VisionViewer SAS",
-  "statut": "société par actions simplifiée en cours de formation",
+  "statut": {
+    "fr": "société par actions simplifiée en cours de formation",
+    "en": "simplified joint-stock company (SAS) being incorporated"
+  },
   "capital": null,
   "siege": null,
   "rcs": null,

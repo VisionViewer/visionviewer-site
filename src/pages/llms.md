@@ -11,7 +11,7 @@ Key facts:
 - Each auditorium is modeled from its real measurements: rows, slope, spacing, screen (flat or curved), wheelchair spaces, double seats. No seat map yet? VisionViewer builds it from photos or an on-site survey.
 - Pricing is by quote.
 - Company: VisionViewer SAS, France (being incorporated). Contact: contact@visionviewer.net
-- The site is in French and in English; the integration guide and the legal pages are in French.
+- The site is in English (https://visionviewer.net/en) and in French (https://visionviewer.net/fr): every page exists in both languages, at its own address. The integration guide is in French.
 
 ## Documentation
 

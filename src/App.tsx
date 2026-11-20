@@ -1,6 +1,7 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { AnimatePresence, LazyMotion, MotionConfig } from 'motion/react'
 import { layouts } from './data/rooms'
+import { t } from './lib/langue'
 import { notify, Toaster } from './lib/notify'
 import { isSelectable, seatName } from './lib/room'
 import { useWideLayout } from './lib/useWideLayout'
@@ -42,7 +43,10 @@ export default function App() {
   const selected = selectedId ? layout.slots.get(selectedId) : undefined
 
   const reservedMessage = selected
-    ? `${seatName(selected)} ${selected.span === 2 ? 'réservée' : 'réservé'}`
+    ? t({
+        en: `${selected.span === 2 ? 'Double seat' : 'Seat'} ${selected.id} booked`,
+        fr: `${seatName(selected)} ${selected.span === 2 ? 'réservée' : 'réservé'}`,
+      })
     : ''
 
   const [detailsOpen, setDetailsOpen] = useState(false)
@@ -83,9 +87,17 @@ export default function App() {
       const chosen = chosenId ? layout.slots.get(chosenId) : undefined
       if (chosen) {
         select(chosen.id)
-        const message = `${seatName(chosen)} ${chosen.span === 2 ? 'choisie' : 'choisi'}`
+        const message = t({
+          en: `${chosen.span === 2 ? 'Double seat' : 'Seat'} ${chosen.id} selected`,
+          fr: `${seatName(chosen)} ${chosen.span === 2 ? 'choisie' : 'choisi'}`,
+        })
         notify((toast) =>
-          toast.success(message, { description: 'Il ne reste plus qu’à continuer votre commande.' }),
+          toast.success(message, {
+            description: t({
+              en: "All that's left is to continue your order.",
+              fr: 'Il ne reste plus qu’à continuer votre commande.',
+            }),
+          }),
         )
       }
     },
@@ -127,9 +139,12 @@ export default function App() {
                 onPrepareView={preloadSeatView}
                 onPmr={() =>
                   notify((toast) =>
-                    toast.info('Emplacement PMR', {
+                    toast.info(t({ en: 'Wheelchair space', fr: 'Emplacement PMR' }), {
                       id: 'pmr',
-                      description: 'Pour le réserver, adressez-vous à l’accueil du cinéma.',
+                      description: t({
+                        en: 'To book it, ask at the theater box office.',
+                        fr: 'Pour le réserver, adressez-vous à l’accueil du cinéma.',
+                      }),
                     }),
                   )
                 }
@@ -137,12 +152,22 @@ export default function App() {
                 onContinue={() =>
                   notify((toast) =>
                     toast.success(reservedMessage, {
-                      description: 'Prototype : la suite de la commande n’est pas incluse.',
+                      description: t({
+                        en: "Prototype: the rest of the order isn't included.",
+                        fr: 'Prototype : la suite de la commande n’est pas incluse.',
+                      }),
                     }),
                   )
                 }
                 onClose={() =>
-                  notify((toast) => toast('Prototype : ce bouton fermerait la réservation.'))
+                  notify((toast) =>
+                    toast(
+                      t({
+                        en: 'Prototype: this button would close the booking.',
+                        fr: 'Prototype : ce bouton fermerait la réservation.',
+                      }),
+                    ),
+                  )
                 }
               />
               <DetailsSheet

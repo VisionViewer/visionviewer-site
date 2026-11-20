@@ -4,6 +4,7 @@ import * as m from 'motion/react-m'
 import { Accessibility, ChevronUp, Eye, Info, X } from 'lucide-react'
 import type { RoomLayout, Slot } from '../lib/room'
 import { formatEuro } from '../lib/format'
+import { t } from '../lib/langue'
 import SeatPlan from './SeatPlan'
 import './BookingScreen.css'
 
@@ -50,22 +51,29 @@ export default function BookingScreen({
   return (
     <>
       <header className="topbar">
-        <h1 className="topbar__title">Ma réservation</h1>
-        <button type="button" className="topbar__close" aria-label="Fermer" onClick={onClose}>
+        <h1 className="topbar__title">{t({ en: 'My booking', fr: 'Ma réservation' })}</h1>
+        <button
+          type="button"
+          className="topbar__close"
+          aria-label={t({ en: 'Close', fr: 'Fermer' })}
+          onClick={onClose}
+        >
           <X aria-hidden size={26} strokeWidth={2.2} />
         </button>
       </header>
 
       <main className="content">
         <Reveal order={0}>
-          <h2 className="title">Sélectionner vos fauteuils</h2>
+          <h2 className="title">{t({ en: 'Select your seats', fr: 'Sélectionner vos fauteuils' })}</h2>
         </Reveal>
 
         <Reveal order={1}>
           <div className="selection">
             <p className="selection__text">
-              {selected?.span === 2 ? 'Place double sélectionnée' : 'Fauteuil sélectionné'} (
-              {selected?.span ?? 0} sur {selected?.span ?? 1}) :{' '}
+              {t({
+                en: `${selected?.span === 2 ? 'Double seat selected' : 'Seat selected'} (${selected?.span ?? 0} of ${selected?.span ?? 1}):`,
+                fr: `${selected?.span === 2 ? 'Place double sélectionnée' : 'Fauteuil sélectionné'} (${selected?.span ?? 0} sur ${selected?.span ?? 1}) :`,
+              })}{' '}
               <span className="selection__seat">
                 <AnimatePresence mode="popLayout" initial={false}>
                   <m.strong
@@ -87,7 +95,7 @@ export default function BookingScreen({
               onClick={onClear}
               disabled={!selected}
             >
-              Effacer
+              {t({ en: 'Clear', fr: 'Effacer' })}
             </button>
           </div>
         </Reveal>
@@ -96,10 +104,20 @@ export default function BookingScreen({
           <p className="info">
             <Info aria-hidden size={16} strokeWidth={2.2} />
             <span>
-              Les emplacements signalés par le pictogramme{' '}
-              <Accessibility aria-label="PMR" size={14} strokeWidth={2.4} className="info__picto" />{' '}
-              sont réservés aux personnes à mobilité réduite. Pour en réserver un, adressez-vous à
-              l'accueil du cinéma.
+              {t({
+                en: 'Spaces marked with the',
+                fr: 'Les emplacements signalés par le pictogramme',
+              })}{' '}
+              <Accessibility
+                aria-label={t({ en: 'wheelchair', fr: 'PMR' })}
+                size={14}
+                strokeWidth={2.4}
+                className="info__picto"
+              />{' '}
+              {t({
+                en: 'symbol are reserved for guests with limited mobility. To book one, ask at the theater box office.',
+                fr: "sont réservés aux personnes à mobilité réduite. Pour en réserver un, adressez-vous à l'accueil du cinéma.",
+              })}
             </span>
           </p>
         </Reveal>
@@ -122,29 +140,29 @@ export default function BookingScreen({
         </AnimatePresence>
 
         <Reveal order={3}>
-          <ul className="legend" aria-label="Légende">
+          <ul className="legend" aria-label={t({ en: 'Legend', fr: 'Légende' })}>
             <li>
               <span className="legend__chip legend__chip--free" aria-hidden />
-              Libre
+              {t({ en: 'Available', fr: 'Libre' })}
             </li>
             <li>
               <span className="legend__chip legend__chip--selected" aria-hidden />
-              Sélectionné
+              {t({ en: 'Selected', fr: 'Sélectionné' })}
             </li>
             <li>
               <span className="legend__chip legend__chip--occupied" aria-hidden />
-              Occupé
+              {t({ en: 'Taken', fr: 'Occupé' })}
             </li>
             <li>
               <span className="legend__chip legend__chip--pmr" aria-hidden>
                 <Accessibility />
               </span>
-              PMR
+              {t({ en: 'Wheelchair', fr: 'PMR' })}
             </li>
             {layout.doubleCount > 0 && (
               <li>
                 <span className="legend__chip legend__chip--double" aria-hidden />
-                Place double
+                {t({ en: 'Double seat', fr: 'Place double' })}
               </li>
             )}
           </ul>
@@ -154,10 +172,11 @@ export default function BookingScreen({
       <footer className="bottombar">
         <div className="bottombar__row">
           <p className="bottombar__total">
-            Total à régler : <strong>{formatEuro(layout.config.price * places)}</strong>
+            {t({ en: 'Total due:', fr: 'Total à régler :' })}{' '}
+            <strong>{formatEuro(layout.config.price * places)}</strong>
           </p>
           <button type="button" className="link-button" onClick={onOpenDetails}>
-            Détails
+            {t({ en: 'Details', fr: 'Détails' })}
             <ChevronUp aria-hidden size={16} strokeWidth={2.6} />
           </button>
         </div>
@@ -166,7 +185,10 @@ export default function BookingScreen({
           <m.button
             type="button"
             className="view-btn"
-            aria-label="Vue 3D : voir la vue depuis ce siège"
+            aria-label={t({
+              en: '3D view: see the view from this seat',
+              fr: 'Vue 3D : voir la vue depuis ce siège',
+            })}
             whileTap={{ scale: 0.95 }}
             disabled={!selected}
             onPointerEnter={onPrepareView}
@@ -180,10 +202,10 @@ export default function BookingScreen({
             {/* Rejoué à chaque nouveau siège : relie la sélection au bouton */}
             {selected && <span key={selected.id} className="view-btn__pulse" aria-hidden />}
             <Eye aria-hidden size={22} strokeWidth={2.2} />
-            <span className="view-btn__label">Vue 3D</span>
+            <span className="view-btn__label">{t({ en: '3D view', fr: 'Vue 3D' })}</span>
             {fresh && (
               <span className="view-btn__badge" aria-hidden>
-                Nouveau
+                {t({ en: 'New', fr: 'Nouveau' })}
               </span>
             )}
           </m.button>
@@ -195,7 +217,7 @@ export default function BookingScreen({
             disabled={!selected}
             onClick={onContinue}
           >
-            Continuer ma commande
+            {t({ en: 'Continue my order', fr: 'Continuer ma commande' })}
           </m.button>
         </div>
       </footer>

@@ -34,9 +34,10 @@
   </head>
   <body>
     <!--
-      Page de présentation VisionViewer, en anglais : la traduction de index.html, dont elle garde
-      la structure, les identifiants, les styles et les scripts (src/landing/). Un texte changé
-      dans l'une se reporte dans l'autre ; `npm test` vérifie les chiffres des deux.
+      Page de présentation VisionViewer, en anglais (adresse : /en, la langue par défaut du site).
+      Chaque langue a la sienne (fr.html…) : même structure, mêmes identifiants, mêmes styles et
+      mêmes scripts (src/landing/). Un texte changé dans l'une se reporte dans les autres ;
+      `npm test` vérifie les chiffres de chacune.
     -->
 <div id="track">
   <main class="stage" id="stage">
@@ -49,9 +50,9 @@
         <a href="#integration">Integration</a>
         <a href="#demo">Demo</a>
         <a href="/en/blog">Blog</a>
-        <a href="{{traduction}}" hreflang="fr" lang="fr" title="Version française">FR</a>
+        <!--@langues court-->
       </nav>
-      <a class="btn demo-link" href="/demo">Try it now<span class="arr" aria-hidden="true">→</span></a>
+      <a class="btn demo-link" href="/en/demo">Try it now<span class="arr" aria-hidden="true">→</span></a>
     </header>
 
     <div id="hero"><h1>Show every moviegoer the view from their seat.</h1></div>
@@ -219,8 +220,8 @@
         <span class="mono"><span class="on-desk">On a computer</span><span class="on-touch">On this device</span></span>
         <div class="desk on-desk" aria-hidden="true"><i></i><i></i><i></i></div>
         <h3><span class="on-desk">Or right here, in your browser.</span><span class="on-touch">Right here, in your browser.</span></h3>
-        <p>The same demo, with the 3D view full screen. Its interface is in French.</p>
-        <a class="btn big demo-link" href="/demo">Try it now<span class="arr" aria-hidden="true">→</span></a>
+        <p>The same demo, with the 3D view full screen.</p>
+        <a class="btn big demo-link" href="/en/demo">Try it now<span class="arr" aria-hidden="true">→</span></a>
       </article>
     </div>
   </div></section>
@@ -286,7 +287,7 @@
         </button></h3>
         <div class="acc__panel" id="q6" role="region" aria-labelledby="q6-head"><div class="acc__inner"><div class="acc__body" data-a>
           <p>Nothing that could identify them: no account, no cookie, no storage in their browser. We only count, per day and per auditorium, the seat maps displayed, the 3D views opened and the seats chosen.</p>
-          <p>The details are in our <a href="/confidentialite" hreflang="fr">privacy policy</a> (in French).</p>
+          <p>The details are in our <a href="/en/privacy">privacy policy</a>.</p>
         </div></div></div>
       </article>
       <article class="acc">
@@ -304,7 +305,7 @@
           <i class="acc__sign" aria-hidden="true"></i>
         </button></h3>
         <div class="acc__panel" id="q8" role="region" aria-labelledby="q8-head"><div class="acc__inner"><div class="acc__body" data-a>
-          <p>Yes. The <a href="/demo">demo</a> is online, with no sign-up: pick a seat, then open the 3D view. To try it in your own page, a test key works right away on your developer's machine.</p>
+          <p>Yes. The <a href="/en/demo">demo</a> is online, with no sign-up: pick a seat, then open the 3D view. To try it in your own page, a test key works right away on your developer's machine.</p>
         </div></div></div>
       </article>
       <!--@/faq-->

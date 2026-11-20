@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react'
 import { AnimatePresence } from 'motion/react'
 import * as m from 'motion/react-m'
-import type { RoomLayout, Slot } from '../lib/room'
+import { roomTexts, type RoomLayout, type Slot } from '../lib/room'
 import { formatEuro } from '../lib/format'
+import { LANGUE, t } from '../lib/langue'
 import './DetailsSheet.css'
 
 interface DetailsSheetProps {
@@ -59,34 +60,47 @@ export default function DetailsSheet({ open, onClose, layout, selected }: Detail
           >
             <div className="sheet__handle" aria-hidden />
             <h2 id="sheet-title" className="sheet__title">
-              Détails de la commande
+              {t({ en: 'Order details', fr: 'Détails de la commande' })}
             </h2>
             <dl className="sheet__list">
               <div>
-                <dt>Salle</dt>
-                <dd>{layout.config.name}</dd>
+                <dt>{t({ en: 'Auditorium', fr: 'Salle' })}</dt>
+                <dd>{roomTexts(layout.config, LANGUE).name}</dd>
               </div>
               <div>
-                <dt>Fauteuil</dt>
+                <dt>{t({ en: 'Seat', fr: 'Fauteuil' })}</dt>
                 <dd>
                   {!selected
-                    ? 'Aucun'
+                    ? t({ en: 'None', fr: 'Aucun' })
                     : selected.span === 2
-                      ? `Rangée ${selected.row} · n° ${selected.number} et ${selected.number + 1} (double)`
-                      : `Rangée ${selected.row} · n° ${selected.number}`}
+                      ? t({
+                          en: `Row ${selected.row} · nos. ${selected.number} and ${selected.number + 1} (double)`,
+                          fr: `Rangée ${selected.row} · n° ${selected.number} et ${selected.number + 1} (double)`,
+                        })
+                      : t({
+                          en: `Row ${selected.row} · no. ${selected.number}`,
+                          fr: `Rangée ${selected.row} · n° ${selected.number}`,
+                        })}
                 </dd>
               </div>
               <div>
-                <dt>{places === 2 ? `2 places × ${formatEuro(layout.config.price)}` : '1 place'}</dt>
+                <dt>
+                  {places === 2
+                    ? t({
+                        en: `2 seats × ${formatEuro(layout.config.price)}`,
+                        fr: `2 places × ${formatEuro(layout.config.price)}`,
+                      })
+                    : t({ en: '1 seat', fr: '1 place' })}
+                </dt>
                 <dd>{formatEuro(total)}</dd>
               </div>
               <div className="sheet__total">
-                <dt>Total à régler</dt>
+                <dt>{t({ en: 'Total due', fr: 'Total à régler' })}</dt>
                 <dd>{formatEuro(total)}</dd>
               </div>
             </dl>
             <button ref={closeRef} type="button" className="sheet__close" onClick={onClose}>
-              Fermer
+              {t({ en: 'Close', fr: 'Fermer' })}
             </button>
           </m.div>
         </>

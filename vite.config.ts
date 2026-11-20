@@ -1,20 +1,26 @@
 import { readFileSync } from 'node:fs'
 import { defineConfig, type HtmlTagDescriptor, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
-import { pageInputs, sitePages } from './tools/pages'
+import { isAccueil, pageInputs, sitePages } from './tools/pages'
+import { siteRoutes } from './tools/routes'
 
 /**
  * La scène 3D de la page de présentation est chargée à part (la page reste lisible sans elle),
  * donc le navigateur ne la découvre qu'en exécutant le script principal. Ce plugin l'annonce
- * dès le HTML : la scène et three.js sont téléchargés en même temps que le reste.
+ * dès le HTML : la scène et three.js sont téléchargés en même temps que le reste. Il vaut pour la
+ * présentation de chaque langue (`fr.html`, `en.html`…).
  */
 function preloadLandingScene(): Plugin {
+  let root = process.cwd()
   return {
     name: 'preload-landing-scene',
+    configResolved(config) {
+      root = config.root
+    },
     transformIndexHtml: {
       order: 'post',
       handler(html, ctx) {
-        if (!ctx.bundle || !ctx.filename.endsWith('index.html')) return
+        if (!ctx.bundle || !isAccueil(ctx.filename.slice(root.length + 1).split('\\').join('/'))) return
         const chunks = Object.values(ctx.bundle).flatMap((file) => (file.type === 'chunk' ? [file] : []))
         const scene = chunks.find((chunk) => chunk.facadeModuleId?.endsWith('/src/landing/scene.js'))
         if (!scene) return
@@ -57,11 +63,11 @@ function securityHeaders(): Record<string, string> {
 }
 
 export default defineConfig({
-  plugins: [sitePages(), react(), preloadLandingScene()],
+  plugins: [siteRoutes(), sitePages(), react(), preloadLandingScene()],
   preview: { headers: securityHeaders() },
   build: {
-    // Une entrée par page : la présentation (index.html), la démo (demo.html, servie sur /demo),
-    // les pages légales, le blog et ses articles (blog/). Voir tools/pages.ts.
+    // Une entrée par page et par langue : la présentation (fr.html, en.html), puis le dossier de la
+    // langue (fr/demo.html, fr/blog.html, fr/blog/*.html, les pages légales…). Voir tools/pages.ts.
     rolldownOptions: {
       input: pageInputs(),
     },

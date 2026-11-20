@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--@include head-->
+    <!-- Hors des moteurs de recherche tant que les mentions de la société sont « À compléter » -->
+    <meta name="robots" content="noindex, follow" />
+    <meta name="vv:page" content="legal-notice" />
+    <title>Legal notice — VisionViewer</title>
+    <meta name="description" content="Publisher, publication director and hosting provider of the VisionViewer websites: visionviewer.net, app.visionviewer.net and docs.visionviewer.net." />
+    <meta property="og:title" content="Legal notice — VisionViewer" />
+    <meta property="og:description" content="Publisher, publication director and hosting provider of the VisionViewer websites: visionviewer.net, app.visionviewer.net and docs.visionviewer.net." />
+  </head>
+  <body>
+    <!--@include header-->
+    <main class="doc">
+      <header class="doc__head">
+        <span class="mono">Legal · version of {{version}}</span>
+        <h1>Legal notice</h1>
+        <p class="chapo">Who publishes and who hosts the VisionViewer websites: visionviewer.net, app.visionviewer.net and docs.visionviewer.net.</p>
+      </header>
+      <div class="doc__body">
+        <!--@sommaire-->
+        <div class="prose">
+          <p class="note">This English version is a courtesy translation. Only the <a href="/fr/mentions-legales" hreflang="fr">French version</a> is binding.</p>
+          <!--@include avis-->
+
+          <h2 id="editeur">Publisher</h2>
+          <p>The websites visionviewer.net, app.visionviewer.net and docs.visionviewer.net are published by:</p>
+          <div class="tableau" tabindex="0">
+            <table>
+              <tbody>
+                <tr><td>Company name</td><td>{{societe.denomination}}</td></tr>
+                <tr><td>Legal form</td><td>{{societe.statut}}</td></tr>
+                <tr><td>Share capital</td><td>{{societe.capital}}</td></tr>
+                <tr><td>Registered office</td><td>{{societe.siege}}</td></tr>
+                <tr><td>Registration</td><td>{{societe.rcs}}</td></tr>
+                <tr><td>Intra-Community VAT number</td><td>{{societe.tva}}</td></tr>
+                <tr><td>Phone</td><td>{{societe.telephone}}</td></tr>
+                <tr><td>Email</td><td><a href="mailto:{{contact}}">{{contact}}</a></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="publication">Publication director</h2>
+          <p>{{societe.directeur}}, as legal representative of {{societe.denomination}}.</p>
+
+          <h2 id="hebergement">Hosting</h2>
+          <p>The three websites are hosted by:</p>
+          <div class="tableau" tabindex="0">
+            <table>
+              <tbody>
+                <tr><td>Hosting provider</td><td>Vercel Inc.</td></tr>
+                <tr><td>Address</td><td>440 N Barranca Ave #4133, Covina, CA 91723, United States</td></tr>
+                <tr><td>Phone</td><td>{{societe.hebergeurTelephone}}</td></tr>
+                <tr><td>Website</td><td><a href="https://vercel.com" rel="noopener noreferrer">vercel.com</a></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>The service data (the shape of the auditoriums, the cinemas’ logos, the usage counters) is stored in a Turso database, in the Frankfurt region, in Germany. The domain name and the email service are provided by OVH SAS, 2 rue Kellermann, 59100 Roubaix, France.</p>
+
+          <h2 id="contact">Contacting us, reporting content</h2>
+          <p>For any question about these websites or about the service, write to <a href="mailto:{{contact}}">{{contact}}</a>.</p>
+          <p>To report content that you consider unlawful, write to the same address, giving the address of the page, the content concerned and the reason for your report. We reply to you, and remove the content where appropriate.</p>
+
+          <h2 id="propriete">Intellectual property</h2>
+          <p>The VisionViewer name, the logo, the texts, the images, the 3D scenes and the code of these websites belong to {{societe.denomination}} or to its licensors. They may not be reproduced, communicated to the public or adapted without its written consent, except in the cases provided for by the French Intellectual Property Code.</p>
+          <p>The sample code published in the integration guide may be copied and adapted to integrate VisionViewer into a website or an application.</p>
+          <p>The Inter Tight and Geist Mono fonts are used under the SIL Open Font License. The study figures cited on these websites remain attributed to their authors, who are named next to each of them.</p>
+
+          <h2 id="demonstration">Demo content</h2>
+          <p>The auditoriums, dimensions, prices and seat occupancy shown on these websites and in the demo are fictitious. They do not represent any real cinema. No booking is recorded there, and no payment is requested there.</p>
+
+          <h2 id="donnees">Personal data and cookies</h2>
+          <p>visionviewer.net sets no cookies and does not measure its audience. What we process, why, and your rights are described in our <a href="/en/privacy">privacy policy</a>.</p>
+
+          <h2 id="responsabilite">Liability and links</h2>
+          <p>We take care that what we publish is accurate, but we cannot guarantee that these websites are free of errors or available without interruption. The conditions for using the websites, the demo and the test keys are in our <a href="/en/terms-of-use">terms of use</a>.</p>
+          <p>These websites may lead to third-party websites, over which we have no control and whose content does not bind us.</p>
+
+          <h2 id="droit">Governing law</h2>
+          <p>This notice is governed by French law. Any dispute that cannot be settled amicably falls within the jurisdiction of the competent courts of the district in which {{societe.denomination}} has its registered office.</p>
+        </div>
+      </div>
+    </main>
+    <!--@include footer-->
+  </body>
+</html>

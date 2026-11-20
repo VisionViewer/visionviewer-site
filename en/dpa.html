@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--@include head-->
+    <!-- Hors des moteurs de recherche tant que les mentions de la société sont « À compléter » -->
+    <meta name="robots" content="noindex, follow" />
+    <title>Data processing agreement (DPA) — VisionViewer</title>
+    <meta name="description" content="The data processing agreement provided for by Article 28 of the GDPR, between a cinema customer and VisionViewer." />
+    <meta property="og:title" content="Data processing agreement (DPA) — VisionViewer" />
+    <meta property="og:description" content="The data processing agreement provided for by Article 28 of the GDPR, between a cinema customer and VisionViewer." />
+  </head>
+  <body>
+    <!--@include header-->
+    <main class="doc">
+      <header class="doc__head">
+        <span class="mono">Customers · GDPR · version of {{version}}</span>
+        <h1>Data processing agreement</h1>
+        <p class="chapo">When VisionViewer is displayed on a cinema’s website, it processes a few items of technical data on behalf of that cinema. This agreement sets the framework for that processing, as required by Article 28 of the GDPR.</p>
+      </header>
+      <div class="doc__body">
+        <!--@sommaire-->
+        <div class="prose">
+          <p class="note">This English version is a courtesy translation. Only the <a href="/fr/dpa" hreflang="fr">French version</a> is binding.</p>
+          <!--@include avis-->
+
+          <h2 id="roles">1. Purpose and roles</h2>
+          <p>This agreement is part of the contract entered into between {{societe.denomination}} (“VisionViewer”) and its customer (“the Customer”), together with the <a href="/en/terms-of-sale">terms of sale</a>.</p>
+          <p>For the display of the 3D view and the seat map on its websites and in its applications, the Customer is the <strong>controller</strong> and VisionViewer its <strong>processor</strong>. For the management of its own business relationship with the Customer, VisionViewer is a controller: see the <a href="/en/privacy">privacy policy</a>.</p>
+
+          <h2 id="traitement">2. The processing</h2>
+          <div class="tableau" tabindex="0">
+            <table>
+              <tbody>
+                <tr><td>Subject matter</td><td>Displaying the 3D view and the seat map on the Customer’s website; counting usage; protecting the service</td></tr>
+                <tr><td>Nature</td><td>Receiving browser requests, technical logging, rate limiting, computing aggregate counters</td></tr>
+                <tr><td>Data subjects</td><td>The visitors to the Customer’s websites and applications</td></tr>
+                <tr><td>Personal data</td><td>IP address, date and time of the request, browser name, address of the originating page</td></tr>
+                <tr><td>Non-personal data</td><td>Identifiers of the seats chosen; counters per day, per key and per auditorium; hash of an order reference, if the Customer reports it</td></tr>
+                <tr><td>Sensitive data</td><td>None</td></tr>
+                <tr><td>Duration</td><td>That of the contract</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>VisionViewer sets neither a cookie nor any other tracker in the browser of the Customer’s visitors, creates no profile and links no data to a person.</p>
+
+          <h2 id="engagements">3. VisionViewer’s commitments</h2>
+          <ul>
+            <li><strong>Instructions.</strong> To process this data only on the Customer’s documented instructions: the contract and this agreement serve as such. VisionViewer notifies the Customer if an instruction appears to it to be contrary to the law.</li>
+            <li><strong>Confidentiality.</strong> To give access to it only to the people who need it, who are bound by confidentiality.</li>
+            <li><strong>Security.</strong> To apply the measures described in section&nbsp;7.</li>
+            <li><strong>Assistance.</strong> To help the Customer respond to requests to exercise rights, and to provide it with the information needed for an impact assessment or for an exchange with the CNIL, the French data protection authority.</li>
+            <li><strong>Data breach.</strong> To notify the Customer without undue delay, and no later than 48&nbsp;hours after becoming aware of it, with what is known at that time: nature of the breach, data and data subjects concerned, measures taken.</li>
+            <li><strong>End of the contract.</strong> To delete the data processed on the Customer’s behalf within thirty days, or to return it to the Customer if it so requests, unless there is a legal obligation to keep it.</li>
+            <li><strong>Evidence.</strong> To keep available to the Customer what demonstrates compliance with this agreement.</li>
+          </ul>
+
+          <h2 id="client">4. The Customer’s commitments</h2>
+          <ul>
+            <li>to inform its visitors of the use of VisionViewer, in its own privacy policy;</li>
+            <li>to have a legal basis for this processing;</li>
+            <li>not to send VisionViewer any personal data by way of seat identifiers or order references.</li>
+          </ul>
+
+          <h2 id="sous-traitants">5. Sub-processors</h2>
+          <p>The Customer authorizes VisionViewer to use the following providers, which are bound by commitments equivalent to those of this agreement:</p>
+          <div class="tableau" tabindex="0">
+            <table>
+              <thead>
+                <tr><th>Provider</th><th>Role</th><th>Location</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Vercel Inc.</td><td>Hosting, delivery of the pages, technical logs</td><td>United States; the server runs in Frankfurt (Germany)</td></tr>
+                <tr><td>Turso</td><td>Database: auditoriums, logos, counters. No personal data of the visitors is stored in it.</td><td>Frankfurt (Germany)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>VisionViewer notifies the Customer at least thirty days before adding or replacing a provider. The Customer may object to it on legitimate grounds; failing agreement, it may terminate the contract without penalty.</p>
+
+          <h2 id="transferts">6. Transfers outside the European Union</h2>
+          <p>These providers are established in the United States. Any access to personal data from a country outside the European Union is governed by the European Commission’s standard contractual clauses and, for the providers that adhere to it, by the EU–U.S. Data Privacy Framework.</p>
+
+          <h2 id="securite">7. Security measures</h2>
+          <ul>
+            <li>encryption of all exchanges (HTTPS);</li>
+            <li>display of the view and the seat map limited to the domains declared for the Customer’s key;</li>
+            <li>verification of the origin and the format of each message exchanged between the Customer’s website and our pages;</li>
+            <li>nothing written to the visitor’s browser;</li>
+            <li>rate limiting of requests;</li>
+            <li>access to the administration tool restricted to VisionViewer, through a time-limited session;</li>
+            <li>keys revocable at any time.</li>
+          </ul>
+
+          <h2 id="audit">8. Audit</h2>
+          <p>Once a year, and after a data breach, the Customer may verify compliance with this agreement, itself or through an auditor bound by confidentiality, subject to thirty days’ notice. The audit first covers the documents; it is conducted without disrupting the service, at the Customer’s expense.</p>
+
+          <h2 id="duree">9. Term</h2>
+          <p>This agreement lasts as long as the contract, and until the data is deleted. It is subject to the same law and the same courts as the contract.</p>
+          <p>A question? <a href="mailto:{{contact}}">{{contact}}</a>.</p>
+        </div>
+      </div>
+    </main>
+    <!--@include footer-->
+  </body>
+</html>
