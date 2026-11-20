@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <!--@include head-->
+    <title>Vue depuis le siège : les questions que nous posent les cinémas — VisionViewer</title>
+    <meta name="description" content="Vue depuis le siège, les questions des cinémas : prix de la vue 3D, intégration, relevé de la salle, RGPD, écran incurvé, balcon, résultats. Réponses franches." />
+    <meta name="vv:rubrique" content="article" />
+    <meta name="vv:date" content="2026-11-30" />
+    <meta name="vv:lecture" content="7" />
+    <meta name="vv:page" content="blog/faq-cinemas" />
+    <meta property="og:title" content="Vue depuis le siège : les questions que nous posent les cinémas" />
+    <meta property="og:description" content="Vue depuis le siège, les questions des cinémas : prix de la vue 3D, intégration, relevé de la salle, RGPD, écran incurvé, balcon, résultats. Réponses franches." />
+  </head>
+  <body>
+    <!--@include header-->
+    <main class="doc">
+      <header class="doc__head">
+        <span class="mono"><a href="/fr/blog">← Blog</a> · {{article.signature}}</span>
+        <h1>Vue depuis le siège&nbsp;: les questions que nous posent les cinémas</h1>
+        <p class="chapo">Quand un cinéma découvre la vue depuis le siège de VisionViewer, les mêmes questions reviennent&nbsp;: le prix, le délai, la billetterie, les données des spectateurs, les salles qui sortent de l’ordinaire. Voici nos réponses, y compris quand elles sont «&nbsp;non&nbsp;» ou «&nbsp;pas encore&nbsp;».</p>
+      </header>
+      <div class="doc__body">
+        <!--@sommaire-->
+        <div class="prose">
+          <h2 id="en-bref">En bref</h2>
+          <ul>
+            <li><strong>Le prix est sur devis</strong>, établi pour vos salles.</li>
+            <li><strong>Votre billetterie ne change pas.</strong> Une balise et un appel ajoutent la vue 3D à votre page de réservation&nbsp;; les séances, les disponibilités et le paiement restent chez vous.</li>
+            <li><strong>Le délai dépend surtout du relevé</strong>&nbsp;: des cotes que vous avez déjà, des photos, ou la visite d’un ingénieur.</li>
+            <li><strong>Nous ne savons rien de vos spectateurs.</strong> Ni compte, ni cookie&nbsp;: nous comptons des nombres par jour et par salle.</li>
+            <li><strong>Limites</strong>&nbsp;: rangées droites, pente régulière, un seul niveau. Pas de balcon, pas de rangées courbes.</li>
+            <li><strong>Aucun résultat publié à ce jour.</strong> Les études de cas viendront, avec l’accord des cinémas.</li>
+          </ul>
+
+          <h2 id="produit">Le produit</h2>
+          <!--@faq-->
+          <h3 data-q>Que montre VisionViewer, exactement&nbsp;?</h3>
+          <div data-a><p>La vue depuis le fauteuil que le spectateur vient de choisir, en 3D, pendant la réservation et avant le paiement. La caméra est placée aux yeux d’un spectateur assis, à 1,15&nbsp;m au-dessus du sol de sa rangée, et regarde le centre de l’écran. Pour un groupe, la vue part du centre du groupe&nbsp;; des flèches déplacent tout le groupe, pour comparer d’autres places. Votre logo est projeté sur l’écran de vos salles.</p></div>
+          <h3 data-q>La vue 3D est-elle une photo de notre salle&nbsp;?</h3>
+          <div data-a><p>Non. Elle est calculée dans le navigateur, à partir des cotes de la salle&nbsp;: écran, gradin, rangées, fauteuils. Elle rend la géométrie (la distance, l’angle, la hauteur de l’écran, les rangs de devant), pas la décoration. En contrepartie, chaque fauteuil a sa vue, et il n’y a rien à photographier. La méthode est décrite dans <a href="/fr/blog/modeliser-une-salle-de-cinema-en-3d">comment nous modélisons une salle de cinéma en 3D</a>.</p></div>
+          <h3 data-q>Fonctionne-t-il sur téléphone, et dans notre application mobile&nbsp;?</h3>
+          <div data-a><p>Sur téléphone, oui&nbsp;: il est conçu pour lui. Sur un téléphone émulé, en 4G lente, notre plan est utilisable en 0,65&nbsp;seconde et la vue 3D affiche sa première image en 0,87&nbsp;seconde (mesures du 17&nbsp;novembre 2026). Nous n’avons pas encore mesuré sur de vrais téléphones, ni sous Safari&nbsp;: le détail est dans <a href="/fr/blog/un-plan-de-salle-en-moins-d-une-seconde">un plan de salle en moins d’une seconde</a>.</p><p>VisionViewer s’affiche dans des pages web, que notre SDK ouvre dans une iframe. Une application qui présente sa réservation dans une vue web l’intègre comme un site. Si votre application est entièrement native, écrivez-nous&nbsp;: nous regarderons avec vous.</p></div>
+          <!--@/faq-->
+
+          <h2 id="integration">L’intégration</h2>
+          <!--@faq-->
+          <h3 data-q>Faut-il changer de billetterie ou de plan de salle&nbsp;?</h3>
+          <div data-a><p>Non. Si vous avez un plan de salle, il ne change pas&nbsp;: un bouton appelle <code>VisionViewer.open()</code> avec les places choisies, et la vue 3D s’ouvre par-dessus votre page. Si vous n’en avez pas, <code>VisionViewer.mountPlan()</code> insère le nôtre dans votre page. Votre page parle dans vos propres identifiants de sièges&nbsp;: la correspondance est enregistrée une fois, salle par salle. Le pas à pas est dans <a href="/fr/blog/ajouter-une-vue-depuis-le-fauteuil-a-sa-billetterie">notre guide d’intégration</a>.</p></div>
+          <h3 data-q>Que se passe-t-il si un siège se vend pendant que le spectateur choisit&nbsp;?</h3>
+          <div data-a><p>La liste des sièges vendus que votre page nous donne est une photo, prise à l’ouverture. Si un siège se vend entre-temps, votre page envoie la nouvelle liste&nbsp;; s’il faisait partie du choix, il en est retiré, et votre page en est informée. VisionViewer ne réserve et ne verrouille aucune place&nbsp;: dans tous les cas, c’est votre billetterie qui tranche au paiement.</p></div>
+          <h3 data-q>Notre développeur peut-il l’essayer avant tout engagement&nbsp;?</h3>
+          <div data-a><p>Oui. Une clé de test (<code>vv_test_…</code>) fonctionne tout de suite sur son poste, sur <code>localhost</code>, et affiche la mention «&nbsp;Version de test&nbsp;». La clé définitive (<code>vv_live_…</code>) ne fonctionne que sur les domaines que vous déclarez. Le code et ses options sont dans le <a href="https://docs.visionviewer.net" rel="noopener noreferrer">guide technique</a>.</p></div>
+          <!--@/faq-->
+
+          <h2 id="salle">La salle et le relevé</h2>
+          <!--@faq-->
+          <h3 data-q>Que faut-il fournir pour qu’une salle soit modélisée&nbsp;?</h3>
+          <div data-a><p>Ses cotes&nbsp;: la largeur, la hauteur et la hauteur du bas de l’écran, sa courbure, la distance de l’écran au premier rang, l’écart entre les rangées, la hauteur de marche, la largeur des fauteuils et l’espace entre eux, les allées, les emplacements PMR, les places doubles et les places absentes. Sans plan ni cotes, nous les reconstituons à partir de quelques photos, ou un ingénieur VisionViewer les mesure sur place&nbsp;; vous n’avez rien à préparer. Les termes sont définis dans notre <a href="/fr/blog/lexique-du-plan-de-salle-de-cinema">lexique du plan de salle</a>.</p></div>
+          <h3 data-q>Nous avons plusieurs salles&nbsp;: comment cela se passe-t-il&nbsp;?</h3>
+          <div data-a><p>Chaque salle est décrite à ses propres cotes, sous son propre identifiant&nbsp;: aucune ne reprend la forme d’une autre. Côté site, rien ne change&nbsp;: la même balise et la même clé servent pour tout le cinéma, et chaque appel nomme la salle. Votre logo apparaît dans toutes vos salles, et les statistiques se lisent salle par salle.</p></div>
+          <h3 data-q>Notre salle a un écran incurvé&nbsp;: est-ce pris en charge&nbsp;?</h3>
+          <div data-a><p>Oui. Sa courbure se donne par sa flèche, c’est-à-dire de combien ses bords avancent vers la salle, jusqu’au quart de la largeur de l’écran. La vue 3D en tient compte, et notre plan dessine l’écran en arc.</p></div>
+          <h3 data-q>Et un balcon, ou des rangées courbes&nbsp;?</h3>
+          <div data-a><p>Pas aujourd’hui. Le modèle décrit des rangées droites, sur un gradin à pente régulière et un seul niveau. Une salle à balcon, à rangées courbes ou à pente brisée ne serait pas rendue fidèlement&nbsp;: nous préférons le dire avant le relevé que le découvrir après.</p></div>
+          <!--@/faq-->
+
+          <h2 id="donnees">Les données et la vie privée</h2>
+          <!--@faq-->
+          <h3 data-q>Que savez-vous de nos spectateurs&nbsp;?</h3>
+          <div data-a><p>Rien qui permette de les reconnaître&nbsp;: ni compte, ni cookie, ni stockage dans leur navigateur. Nous comptons des nombres par jour et par salle&nbsp;: plans affichés, vues 3D ouvertes, choix confirmés et, si votre page les signale, commandes. D’une référence de commande, nous ne gardons qu’une empreinte, pour ne pas la compter deux fois. Comme pour toute page web, le navigateur transmet son adresse IP à notre hébergeur&nbsp;; elle sert, en mémoire, à limiter le débit des requêtes, et figure dans ses journaux techniques.</p></div>
+          <h3 data-q>Et le RGPD&nbsp;: qui est responsable de quoi&nbsp;?</h3>
+          <div data-a><p>Quand VisionViewer s’affiche dans votre site, vous êtes responsable du traitement, et nous agissons pour votre compte, comme sous-traitant, dans le cadre d’un accord sur le traitement des données (l’article&nbsp;28 du RGPD). Les seules données personnelles en jeu sont techniques&nbsp;: adresse IP, date et heure, nom du navigateur, page d’origine. Notre serveur et notre base de données tournent à Francfort, chez des prestataires établis aux États-Unis&nbsp;; ces transferts sont encadrés par les clauses contractuelles types de la Commission européenne. VisionViewer ne dépose aucun cookie ni traceur dans votre page&nbsp;; de votre côté, vous mentionnez son usage dans votre politique de confidentialité. Notre politique de confidentialité et l’accord sont publiés sur ce site.</p></div>
+          <!--@/faq-->
+
+          <h2 id="prix">Le prix et la mise en route</h2>
+          <!--@faq-->
+          <h3 data-q>Quel est le prix d’une vue 3D pour un cinéma&nbsp;?</h3>
+          <div data-a><p>Il est établi sur devis, pour vos salles&nbsp;: nous ne publions pas de grille. Écrivez-nous à <a href="mailto:{{contact}}">{{contact}}</a> avec le nom de l’une d’elles&nbsp;: nous vous la montrons dans VisionViewer, et le devis suit.</p></div>
+          <h3 data-q>En combien de temps une salle peut-elle être en ligne&nbsp;?</h3>
+          <div data-a><p>Nous ne donnons pas de délai type, parce qu’il dépend surtout du relevé. Si vous avez un plan coté, il ne reste qu’à saisir la salle. À partir de photos, nous reconstituons le plan, la numérotation et les cotes. Une visite sur place se planifie avec vous. Côté site, l’intégration tient en une balise et un appel, et votre développeur peut commencer dès le premier jour avec la clé de test.</p></div>
+          <h3 data-q>Avez-vous des résultats, des clients à citer&nbsp;?</h3>
+          <div data-a><p>Pas encore. Aucun résultat de cinéma n’est publié à ce jour, et nous ne prêtons à VisionViewer aucun gain que nous n’avons pas mesuré. Les premiers chiffres paraîtront dans nos <a href="/fr/blog#etudes-de-cas">études de cas</a>, avec l’accord des cinémas concernés. Ce que disent les études sur le choix de la place est rassemblé dans <a href="/fr/blog/la-place-compte-avant-l-achat">la place compte avant l’achat</a>.</p></div>
+          <!--@/faq-->
+
+          <h2 id="pour-aller-plus-loin">Pour aller plus loin</h2>
+          <ul>
+            <li><a href="/fr/blog/ajouter-une-vue-depuis-le-fauteuil-a-sa-billetterie">Ajouter une vue depuis le fauteuil à sa billetterie</a>&nbsp;: les deux intégrations, pas à pas.</li>
+            <li><a href="/fr/blog/vue-depuis-le-siege-comparatif-des-solutions">Vue depuis le siège&nbsp;: comparatif des solutions</a>&nbsp;: les autres outils, d’après leurs éditeurs.</li>
+            <li><a href="/fr/blog/quelle-est-la-meilleure-place-au-cinema">Quelle est la meilleure place au cinéma&nbsp;?</a>&nbsp;: ce que disent les normes.</li>
+            <li>Une question qui n’est pas ici&nbsp;? <a href="mailto:{{contact}}">{{contact}}</a>&nbsp;: nous vous répondons.</li>
+          </ul>
+
+          <div class="suite">
+            <p>La réponse la plus courte reste la démo&nbsp;: un fauteuil, puis la vue.</p>
+            <a class="btn" href="/fr/demo">Essayez la démo<span class="arr" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+      <!--@voir-aussi-->
+    </main>
+    <!--@include footer-->
+  </body>
+</html>

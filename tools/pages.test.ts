@@ -1,10 +1,13 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { CODES, DEFAUT, LANGUES, SITE, cle, isIndexable, langueDe, lieu, llmsTxt, pageInputs, pagePath, questions, renderPage, sitemap, versions, type Langue } from './pages'
+import { CODES, DEFAUT, LANGUES, SITE, cle, isIndexable, langueDe, lieu, llmsTxt, pageInputs, pagePath, questions, renderPage, sitemap, versions, publication, estProgramme, jourDeParis, type Langue } from './pages'
+import { SITE as SITE_DU_PROGRAMME, duJour, jourDeParis as jourDuProgramme, parutions } from './programme'
 import { appliquer, fichierServi, readRoutes, repondre } from './routes'
 
 const root = process.cwd()
+// Les pages se vérifient toutes, articles programmés compris : ils paraîtront tels quels
+publication.tout = true
 const files = Object.values(pageInputs(root))
 const sources = new Map(files.map((file) => [file, readFileSync(join(root, file), 'utf8')]))
 const rendered = new Map(files.map((file) => [file, renderPage(root, file, sources.get(file)!)]))
@@ -419,4 +422,82 @@ describe('Blog', () => {
   it('publie autant d’articles dans chaque langue', () => {
     for (const langue of CODES) expect(articles.filter((file) => langueDe(file) === langue).length, langue).toBe(articles.length / CODES.length)
   })
+})
+
+describe('Publication programmée', () => {
+  const date = (file: string) => tag(source(file), /<meta name="vv:date" content="([^"]+)"/)
+  /** Ce que le site construit montrerait tel jour : seulement les articles parus */
+  function auJour<T>(jour: string, voir: () => T): T {
+    publication.tout = false
+    publication.jour = jour
+    try {
+      return voir()
+    } finally {
+      publication.tout = true
+      publication.jour = undefined
+    }
+  }
+  const aujourdhui = jourDeParis()
+  const dernier = articles.map(date).sort().at(-1)!
+
+  it('un article programmé n’a ni page, ni carte, ni lien de langue, ni place dans sitemap.xml et llms.txt', () => {
+    auJour(aujourdhui, () => {
+      const inputs = Object.values(pageInputs(root))
+      const plan = sitemap(root)
+      const llms = llmsTxt(root)
+      for (const file of articles.filter((file) => date(file) > aujourdhui)) {
+        const url = SITE + pagePath(file)
+        expect(estProgramme(source(file)), file).toBe(true)
+        expect(inputs, file).not.toContain(file)
+        expect(plan, file).not.toContain(`${url}<`)
+        expect(plan, file).not.toContain(`${url}"`)
+        expect(llms, file).not.toContain(`(${url})`)
+        for (const page of inputs) expect(renderPage(root, page, source(page)), `${page} → ${file}`).not.toContain(`href="${pagePath(file)}"`)
+      }
+    })
+  })
+
+  it('un article paraît le jour de sa date, dans chaque langue à la fois', () => {
+    auJour(dernier, () => {
+      const inputs = Object.values(pageInputs(root))
+      for (const file of articles) expect(inputs, file).toContain(file)
+    })
+    for (const file of articles) for (const other of Object.values(same(file))) expect(date(other!), `${file} et sa traduction ${other}`).toBe(date(file))
+  })
+
+  it('un article ne mène pas à un article programmé pour après lui', () => {
+    const parMesChemins = new Map(articles.map((file) => [pagePath(file), file]))
+    for (const file of articles)
+      for (const { path } of internalLinks(source(file))) {
+        const target = parMesChemins.get(path)
+        if (target) expect(date(target) <= date(file) || !estProgramme(source(target)), `${file} (${date(file)}) → ${path} (${date(target)})`).toBe(true)
+      }
+  })
+
+  it('le programme connaît les mêmes articles et le même jour que le site', () => {
+    expect(SITE_DU_PROGRAMME).toBe(SITE)
+    expect(jourDuProgramme(new Date('2026-11-20T23:30:00Z'))).toBe('2026-11-21')
+    expect(jourDeParis(new Date('2026-11-20T23:30:00Z'))).toBe('2026-11-21')
+    expect(parutions(root).map(({ url }) => url).sort()).toEqual(articles.map((file) => SITE + pagePath(file)).sort())
+    const jour = date(articles[0])
+    const annonces = duJour(jour, root)
+    for (const file of articles.filter((file) => date(file) === jour)) expect(annonces).toContain(SITE + pagePath(file))
+  })
+})
+
+describe('Rubriques du blog', () => {
+  for (const langue of CODES) {
+    it(`montrent un article, le début du suivant et un bouton pour le reste, s’il y en a plusieurs (${langue})`, () => {
+      const page = html(`${langue}/blog.html`)
+      for (const [, section] of page.matchAll(/<section class="rubrique"[^>]*>([\s\S]*?)<\/section>/g)) {
+        const n = (section.match(/class="card"/g) ?? []).length
+        if (n < 2) expect(section).not.toContain('liste__plus')
+        else {
+          const id = /<input type="checkbox" class="liste__bascule" id="([\w-]+)" \/>/.exec(section)?.[1]
+          expect(id).toBeTruthy()
+          expect(section).toContain(`<label class="liste__plus" for="${id}">${LANGUES[langue].plus(n - 1)}`)
+        }
+      }
+    })
+  }
 })

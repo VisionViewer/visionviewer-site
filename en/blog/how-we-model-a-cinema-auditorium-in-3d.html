@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--@include head-->
+    <title>How we build a 3D cinema auditorium model, seat by seat — VisionViewer</title>
+    <meta name="description" content="How we build a 3D cinema auditorium model: the measurements we take, the seat grid, curved screens, a camera at seated eye level, and the model’s limits." />
+    <meta name="vv:rubrique" content="article" />
+    <meta name="vv:date" content="2026-11-25" />
+    <meta name="vv:lecture" content="8" />
+    <meta name="vv:page" content="blog/modeling" />
+    <meta property="og:title" content="How we build a 3D cinema auditorium model, seat by seat" />
+    <meta property="og:description" content="How we build a 3D cinema auditorium model: the measurements we take, the seat grid, curved screens, a camera at seated eye level, and the model’s limits." />
+  </head>
+  <body>
+    <!--@include header-->
+    <main class="doc">
+      <header class="doc__head">
+        <span class="mono"><a href="/en/blog">← Blog</a> · {{article.signature}}</span>
+        <h1>How we build a 3D cinema auditorium model, from the real room to the view from each seat</h1>
+        <p class="chapo">To show moviegoers what they will see from their seat, VisionViewer does not photograph the auditorium. It describes it with a handful of measurements and computes the view. Here is how our 3D cinema auditorium model is built, measurement by measurement, what each one changes on screen, and what the model cannot describe yet.</p>
+      </header>
+      <div class="doc__body">
+        <!--@sommaire-->
+        <div class="prose">
+          <h2 id="in-short">In short</h2>
+          <ul>
+            <li><strong>A cinema auditorium can be described with about ten measurements</strong>: the screen, its height, its curvature, the distance to the first row, the row spacing, the step height, and the width of seats and aisles.</li>
+            <li><strong>The seats form a grid</strong>: rows, seat numbers, aisles, wheelchair spaces, double seats and missing seats.</li>
+            <li><strong>The camera sits at the eyes of a seated moviegoer</strong>, 1.15&nbsp;m (about 3&nbsp;ft 9&nbsp;in) above the floor of their row, looking at the center of the screen.</li>
+            <li><strong>The model has limits</strong>: straight rows, an even rake, a single level. No curved rows, no balcony.</li>
+          </ul>
+
+          <h2 id="definition">What is a 3D seating chart?</h2>
+          <p><strong>A 3D seating chart is a model of the auditorium in three dimensions, in which you can sit in any seat and look at the screen from it.</strong> A 2D seat map tells you where the seat is; a 3D seating chart tells you what you will see from it.</p>
+          <p>At VisionViewer, that model does not come from an architect’s 3D file or a laser scan. It is rebuilt from the auditorium’s measurements, by calculation.</p>
+
+          <h2 id="measurements">Which measurements do we take, and why does each one matter?</h2>
+          <p>Every measurement has a visible effect on the view. Here is the list, with the values of the auditorium in our <a href="/en/demo">demo</a> in parentheses.</p>
+          <ul>
+            <li><strong>Screen width</strong> (9.40&nbsp;m, about 31&nbsp;ft). It sets the angle the picture fills. At the same distance, a screen twice as wide looks twice as big.</li>
+            <li><strong>Screen height</strong> (3.93&nbsp;m). It gives the picture’s shape and, in the front row, how far up you have to look.</li>
+            <li><strong>Height of the bottom of the screen</strong> (1.30&nbsp;m). It decides whether the bottom of the picture clears the heads in front. Too low, and it disappears behind the row ahead; too high, and the front row looks up.</li>
+            <li><strong>Distance from the screen to the first row</strong> (4.0&nbsp;m). It sets the front-row experience and shifts every other row. Too close and you tilt your head back to see the top of the picture; design guides treat this as a comfort limit, as our article on <a href="/en/blog/best-seat-in-a-movie-theater">the best seat in a movie theater</a> explains.</li>
+            <li><strong>Row spacing</strong> (1.10&nbsp;m). It gives the depth of the room, so each row’s distance to the screen.</li>
+            <li><strong>Step height</strong> (22&nbsp;cm, under 9&nbsp;in). This is the rake of the stadium seating. It decides what you see over the heads of the row in front: each step lifts your eyes above those of the row ahead.</li>
+            <li><strong>Seat width</strong> (56&nbsp;cm) and <strong>the gap between seats</strong>. Together, they place each seat across the row: ten seats from the center, a few extra centimeters per seat noticeably change the angle at which you see the screen.</li>
+            <li><strong>Aisle width</strong> (1.10&nbsp;m). A center aisle pushes the seats beside it away from the screen’s axis.</li>
+          </ul>
+          <h3>Step height, in detail</h3>
+          <p>Take two seats, one behind the other. The person in front has the top of their head a little above their eyes. To see the bottom of the screen, the person behind has to look over that head. The higher the step, the bigger the margin.</p>
+          <p>With an even rake, that margin shrinks as you move back: the line of sight to the bottom of the screen gets flatter, while the heads in front keep rising at the same pace. By our calculations for the demo auditorium, for two seats in line, your sight line clears the head in front in the first rows; around the middle of the room, that head starts to cover the bottom of the picture. The 3D view shows it: seats that are already sold are filled with seated silhouettes.</p>
+
+          <h2 id="survey">How are the measurements taken?</h2>
+          <p>Cinemas do not always have their architect’s drawings at hand. We offer two ways:</p>
+          <ul>
+            <li><strong>Remotely, from photos.</strong> The cinema sends us a few photos of the auditorium. We rebuild the seat map, the numbering and the measurements.</li>
+            <li><strong>On site.</strong> A VisionViewer engineer comes over and measures the screen, the stadium seating, the rows and the spacing. The cinema has nothing to prepare.</li>
+          </ul>
+
+          <h2 id="grid">How do you describe the seats in an auditorium?</h2>
+          <p>Seats are described as <strong>a grid</strong>: rows, and the same seat numbers in each. Every cell of the grid is a seat, a wheelchair space, or nothing.</p>
+          <ul>
+            <li><strong>Rows</strong> carry their name (A, B, C…) and <strong>seats</strong> their number, in the direction the cinema chooses.</li>
+            <li><strong>Aisles</strong> sit between two seat numbers, for the whole room.</li>
+            <li><strong>Wheelchair spaces</strong> are cells of their own: no seat, but a place.</li>
+            <li><strong>A double seat</strong> (a loveseat) covers two numbers, has a single ID and counts as two seats.</li>
+            <li><strong>Missing seats</strong> leave an empty cell: a pillar, a passage, a shorter row.</li>
+          </ul>
+          <h3>Why the 2D seat map is a grid, not a scale drawing</h3>
+          <p>We tried a 2D seat map that followed the room’s real distances. On the demo auditorium, it became about twice as tall, and its seats shrank from 38 to 26 pixels. On a phone, that means a longer map to scroll and seats that are harder to tap. We dropped it: on the map, one seat takes one cell, and the 3D view shows the true proportions. One exception: a curved screen is drawn as an arc.</p>
+
+          <h2 id="curved-screen">How do you model a curved screen?</h2>
+          <p>A curved screen is described by its <strong>depth of curvature</strong>: how far its edges come forward into the room compared with its center. It never exceeds a quarter of the screen’s width.</p>
+          <p>Curvature changes the view from the sides. The edges of the screen are closer to the audience than its center: from a side seat, the nearer edge looks larger than it would on a flat screen. The calculation of the angle at which you see the screen accounts for it.</p>
+
+          <h2 id="logo">Why project the cinema’s logo on the screen?</h2>
+          <p>A blank screen tells you nothing about the room. The cinema’s logo, uploaded once, is <strong>projected at the center of the screen</strong> in the 3D view of all its auditoriums, on a background of its choice. It gives a reference point: you see where the center of the picture falls, and how large a familiar image looks from the seat you picked.</p>
+
+          <h2 id="camera">Where does the camera sit?</h2>
+          <p>The camera sits <strong>at the eyes of a seated moviegoer</strong>: 1.15&nbsp;m above the floor of their row, right above their seat. It looks at the center of the screen.</p>
+          <p>For a group, the camera sits at the center of the group: three seats give the middle one, four give the point between the two middle ones. In the view, arrows move the whole group a row or a few seats over, to compare, without changing the number of seats.</p>
+
+          <h2 id="compute">Why compute the view instead of photographing it?</h2>
+          <ul>
+            <li><strong>Every seat gets its own view.</strong> One photo per seat means hundreds of shots per auditorium; one photo per section does not show the seat you picked. Computing covers every seat, including a group’s.</li>
+            <li><strong>Sold seats show as they are right now</strong>, filled with silhouettes, which no photo of an empty room can show.</li>
+            <li><strong>It stays light.</strong> The browser receives measurements, not images: the 3D view shows its first frame in 0.87&nbsp;seconds from the seat map, on slow 4G, on a first visit (<a href="/en/blog/a-seat-map-in-under-a-second">our measurements</a>).</li>
+          </ul>
+          <p>The trade-off: the view renders the room’s geometry, not its decor. Not the color of the seats, not the lighting, not the materials. That is deliberate: what moviegoers want to know is how big the screen looks from their seat and what will be in the way.</p>
+
+          <h2 id="limits">What are the model’s limits?</h2>
+          <ul>
+            <li><strong>Straight rows.</strong> Auditoriums with curved rows are not described yet.</li>
+            <li><strong>An even rake.</strong> Stadium seating whose step changes from row to row is reduced to a single step height.</li>
+            <li><strong>A single level.</strong> No balcony, no mezzanine.</li>
+            <li><strong>Seats in line.</strong> A seat is not offset by half a seat from the one in front.</li>
+            <li><strong>An average eye height</strong>, the same for everyone.</li>
+          </ul>
+
+          <h2 id="faq">Frequently asked questions</h2>
+          <!--@faq-->
+          <h3 data-q>How do you build a 3D model of a cinema auditorium?</h3>
+          <div data-a><p>At VisionViewer, from the auditorium’s measurements: the screen (width, height, height of its bottom edge, curvature), the distance to the first row, the row spacing, the step height, the width of seats, of the gaps between them and of the aisles, plus the seat grid. The 3D view is then computed in the browser, for each seat.</p></div>
+          <h3 data-q>At what height is the view from the seat taken?</h3>
+          <div data-a><p>At the eyes of a seated moviegoer, 1.15&nbsp;m (about 3&nbsp;ft 9&nbsp;in) above the floor of their row, looking at the center of the screen. For a group, the view starts from the center of the group.</p></div>
+          <h3 data-q>Which auditoriums can VisionViewer not model yet?</h3>
+          <div data-a><p>Auditoriums with curved rows, an uneven rake or several levels, such as those with a balcony. The model describes straight rows, on stadium seating with an even rake and a single level.</p></div>
+          <!--@/faq-->
+
+          <div class="suite">
+            <p>Pick a seat in the demo, and look at the screen from it.</p>
+            <a class="btn" href="/en/demo">Try the demo<span class="arr" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+      <!--@voir-aussi-->
+    </main>
+    <!--@include footer-->
+  </body>
+</html>

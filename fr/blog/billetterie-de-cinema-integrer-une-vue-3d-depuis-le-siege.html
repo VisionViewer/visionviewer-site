@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <!--@include head-->
+    <title>Logiciel de billetterie cinéma : intégrer une vue 3D depuis le siège — VisionViewer</title>
+    <meta name="description" content="Éditeurs de logiciel de billetterie cinéma : ce que coûte une vue 3D depuis le siège faite maison, et comment VisionViewer s’y branche sans toucher aux ventes." />
+    <meta name="vv:rubrique" content="guide" />
+    <meta name="vv:date" content="2026-11-23" />
+    <meta name="vv:lecture" content="8" />
+    <meta name="vv:page" content="blog/ticketing-platforms" />
+    <meta property="og:title" content="Logiciel de billetterie cinéma : intégrer une vue 3D depuis le siège plutôt que la développer" />
+    <meta property="og:description" content="Éditeurs de logiciel de billetterie cinéma : ce que coûte une vue 3D depuis le siège faite maison, et comment VisionViewer s’y branche sans toucher aux ventes." />
+  </head>
+  <body>
+    <!--@include header-->
+    <main class="doc">
+      <header class="doc__head">
+        <span class="mono"><a href="/fr/blog">← Blog</a> · {{article.signature}}</span>
+        <h1>Logiciel de billetterie cinéma&nbsp;: intégrer une vue 3D depuis le siège plutôt que la développer</h1>
+        <p class="chapo">Vous éditez un logiciel de billetterie cinéma, un logiciel de caisse ou une plateforme de réservation. Vos cinémas clients veulent peut-être montrer la vue depuis le siège. Voici ce que coûte une billetterie cinéma avec vue 3D construite en interne, et comment VisionViewer s’y branche à la place.</p>
+      </header>
+      <div class="doc__body">
+        <!--@sommaire-->
+        <div class="prose">
+          <h2 id="en-bref">En bref</h2>
+          <ul>
+            <li><strong>Une vue 3D depuis le siège ne se résume pas à un rendu 3D.</strong> Il faut un modèle juste de chaque salle, un affichage rapide sur téléphone, et l’entretenir dans le temps.</li>
+            <li><strong>VisionViewer s’ajoute à votre logiciel</strong> par une balise et un appel&nbsp;: la vue 3D seule depuis votre plan de salle, ou notre plan 2D avec la vue 3D.</li>
+            <li><strong>Vos identifiants de sièges restent les vôtres.</strong> La correspondance est enregistrée une fois, salle par salle.</li>
+            <li><strong>Votre billetterie tranche au paiement.</strong> VisionViewer ne stocke ni séances, ni disponibilités, ni ventes&nbsp;: seulement la forme des salles.</li>
+            <li><strong>Une clé de test fonctionne tout de suite</strong> sur le poste de votre développeur, sans rien nous demander d’autre.</li>
+          </ul>
+
+          <h2 id="definition">Qu’est-ce qu’une vue 3D depuis le siège dans une billetterie&nbsp;?</h2>
+          <p>Une vue 3D depuis le siège est une image de l’écran telle qu’on la voit assis à une place précise, montrée pendant la réservation, avant le paiement. Dans VisionViewer, elle est calculée dans le navigateur à partir des cotes de la salle&nbsp;: la caméra est placée aux yeux d’un spectateur assis, 1,15&nbsp;m au-dessus du sol de sa rangée, et regarde le centre de l’écran.</p>
+          <p>Pour un éditeur, la question n’est pas de savoir si la fonction est utile à vos cinémas&nbsp;: c’est de savoir qui la construit, et qui l’entretient.</p>
+
+          <h2 id="pourquoi">Pourquoi un éditeur de billetterie cinéma s’en soucie-t-il&nbsp;?</h2>
+          <p>Parce que la place est au cœur de l’achat en ligne. Dans une étude menée par Vertigo Research pour Webedia Movies Pro auprès de plus de 100&nbsp;000 spectateurs américains, en 2018, 28&nbsp;% des acheteurs en ligne disent avoir choisi leur cinéma parce qu’on y réserve sa place. Nous détaillons ces chiffres, et leurs limites, dans <a href="/fr/blog/la-place-compte-avant-l-achat">notre article sur la place avant l’achat</a>.</p>
+          <p>Or, du côté des billetteries de cinéma, le plan de salle est en 2D. Parmi celles que nous avons consultées pour <a href="/fr/blog/vue-depuis-le-siege-comparatif-des-solutions">notre comparatif</a>, une seule annonce une vue à 360° depuis le siège choisi, dans son application mobile. Le plan dit où est le fauteuil&nbsp;; il ne dit pas ce qu’on en voit.</p>
+
+          <h2 id="construire">Que coûte une vue 3D depuis le siège construite en interne&nbsp;?</h2>
+          <p>Nous ne chiffrons pas ce coût à votre place&nbsp;: il dépend de votre équipe. Voici en revanche les chantiers que nous avons dû mener, et qu’une équipe interne retrouverait.</p>
+          <h3>Un modèle de chaque salle</h3>
+          <p>Une vue juste demande la géométrie réelle de la salle&nbsp;: largeur, hauteur et hauteur du bas de l’écran, sa courbure, la distance au premier rang, l’écart entre les rangées, la hauteur de marche, la largeur des fauteuils et l’espace entre eux, les allées. Puis la disposition&nbsp;: emplacements PMR, places doubles, places absentes. Votre logiciel connaît des identifiants de sièges, rarement ces cotes. Il faut les collecter, salle par salle, chez chacun de vos cinémas, et les tenir à jour quand une salle est refaite.</p>
+          <h3>Un rendu 3D sur téléphone</h3>
+          <p>La vue doit s’afficher sur les téléphones des spectateurs, pas seulement sur un ordinateur. La scène doit y tourner sans saccade, avec la bonne caméra pour chaque place, et pour un groupe&nbsp;: chez nous, la vue se prend depuis le centre du groupe. Il faut aussi gérer ce qui se vend pendant que le spectateur regarde.</p>
+          <h3>La vitesse</h3>
+          <p>Une vue qui tarde fait hésiter au pire moment, juste avant le paiement. Notre première version rendait le plan utilisable en 2,8&nbsp;secondes en 4G lente. Il a fallu revoir la façon dont la page arrive, dessiner la salle avant que le code soit chargé, et télécharger la vue 3D d’avance pendant que le spectateur regarde le plan. Aujourd’hui, en première visite et en 4G lente, sur un téléphone émulé, le plan est utilisable en 0,65&nbsp;seconde et la vue 3D affiche sa première image en 0,87&nbsp;seconde. Le détail est dans <a href="/fr/blog/un-plan-de-salle-en-moins-d-une-seconde">notre article sur la vitesse</a>.</p>
+          <h3>La maintenance</h3>
+          <p>Une vitesse gagnée se reperd, correction après correction. Chez nous, chaque construction se termine par des seuils de poids et de temps&nbsp;: s’ils sont dépassés, la mise en ligne est refusée. S’y ajoutent les navigateurs et les salles qui changent. C’est un produit à part entière, à côté du vôtre.</p>
+
+          <h2 id="brancher">Comment VisionViewer se branche-t-il sur une billetterie&nbsp;?</h2>
+          <p>Une balise <code>&lt;script&gt;</code> charge le SDK, puis un appel suffit. Deux intégrations, selon ce que votre logiciel affiche déjà&nbsp;:</p>
+          <div class="tableau" tabindex="0">
+            <table>
+              <thead>
+                <tr><th>Votre logiciel</th><th>L’appel</th><th>Ce qui se passe</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>A déjà un plan de salle</td><td><code>VisionViewer.open()</code></td><td>Un bouton sur votre plan ouvre la vue 3D en plein écran, depuis les places choisies. «&nbsp;Choisir ces places&nbsp;» vous les rend (<code>onConfirm</code>).</td></tr>
+                <tr><td>N’a pas de plan de salle</td><td><code>VisionViewer.mountPlan()</code></td><td>Notre plan 2D s’insère dans un bloc de votre page, en clair ou en sombre. Votre page reçoit chaque changement de sélection (<code>onChange</code>).</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Dans les deux cas, votre page parle <strong>dans ses propres identifiants de sièges</strong>. Si votre logiciel nomme G9 «&nbsp;7-9&nbsp;», la correspondance est enregistrée une fois, salle par salle&nbsp;: vous n’avez rien à traduire à chaque appel.</p>
+          <p>Les sièges déjà vendus arrivent par <code>occupied</code>&nbsp;: c’est une photo, prise à l’ouverture. Si un siège se vend pendant que le spectateur regarde, votre page envoie la nouvelle liste (<code>update</code>)&nbsp;; si ce siège était choisi, il est retiré, et votre page en est informée. Dans tous les cas, <strong>votre billetterie tranche au paiement</strong>.</p>
+          <p>Le code complet des deux intégrations est dans notre <a href="/fr/blog/ajouter-une-vue-depuis-le-fauteuil-a-sa-billetterie">guide d’intégration pas à pas</a>, et toutes les options dans le <a href="https://docs.visionviewer.net" rel="noopener noreferrer">guide technique</a>.</p>
+
+          <h2 id="donnees">Quelles données passent par VisionViewer&nbsp;?</h2>
+          <ul>
+            <li><strong>Ce que nous gardons</strong>&nbsp;: la forme des salles, et le logo de chaque cinéma, projeté sur l’écran dans la vue 3D.</li>
+            <li><strong>Ce que nous ne gardons pas</strong>&nbsp;: les séances, les tarifs, les disponibilités, les ventes, les paiements.</li>
+            <li><strong>Les spectateurs</strong>&nbsp;: ni compte, ni cookie, ni stockage dans leur navigateur.</li>
+            <li><strong>Ce que nous comptons</strong>&nbsp;: par jour et par salle, les plans affichés, les vues 3D ouvertes, les choix confirmés depuis la vue 3D et, si la page de confirmation les signale (<code>reportOrder()</code>), les commandes.</li>
+          </ul>
+
+          <h2 id="essayer">Comment l’essayer avant d’en parler à vos cinémas&nbsp;?</h2>
+          <p>Une <strong>clé de test</strong> (<code>vv_test_…</code>) fonctionne tout de suite sur <code>localhost</code>, quel que soit le port. Votre développeur branche la vue sur votre propre plan de salle, sur son poste, avant toute mise en ligne. La vue affiche alors la mention «&nbsp;Version de test&nbsp;».</p>
+          <p>La <strong>clé définitive</strong> (<code>vv_live_…</code>) ne fonctionne que sur les domaines déclarés, sans mention. Un domaine déclaré est un nom exact&nbsp;: pas de joker.</p>
+          <p>Un cinéma sans plan ni cotes n’est pas un obstacle&nbsp;: nous construisons sa salle à partir de quelques photos, ou un ingénieur la mesure sur place.</p>
+
+          <h2 id="limites">Ce que VisionViewer ne fait pas</h2>
+          <ul>
+            <li><strong>Il est fait pour le cinéma, et pour lui seul.</strong> Ni stade, ni théâtre.</li>
+            <li><strong>Le modèle décrit des rangées droites</strong>, sur un gradin à pente régulière et un seul niveau. Les rangées courbes et les balcons ne sont pas encore pris en charge.</li>
+            <li><strong>La vue est calculée, pas photographiée.</strong> Elle rend la distance, l’angle et la hauteur de l’écran, pas la décoration de la salle.</li>
+            <li><strong>Nous n’avons pas de résultats de cinémas à publier.</strong> Nous ne prêtons à VisionViewer aucun gain de ventes que nous n’avons pas mesuré.</li>
+          </ul>
+
+          <h2 id="partenariat">Comment travailler ensemble&nbsp;?</h2>
+          <p>Vous gardez la relation avec vos cinémas, votre plan de salle et votre paiement. Nous fournissons la vue, et la description de chaque salle. Les tarifs sont établis sur devis, selon votre parc.</p>
+          <p>Le plus simple est de commencer par une salle réelle d’un de vos cinémas clients. Écrivez-nous à <a href="mailto:{{contact}}">{{contact}}</a>&nbsp;: nous vous la montrons dans VisionViewer, et nous vous envoyons une clé de test pour la brancher sur votre plan.</p>
+
+          <h2 id="questions">Questions fréquentes</h2>
+          <!--@faq-->
+          <h3 data-q>Un éditeur de billetterie cinéma peut-il ajouter une vue 3D sans changer son plan de salle&nbsp;?</h3>
+          <div data-a><p>Oui. Avec <code>VisionViewer.open()</code>, un bouton sur votre plan existant ouvre la vue 3D depuis les places choisies, puis vous rend les places retenues. Votre plan ne change pas.</p></div>
+          <h3 data-q>VisionViewer stocke-t-il les ventes ou les disponibilités&nbsp;?</h3>
+          <div data-a><p>Non. VisionViewer ne garde que la forme des salles. Les sièges vendus lui sont passés à l’ouverture (<code>occupied</code>) et mis à jour au besoin (<code>update</code>)&nbsp;; votre billetterie tranche au paiement.</p></div>
+          <h3 data-q>Faut-il renommer nos sièges pour utiliser VisionViewer&nbsp;?</h3>
+          <div data-a><p>Non. Votre page utilise vos propres identifiants de sièges. La correspondance avec la salle modélisée est enregistrée une fois, salle par salle.</p></div>
+          <h3 data-q>Comment devenir partenaire&nbsp;?</h3>
+          <div data-a><p>Écrivez-nous à {{contact}} avec le nom d’une salle d’un de vos cinémas clients. Nous vous la montrons dans VisionViewer et vous envoyons une clé de test. Les tarifs sont sur devis.</p></div>
+          <!--@/faq-->
+
+          <h2 id="sources">Sources</h2>
+          <ul class="sources">
+            <li>Webedia Movies Pro et Vertigo Research, <em>From Discovery to Purchase – The Moviegoing Experience Begins Online – A Boxoffice Profile</em>, communiqué du 12&nbsp;mars 2019, repris par <a href="https://celluloidjunkie.com/?p=51430" rel="noopener noreferrer">Celluloid Junkie</a>. Plus de 100&nbsp;000 spectateurs interrogés à la sortie de cinémas américains en 2018.</li>
+            <li>Le <a href="https://docs.visionviewer.net" rel="noopener noreferrer">guide technique de VisionViewer</a>&nbsp;: toutes les options du SDK, avec des exemples à exécuter sur place.</li>
+          </ul>
+
+          <div class="suite">
+            <p>Voyez ce que verraient les spectateurs de vos cinémas clients.</p>
+            <a class="btn" href="/fr/demo">Essayez la démo<span class="arr" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+      <!--@voir-aussi-->
+    </main>
+    <!--@include footer-->
+  </body>
+</html>

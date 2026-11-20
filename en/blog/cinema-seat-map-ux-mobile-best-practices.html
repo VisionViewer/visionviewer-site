@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--@include head-->
+    <title>Seat map UX for mobile cinema booking: 10 best practices — VisionViewer</title>
+    <meta name="description" content="Seat map UX for mobile cinema booking: ten concrete best practices for choosing seats on a phone, each one explained, with the figures behind them." />
+    <meta name="vv:rubrique" content="guide" />
+    <meta name="vv:date" content="2026-11-26" />
+    <meta name="vv:lecture" content="8" />
+    <meta name="vv:page" content="blog/seat-map-ux" />
+    <meta property="og:title" content="Seat map UX for mobile cinema booking: 10 best practices" />
+    <meta property="og:description" content="Seat map UX for mobile cinema booking: ten concrete best practices for choosing seats on a phone, each one explained, with the figures behind them." />
+  </head>
+  <body>
+    <!--@include header-->
+    <main class="doc">
+      <header class="doc__head">
+        <span class="mono"><a href="/en/blog">← Blog</a> · {{article.signature}}</span>
+        <h1>Seat map UX for mobile cinema booking: ten best practices</h1>
+        <p class="chapo">Moviegoers increasingly book on their phones, and the seat map is the most delicate step of the flow: lots of small targets, on a small screen, right before paying. Here are ten seat map UX best practices for mobile cinema booking, each with its reason, and what VisionViewer does where it applies.</p>
+      </header>
+      <div class="doc__body">
+        <!--@sommaire-->
+        <div class="prose">
+          <h2 id="in-short">In short</h2>
+          <div class="chiffres">
+            <div><b>46.4<small>%</small></b><p>of French moviegoers who book their seat do it on a smartphone. 40.9% on a computer.</p><span class="mono">CNC · Vertigo, CinExpert survey · France, 2026</span></div>
+            <div><b>72<small>%</small></b><p>of moviegoers who found their showtime on the cinema’s website completed their purchase there.</p><span class="mono">Webedia Movies Pro · Vertigo Research · United States, 2018</span></div>
+            <div><b>24<small>px</small></b><p>The minimum size of a touch target under the web accessibility guidelines (level AA).</p><span class="mono">W3C, WCAG&nbsp;2.2, criterion 2.5.8</span></div>
+            <div><b>0.65<small>s</small></b><p>for the VisionViewer seat map to be usable, on slow 4G, on a first visit.</p><span class="mono">VisionViewer measurements, 2026</span></div>
+          </div>
+          <p><strong>A good mobile seat map shows up right away, does not shift while loading, never shows an unverified seat as free, can be tapped without mistakes, explains its refusals, and shows the view before payment.</strong> The ten practices below go into each point.</p>
+
+          <h2 id="why-mobile">Why does the seat map matter most on a phone?</h2>
+          <p>The phone is now where many moviegoers book. France publishes precise figures: according to the national film agency, the CNC, <strong>41.7% of moviegoers booked their seat in advance in 2026, and 46.4% of them did so on a smartphone</strong>, ahead of the computer. The details are in our article on <a href="/en/blog/online-booking-and-seat-choice-in-french-cinemas">online booking and seat choice in French cinemas</a>.</p>
+          <p>An <strong>interactive seat map</strong> is the map of an auditorium’s seats, on which the moviegoer taps the seats they want to book. On a phone held in one hand, every flaw shows more than anywhere else.</p>
+
+          <h2 id="show-the-room">1. Show the auditorium right away</h2>
+          <p><strong>Why:</strong> a blank page or a spinner tells the moviegoer nothing. A drawn auditorium, even before it can be used, tells them they are in the right place and gives them time to get their bearings.</p>
+          <p><strong>At VisionViewer:</strong> the seat map page arrives with the room already drawn: rows, seats, screen. It is visible in 0.33&nbsp;seconds, on slow 4G, on a first visit.</p>
+
+          <h2 id="no-layout-shift">2. Don’t let the page jump</h2>
+          <p><strong>Why:</strong> a seat map that pushes the rest of the page down as it loads makes people tap something other than what they aimed for. On a phone, with the thumb already moving, that is a guaranteed wrong tap.</p>
+          <p><strong>At VisionViewer:</strong> the map arrives at its final size, and its frame in the cinema’s page starts from a height estimated from its width. The measured layout shift score is 0.00, down from 0.15.</p>
+
+          <h2 id="availability">3. Never show an unverified seat as available</h2>
+          <p><strong>Why:</strong> a seat shown as free, picked, then refused at checkout is the worst letdown in the flow. A map that waits is better than a map that is wrong.</p>
+          <p><strong>At VisionViewer:</strong> until the cinema’s site has said which seats are sold, seats have no color and cannot be picked. If a seat sells while the moviegoer hesitates, the cinema sends the new list; a seat already picked is removed, and the cinema is told. In every case, its ticketing system has the final word at checkout.</p>
+
+          <h2 id="touch-targets">4. Big enough targets, and zoom that doesn’t get in the way</h2>
+          <p><strong>Why:</strong> a large auditorium shown whole on a phone screen gives tiny seats. The web accessibility guidelines (WCAG&nbsp;2.2, criterion 2.5.8, level AA) set 24 by 24&nbsp;pixels as the minimum size for a target, with some exceptions. A seat map must be able to zoom in, without zooming becoming an obstacle.</p>
+          <p><strong>At VisionViewer:</strong> the whole auditorium shows first. The map zooms with buttons, with two fingers, or with Ctrl and the scroll wheel. With a finger, when seats are smaller than 18&nbsp;pixels, the first tap zooms the map, to about 30&nbsp;pixels per seat, instead of picking a seat at random. The 2D map is a grid, one seat per cell, rather than a scale drawing: a scale drawing was twice as tall, with smaller seats (see <a href="/en/blog/how-we-model-a-cinema-auditorium-in-3d">how we model an auditorium</a>).</p>
+
+          <h2 id="seats-together">5. Keep seats together, and explain refusals</h2>
+          <p><strong>Why:</strong> a group wants to sit together. A map that lets people pick scattered seats, or that ignores a tap without saying why, looks broken.</p>
+          <p><strong>At VisionViewer:</strong> up to nine seats, touching: side by side or one in front of the other, not diagonally. A seat can only be added if it touches the selection, and the legend marks the seats that “can be added.” When the map refuses, it says why, for instance: “Choose a seat touching yours: beside, in front or behind.”</p>
+
+          <h2 id="wheelchair-double">6. Make wheelchair spaces and double seats easy to read</h2>
+          <p><strong>Why:</strong> a wheelchair space is not a seat like the others, and a double seat is booked as a whole. If the map does not set them apart, the moviegoer finds out too late, at the door or in the auditorium.</p>
+          <p><strong>At VisionViewer:</strong> each cell of the grid is a seat, a wheelchair space or nothing, and wheelchair spaces are announced as such to screen readers. A double seat has a single ID, counts as two, and the map says so: “A double seat counts as two and is booked as a whole.”</p>
+
+          <h2 id="light-dark">7. Match the site’s light or dark theme</h2>
+          <p><strong>Why:</strong> when a cinema’s site is dark, a white seat map lighting up in the middle of the page is glaring and breaks the flow. The reverse clashes just as much on a light site.</p>
+          <p><strong>At VisionViewer:</strong> the cinema picks our seat map’s theme, light or dark, to match its page.</p>
+
+          <h2 id="stay-in-flow">8. Don’t make people leave the flow</h2>
+          <p><strong>Why:</strong> every redirect, every new tab, every login prompt is a chance to drop off. The Webedia Movies Pro and Vertigo Research study (United States, 2018) found that 72% of moviegoers who found their showtime on the cinema’s website completed their purchase there: the cinema’s own site is where the sale naturally happens.</p>
+          <p><strong>At VisionViewer:</strong> the seat map sits in a block of the cinema’s page, and the 3D view opens full screen on top of it. Two ways out: “Map” closes without changing anything, “Choose these seats” hands back the seats being viewed. The order and the payment stay on the cinema’s site.</p>
+
+          <h2 id="view-before-paying">9. Show the view before payment</h2>
+          <p><strong>Why:</strong> a seat map tells you where the seat is, not what you will see from it. A row letter says nothing about how big the screen will look or about the head in front. That information is useful before payment; afterward, it changes nothing. We go further into this in <a href="/en/blog/why-cinemas-should-show-the-view-from-each-seat">why cinemas should show the view from each seat</a>.</p>
+          <p><strong>At VisionViewer:</strong> this is the heart of the product. A 3D view computed from the chosen seat, at a seated moviegoer’s eye level, with the cinema’s logo on the screen. For a group, from the center of the group; arrows move the group to compare.</p>
+
+          <h2 id="measure-speed">10. Measure speed, on a phone</h2>
+          <p><strong>Why:</strong> on a desktop computer, almost everything feels fast. Moviegoers often book over 4G, on a mid-range phone. Speed that is not measured under those conditions is not known.</p>
+          <p><strong>At VisionViewer:</strong> a real browser opens the product as it is deployed, emulating slow 4G and a throttled processor. On a first visit, the seat map is usable in 0.65&nbsp;seconds and the 3D view shows its first frame in 0.87&nbsp;seconds. Thresholds block any release that would slow these times down. Our limits are published too: these are emulated measurements, not yet on real phones. It is all in <a href="/en/blog/a-seat-map-in-under-a-second">a seat map in under a second</a>.</p>
+
+          <h2 id="faq">Frequently asked questions</h2>
+          <!--@faq-->
+          <h3 data-q>What makes good seat map UX on mobile?</h3>
+          <div data-a><p>A seat map that shows the auditorium right away, does not make the page jump, never shows an unverified seat as free, can be tapped without mistakes thanks to zoom, explains its refusals, makes wheelchair spaces and double seats readable, and shows the view before payment, without making people leave the cinema’s site.</p></div>
+          <h3 data-q>How many moviegoers book cinema tickets on a smartphone?</h3>
+          <div data-a><p>In France, 46.4% of moviegoers who book their seat do it on a smartphone and 40.9% on a computer, according to the CNC’s 2026 study of French moviegoing habits. We know of no equivalent public figure for every country.</p></div>
+          <h3 data-q>How big should a seat be on a touch seat map?</h3>
+          <div data-a><p>The web accessibility guidelines (WCAG&nbsp;2.2, criterion 2.5.8) set 24 by 24&nbsp;pixels as the minimum target size. In a large auditorium, the map must therefore zoom in; VisionViewer’s map zooms on the first tap when seats are smaller than 18&nbsp;pixels.</p></div>
+          <!--@/faq-->
+
+          <h2 id="limits">What this article does not claim</h2>
+          <ul>
+            <li><strong>None of these practices has been measured here against sales.</strong> We have no cinema results to publish, and we attribute no figure-backed gain to them.</li>
+            <li><strong>The speed figures are ours</strong>, measured in emulation, not on real phones.</li>
+          </ul>
+
+          <h2 id="sources">Sources</h2>
+          <ul class="sources">
+            <li>CNC, <a href="https://www.cnc.fr/professionnels/etudes-et-rapports/etudes-prospectives/les-pratiques-cinematographiques-des-francais-en-2026_2668928" rel="noopener noreferrer"><em>Les pratiques cinématographiques des Français en 2026</em></a> (in French), September 2026, pp.&nbsp;11–12. Weekly online CinExpert survey by the institute Vertigo, among 2,000 moviegoers.</li>
+            <li>W3C, <a href="https://www.w3.org/TR/WCAG22/#target-size-minimum" rel="noopener noreferrer"><em>Web Content Accessibility Guidelines (WCAG) 2.2</em>, success criterion 2.5.8, Target Size (Minimum)</a>.</li>
+            <li>Webedia Movies Pro and Vertigo Research, <em>From Discovery to Purchase – The Moviegoing Experience Begins Online – A Boxoffice Profile</em>, press release of March&nbsp;12, 2019, carried by <a href="https://celluloidjunkie.com/?p=51430" rel="noopener noreferrer">Celluloid Junkie</a>. More than 100,000 moviegoers surveyed as they left US cinemas in 2018.</li>
+            <li>VisionViewer, <a href="/en/blog/a-seat-map-in-under-a-second">a seat map in under a second</a>: speed method and measurements.</li>
+          </ul>
+
+          <div class="suite">
+            <p>Open the demo on your phone, and check these ten points yourself.</p>
+            <a class="btn" href="/en/demo">Try the demo<span class="arr" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+      <!--@voir-aussi-->
+    </main>
+    <!--@include footer-->
+  </body>
+</html>

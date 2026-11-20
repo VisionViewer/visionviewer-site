@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <!--@include head-->
+    <title>Plan de salle interactif sur mobile : 10 bonnes pratiques — VisionViewer</title>
+    <meta name="description" content="Plan de salle interactif et réservation cinéma mobile&nbsp;: dix bonnes pratiques pour le choix de la place sur téléphone, chacune justifiée, avec des chiffres." />
+    <meta name="vv:rubrique" content="guide" />
+    <meta name="vv:date" content="2026-11-26" />
+    <meta name="vv:lecture" content="8" />
+    <meta name="vv:page" content="blog/seat-map-ux" />
+    <meta property="og:title" content="Plan de salle interactif sur mobile&nbsp;: 10 bonnes pratiques pour le cinéma" />
+    <meta property="og:description" content="Plan de salle interactif et réservation cinéma mobile&nbsp;: dix bonnes pratiques pour le choix de la place sur téléphone, chacune justifiée, avec des chiffres." />
+  </head>
+  <body>
+    <!--@include header-->
+    <main class="doc">
+      <header class="doc__head">
+        <span class="mono"><a href="/fr/blog">← Blog</a> · {{article.signature}}</span>
+        <h1>Plan de salle interactif sur mobile&nbsp;: dix bonnes pratiques pour le cinéma</h1>
+        <p class="chapo">La réservation de cinéma se fait d’abord sur téléphone. Le plan de salle interactif y est le moment le plus délicat du parcours&nbsp;: beaucoup de petites cibles, sur un petit écran, juste avant de payer. Voici dix bonnes pratiques pour la réservation cinéma sur mobile, chacune avec sa raison, et ce que fait VisionViewer quand c’est pertinent.</p>
+      </header>
+      <div class="doc__body">
+        <!--@sommaire-->
+        <div class="prose">
+          <h2 id="en-bref">En bref</h2>
+          <div class="chiffres">
+            <div><b>46,4<small>%</small></b><p>des spectateurs qui réservent leur place le font sur smartphone. 40,9&nbsp;% sur ordinateur.</p><span class="mono">CNC · Vertigo, enquête CinExpert · France, 2026</span></div>
+            <div><b>41,7<small>%</small></b><p>des spectateurs ont réservé leur place à l’avance en 2026. Ils étaient 25,6&nbsp;% en 2019.</p><span class="mono">CNC · Vertigo, enquête CinExpert · France, 2026</span></div>
+            <div><b>24<small>px</small></b><p>La taille minimale d’une cible tactile, au sens des règles d’accessibilité du web (niveau AA).</p><span class="mono">W3C, WCAG&nbsp;2.2, critère 2.5.8</span></div>
+            <div><b>0,65<small>s</small></b><p>pour que le plan VisionViewer soit utilisable, en 4G lente, à la première visite.</p><span class="mono">Mesures VisionViewer, 2026</span></div>
+          </div>
+          <p><strong>Un bon plan de salle sur mobile se voit tout de suite, ne bouge pas en chargeant, ne montre jamais libre un siège qu’il n’a pas vérifié, se touche sans erreur, explique ses refus, et montre la vue avant le paiement.</strong> Les dix pratiques qui suivent le détaillent.</p>
+
+          <h2 id="pourquoi">Pourquoi le plan de salle se joue sur téléphone&nbsp;?</h2>
+          <p>En France, selon l’étude 2026 du CNC, <strong>41,7&nbsp;% des spectateurs réservent leur place à l’avance, et 46,4&nbsp;% d’entre eux le font sur smartphone</strong>&nbsp;: le téléphone passe devant l’ordinateur. Le détail est dans notre article sur <a href="/fr/blog/reservation-et-choix-de-la-place-au-cinema-en-france">la réservation et le choix de la place au cinéma en France</a>.</p>
+          <p>Un <strong>plan de salle interactif</strong> est la carte des places d’une salle, sur laquelle le spectateur touche les fauteuils qu’il veut réserver. Sur un téléphone tenu d’une main, chaque défaut s’y voit plus qu’ailleurs.</p>
+
+          <h2 id="salle-visible">1. Montrer la salle tout de suite</h2>
+          <p><strong>Pourquoi&nbsp;:</strong> une page blanche ou un indicateur de chargement ne dit rien au spectateur. Une salle dessinée, même pas encore utilisable, lui dit qu’il est au bon endroit et lui laisse le temps de s’orienter.</p>
+          <p><strong>Chez VisionViewer&nbsp;:</strong> la page du plan arrive avec la salle déjà dessinée&nbsp;: rangées, fauteuils, écran. Elle se voit en 0,33&nbsp;seconde, en 4G lente, à la première visite.</p>
+
+          <h2 id="pas-de-saut">2. Ne pas faire sauter la page</h2>
+          <p><strong>Pourquoi&nbsp;:</strong> un plan qui s’insère en poussant le reste de la page fait toucher autre chose que ce qu’on visait. Sur un téléphone, où le pouce est déjà en route, c’est une erreur de sélection assurée.</p>
+          <p><strong>Chez VisionViewer&nbsp;:</strong> le plan arrive à sa taille définitive, et son cadre, dans la page du cinéma, part d’une hauteur estimée d’après sa largeur. L’indice de décalage de mise en page mesuré est de 0,00, contre 0,15 avant correction.</p>
+
+          <h2 id="disponibilite">3. Ne jamais montrer libre un siège non vérifié</h2>
+          <p><strong>Pourquoi&nbsp;:</strong> un siège affiché libre, choisi, puis refusé au paiement, c’est la pire déception du parcours. Mieux vaut un plan qui attend que d’un plan qui se trompe.</p>
+          <p><strong>Chez VisionViewer&nbsp;:</strong> tant que le site du cinéma n’a pas dit quels sièges sont vendus, les fauteuils n’ont pas leur couleur et ne se choisissent pas. Si un siège se vend pendant que le spectateur hésite, le cinéma envoie la nouvelle liste&nbsp;; un siège déjà choisi est retiré, et le cinéma en est informé. Dans tous les cas, sa billetterie tranche au paiement.</p>
+
+          <h2 id="cibles">4. Des cibles assez grandes, et un zoom qui ne gêne pas</h2>
+          <p><strong>Pourquoi&nbsp;:</strong> une grande salle, affichée en entier sur un écran de téléphone, donne des fauteuils minuscules. Les règles d’accessibilité du web (WCAG&nbsp;2.2, critère 2.5.8, niveau AA) fixent à 24&nbsp;pixels de côté la taille minimale d’une cible, sauf exceptions. Un plan doit donc pouvoir s’agrandir, sans que l’agrandissement devienne un obstacle.</p>
+          <p><strong>Chez VisionViewer&nbsp;:</strong> toute la salle s’affiche d’abord. Le plan s’agrandit par des boutons, à deux doigts, ou avec Ctrl et la molette. Au doigt, quand les fauteuils font moins de 18&nbsp;pixels, le premier toucher agrandit le plan, vers 30&nbsp;pixels par fauteuil, au lieu de choisir une place au hasard. Le plan 2D est une grille, un fauteuil par case, plutôt qu’un plan à l’échelle&nbsp;: un plan à l’échelle était deux fois plus haut, avec des fauteuils plus petits (voir <a href="/fr/blog/modeliser-une-salle-de-cinema-en-3d">comment nous modélisons une salle</a>).</p>
+
+          <h2 id="places-collees">5. Garder les places collées, et expliquer les refus</h2>
+          <p><strong>Pourquoi&nbsp;:</strong> un groupe veut s’asseoir ensemble. Un plan qui laisse choisir des places éparpillées, ou qui refuse un toucher sans rien dire, fait croire à une panne.</p>
+          <p><strong>Chez VisionViewer&nbsp;:</strong> jusqu’à neuf places, collées&nbsp;: côte à côte ou l’une devant l’autre, pas en diagonale. Une place ne s’ajoute que si elle touche la sélection, et la légende distingue les places qui «&nbsp;peuvent s’ajouter&nbsp;». Quand le plan refuse, il dit pourquoi, par exemple&nbsp;: «&nbsp;Choisissez une place collée aux vôtres&nbsp;: à côté, devant ou derrière.&nbsp;»</p>
+
+          <h2 id="pmr-doubles">6. Rendre lisibles les emplacements PMR et les places doubles</h2>
+          <p><strong>Pourquoi&nbsp;:</strong> un emplacement pour fauteuil roulant n’est pas un siège comme les autres, et une place double se réserve en entier. Si le plan ne les distingue pas, le spectateur le découvre trop tard, au guichet ou en salle.</p>
+          <p><strong>Chez VisionViewer&nbsp;:</strong> chaque case de la grille est un fauteuil, un emplacement PMR ou rien, et l’emplacement PMR est annoncé comme tel aux lecteurs d’écran. Une place double porte un seul identifiant, compte pour deux, et le plan le rappelle&nbsp;: «&nbsp;Une place double compte pour deux et se réserve en entier.&nbsp;»</p>
+
+          <h2 id="theme">7. Suivre le mode clair ou sombre du site</h2>
+          <p><strong>Pourquoi&nbsp;:</strong> quand le site du cinéma est sombre, un plan blanc qui s’allume au milieu de la page éblouit, et rompt la continuité du parcours. L’inverse jure tout autant sur un site clair.</p>
+          <p><strong>Chez VisionViewer&nbsp;:</strong> le cinéma choisit le thème de notre plan, clair ou sombre, pour qu’il s’accorde à sa page.</p>
+
+          <h2 id="parcours">8. Ne pas faire quitter le parcours</h2>
+          <p><strong>Pourquoi&nbsp;:</strong> chaque redirection, chaque nouvel onglet, chaque connexion demandée est une occasion d’abandon. L’étude Webedia Movies Pro et Vertigo Research (États-Unis, 2018) relève que 72&nbsp;% des spectateurs qui avaient trouvé leur séance sur le site du cinéma y ont terminé leur achat&nbsp;: le site du cinéma est le lieu naturel de la vente.</p>
+          <p><strong>Chez VisionViewer&nbsp;:</strong> le plan s’insère dans un bloc de la page du cinéma, et la vue 3D s’ouvre en plein écran par-dessus. Deux sorties&nbsp;: «&nbsp;Plan&nbsp;» ferme sans rien changer, «&nbsp;Choisir ces places&nbsp;» rend les places regardées. La commande et le paiement restent sur le site du cinéma.</p>
+
+          <h2 id="vue-avant">9. Montrer la vue avant de payer</h2>
+          <p><strong>Pourquoi&nbsp;:</strong> un plan dit où est la place, pas ce qu’on en voit. Une lettre de rangée ne dit rien de la taille de l’écran ni de la tête de devant. C’est avant le paiement que cette information sert&nbsp;; après, elle ne change plus rien. Nous l’expliquons plus longuement dans <a href="/fr/blog/pourquoi-montrer-la-vue-depuis-la-place-au-cinema">pourquoi montrer la vue depuis la place</a>.</p>
+          <p><strong>Chez VisionViewer&nbsp;:</strong> c’est le cœur du produit. Une vue 3D calculée depuis le fauteuil choisi, aux yeux d’un spectateur assis, avec le logo du cinéma sur l’écran. Pour un groupe, depuis le centre du groupe&nbsp;; des flèches déplacent le groupe pour comparer.</p>
+
+          <h2 id="vitesse">10. Mesurer la vitesse, sur un téléphone</h2>
+          <p><strong>Pourquoi&nbsp;:</strong> sur un ordinateur de bureau, presque tout paraît rapide. Le spectateur, lui, réserve souvent en 4G, sur un téléphone de milieu de gamme. Une vitesse qui n’est pas mesurée dans ces conditions n’est pas connue.</p>
+          <p><strong>Chez VisionViewer&nbsp;:</strong> un vrai navigateur ouvre le produit tel qu’il est en ligne, en émulant une 4G lente et un processeur ralenti. Résultat, à la première visite&nbsp;: plan utilisable en 0,65&nbsp;seconde, première image de la vue 3D en 0,87&nbsp;seconde. Des seuils bloquent toute mise en ligne qui ferait reculer ces temps. Nos limites aussi sont publiées&nbsp;: ce sont des mesures en émulation, pas encore sur de vrais téléphones. Tout est dans <a href="/fr/blog/un-plan-de-salle-en-moins-d-une-seconde">un plan de salle en moins d’une seconde</a>.</p>
+
+          <h2 id="questions">Questions fréquentes</h2>
+          <!--@faq-->
+          <h3 data-q>Qu’est-ce qu’un bon plan de salle interactif sur mobile&nbsp;?</h3>
+          <div data-a><p>Un plan qui montre la salle tout de suite, ne fait pas sauter la page, ne montre jamais libre un siège non vérifié, se touche sans erreur grâce au zoom, explique ses refus, rend lisibles les places PMR et doubles, et laisse voir la vue avant le paiement, sans faire quitter le site du cinéma.</p></div>
+          <h3 data-q>Quelle part des réservations de cinéma se fait sur smartphone&nbsp;?</h3>
+          <div data-a><p>En France, 46,4&nbsp;% des spectateurs qui réservent leur place le font sur smartphone, et 40,9&nbsp;% sur ordinateur, selon l’étude 2026 du CNC sur les pratiques cinématographiques des Français.</p></div>
+          <h3 data-q>Quelle taille doit avoir un siège sur un plan de salle tactile&nbsp;?</h3>
+          <div data-a><p>Les règles d’accessibilité du web (WCAG&nbsp;2.2, critère 2.5.8) fixent à 24&nbsp;pixels de côté la taille minimale d’une cible. Dans une grande salle, le plan doit donc s’agrandir&nbsp;; celui de VisionViewer agrandit au premier toucher quand les fauteuils font moins de 18&nbsp;pixels.</p></div>
+          <!--@/faq-->
+
+          <h2 id="limites">Ce que cet article ne dit pas</h2>
+          <ul>
+            <li><strong>Aucune de ces pratiques n’a été mesurée ici sur des ventes.</strong> Nous n’avons pas de résultats de cinémas à publier, et nous ne prêtons à ces pratiques aucun gain chiffré.</li>
+            <li><strong>Les chiffres de vitesse sont les nôtres</strong>, mesurés en émulation, pas sur de vrais téléphones.</li>
+          </ul>
+
+          <h2 id="sources">Sources</h2>
+          <ul class="sources">
+            <li>CNC, <a href="https://www.cnc.fr/professionnels/etudes-et-rapports/etudes-prospectives/les-pratiques-cinematographiques-des-francais-en-2026_2668928" rel="noopener noreferrer"><em>Les pratiques cinématographiques des Français en 2026</em></a>, septembre 2026, p.&nbsp;11 et&nbsp;12. Enquête hebdomadaire CinExpert de l’institut Vertigo, en ligne, auprès de 2&nbsp;000 spectateurs.</li>
+            <li>W3C, <a href="https://www.w3.org/TR/WCAG22/#target-size-minimum" rel="noopener noreferrer"><em>Web Content Accessibility Guidelines (WCAG) 2.2</em>, critère 2.5.8, taille de la cible (minimum)</a>.</li>
+            <li>Webedia Movies Pro et Vertigo Research, <em>From Discovery to Purchase – The Moviegoing Experience Begins Online – A Boxoffice Profile</em>, communiqué du 12&nbsp;mars 2019, repris par <a href="https://celluloidjunkie.com/?p=51430" rel="noopener noreferrer">Celluloid Junkie</a>. Plus de 100&nbsp;000 spectateurs interrogés à la sortie de cinémas américains en 2018.</li>
+            <li>VisionViewer, <a href="/fr/blog/un-plan-de-salle-en-moins-d-une-seconde">un plan de salle en moins d’une seconde</a>&nbsp;: méthode et mesures de vitesse.</li>
+          </ul>
+
+          <div class="suite">
+            <p>Ouvrez la démo sur votre téléphone, et essayez ces dix points vous-même.</p>
+            <a class="btn" href="/fr/demo">Essayez la démo<span class="arr" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+      <!--@voir-aussi-->
+    </main>
+    <!--@include footer-->
+  </body>
+</html>

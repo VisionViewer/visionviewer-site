@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--@include head-->
+    <title>Cinema seating glossary: 30 seat map terms defined — VisionViewer</title>
+    <meta name="description" content="A cinema seating glossary: seat map, stadium riser, viewing angle, wheelchair space, 360° panorama, computed 3D view, SMPTE, THX. 30 seat map terms, defined." />
+    <meta name="vv:rubrique" content="guide" />
+    <meta name="vv:date" content="2026-11-29" />
+    <meta name="vv:lecture" content="8" />
+    <meta name="vv:page" content="blog/glossary" />
+    <meta property="og:title" content="Cinema seating glossary: 30 seat map terms" />
+    <meta property="og:description" content="A cinema seating glossary: seat map, stadium riser, viewing angle, wheelchair space, 360° panorama, computed 3D view, SMPTE, THX. 30 seat map terms, defined." />
+  </head>
+  <body>
+    <!--@include header-->
+    <main class="doc">
+      <header class="doc__head">
+        <span class="mono"><a href="/en/blog">← Blog</a> · {{article.signature}}</span>
+        <h1>Cinema seating glossary: 30 seat map terms</h1>
+        <p class="chapo">Seat map, riser height, viewing angle, seat hold, computed 3D view: thirty terms that come up as soon as you talk about a movie theater auditorium and how its seats are sold online. Each one gets a short definition that stands on its own.</p>
+      </header>
+      <div class="doc__body">
+        <!--@sommaire-->
+        <div class="prose">
+          <h2 id="en-bref">In short</h2>
+          <p><strong>This cinema seating glossary gathers thirty definitions in five groups</strong>: booking, the geometry of the auditorium, the view and comfort, standards bodies, and the tools that show the view from the seat. The figures quoted come from SMPTE, THX, Dolby, UNIC and CST documents, listed in the <a href="#sources">sources</a>.</p>
+          <p>Three distinctions clear up most confusion: a <strong>seat map</strong> tells you where a seat is, a <strong>view from the seat</strong> tells you what you see from it; a <strong>360° panorama</strong> is prepared in advance, a <strong>computed 3D view</strong> is produced at the moment of choice; and the ticketing system, not the view tool, decides whether a seat is sold.</p>
+
+          <h2 id="booking">Booking terms</h2>
+          <p><strong>Seat map</strong> — A top-down diagram of an auditorium’s seats, on which the moviegoer picks a seat online. It shows where each seat is (row, number, aisles, screen) and which ones are free; it does not show what you see from them.</p>
+          <p><strong>Showtime</strong> — One screening of a film, in one auditorium, on a given date and time. Seats are sold showtime by showtime: the same seat can be free at one and sold at the next.</p>
+          <p><strong>Availability</strong> — The list of seats still free for a showtime. It changes with every sale, and the ticketing system keeps it up to date.</p>
+          <p><strong>Reserved seating</strong> — The seat is assigned at purchase: the ticket carries a row and a number. This is the case in which a seat map, and a view from the seat, make sense.</p>
+          <p><strong>General admission</strong> — Also called open seating. The ticket gives access to the auditorium, not to a seat: people sit where they like, first come, first served. How moviegoers choose in that case is covered in <a href="/en/blog/online-booking-and-seat-choice-in-french-cinemas">online booking and seat choice in French cinemas</a>.</p>
+          <p><strong>Seat hold</strong> — Also called a seat lock. The ticketing system reserves a seat temporarily while the buyer pays, so that nobody else takes it at the same moment. It is a ticketing function, not a function of the tool that shows the view.</p>
+          <p><strong>Ticketing system</strong> — The software that manages a cinema’s showtimes, prices, availability and payments, at the box office and online. It is the ticketing system that decides, at payment, whether a seat is sold.</p>
+          <p><strong>Wheelchair space</strong> — A position reserved for wheelchair users, often with no fixed seat. On a seat map it is marked with a symbol.</p>
+          <p><strong>Double seat</strong> — Sometimes called a loveseat or couple seat: a seat built for two people, often with no armrest in the middle. It takes the width of two seats and is sold as one unit; in VisionViewer, it counts as two seats.</p>
+          <p><strong>Club seat</strong> — A seat wider and more comfortable than the standard one, sometimes reclining. Some cinemas sell it as a separate, more expensive seat.</p>
+
+          <h2 id="geometry">Auditorium geometry terms</h2>
+          <p><strong>Stadium seating</strong> — A stepped floor that rises toward the back of the auditorium. Each row sits higher than the one in front, so viewers see the screen over the heads ahead of them.</p>
+          <p><strong>Riser height</strong> — The height each row gains over the previous one. It decides what you see over the person in front of you; together with the row spacing, it gives the slope of the floor.</p>
+          <p><strong>Row spacing</strong> — The front-to-back distance from one row to the next. It sets the legroom, and how far back each row sits from the screen.</p>
+          <p><strong>Curved screen</strong> — A screen whose edges come forward toward the audience. Its curvature is measured by its depth of curve: how far the edges come forward relative to the center. In VisionViewer, it can be at most a quarter of the screen width.</p>
+
+          <h2 id="view">View and comfort terms</h2>
+          <p><strong>Viewing angle</strong> — The angle between the left and right edges of the screen, seen from a seat. It narrows as you move back. SMPTE guideline EG&nbsp;18-1994 considers the image small below about 30°; THX recommends 36° from the farthest seat.</p>
+          <p><strong>Distance-to-screen-width ratio</strong> — The distance from the seat to the screen, divided by the screen width. It turns the viewing angle into a distance: 0.6 screen widths gives 80°, the limit of comfort in the first row according to the UNIC guide; 1.5 gives THX’s 36°; 1.9 gives SMPTE’s 30°.</p>
+          <p><strong>Vertical viewing angle</strong> — How far you have to look up to see the top of the image. According to SMPTE, most viewers are uncomfortable beyond 35°; France’s CST denies its label to an auditorium where viewers have to tilt their head back more than 45°.</p>
+          <p><strong>Lateral angle</strong> — The angle at which a viewer sitting off to the side sees the center of the screen. The design guide distributed by UNIC rates it good below 35°, acceptable up to 45°, and unacceptable beyond.</p>
+          <p><strong>Reference listening position</strong> — The point where an auditorium’s sound is measured and tuned: about two-thirds of the distance from the screen to the back wall, on the screen’s centerline, according to SMPTE recommended practice RP&nbsp;2096-1 and the Dolby Atmos specifications. It is where the “two-thirds back” advice comes from, explained in <a href="/en/blog/best-seat-in-a-movie-theater">the best seat in a movie theater</a>.</p>
+
+          <h2 id="standards">Standards bodies</h2>
+          <p><strong>SMPTE</strong> — The Society of Motion Picture and Television Engineers, the body that standardizes cinema and television. It publishes standards (ST), recommended practices (RP) and engineering guidelines (EG); its auditorium design guideline EG&nbsp;18-1994 was withdrawn in 2003, but its angles are still used as landmarks.</p>
+          <p><strong>THX</strong> — A certification program for auditoriums and equipment. On screen placement, its public page gives a single figure: a 36-degree angle from the farthest seat.</p>
+          <p><strong>CST</strong> — The Commission supérieure technique de l’image et du son, a French technical body that awards the Excellence and Immersion labels to auditoriums. Its criteria are public: for example, no first row closer than half the widest image width.</p>
+          <p><strong>UNIC</strong> — The International Union of Cinemas, which brings together European cinema operators. It distributes an auditorium design guide, <em>How to Design a Cinema Auditorium</em> (2019), which sets angle limits for the first row and the sides.</p>
+
+          <h2 id="tools">View-from-seat tool terms</h2>
+          <p><strong>View from the seat</strong> — The screen as you see it from one specific seat, shown before you buy that seat. It can be a photo, a panorama or a computed 3D view; the tools that offer one are compared in <a href="/en/blog/view-from-seat-software-compared">our view-from-seat software comparison</a>.</p>
+          <p><strong>Computed 3D view</strong> — A view produced in the browser, for the chosen seat, at the moment the moviegoer chooses it, from the auditorium’s dimensions. It renders the geometry (distance, angle, the rows in front), not the decor. This is VisionViewer’s approach: the camera is at the eyes of a seated viewer, 1.15&nbsp;m above the floor of their row.</p>
+          <p><strong>360° panorama</strong> — An image prepared in advance for a seat, in which the buyer can look around. It comes from a photo or from a digital twin; it is the usual approach for stadiums, arenas and theaters.</p>
+          <p><strong>Digital twin</strong> — A 3D reconstruction of an entire venue, built from architectural drawings or a laser scan. Images from the seats are then rendered from it. It is not the same as describing an auditorium by a few dimensions, which is enough for a regular cinema auditorium: see <a href="/en/blog/how-we-model-a-cinema-auditorium-in-3d">how we model a cinema auditorium in 3D</a>.</p>
+          <p><strong>Ticketing API</strong> — The interface through which ticketing software gives other programs its showtimes, seat maps and availability, and receives orders. It is how a cinema’s website knows which seats are sold.</p>
+          <p><strong>SDK</strong> — A software development kit: code supplied by a vendor, which a website loads to use its service. VisionViewer’s loads with one <code>&lt;script&gt;</code> tag; one call then opens the 3D view or inserts the seat map.</p>
+          <p><strong>Iframe</strong> — A frame that displays, inside a web page, a page from another site. The VisionViewer SDK opens its pages, the 3D view and the seat map, in iframes, and talks to them only through messages.</p>
+
+          <h2 id="questions">Frequently asked questions</h2>
+          <!--@faq-->
+          <h3 data-q>What is a cinema seat map?</h3>
+          <div data-a><p>A top-down diagram of an auditorium’s seats, on which the moviegoer picks a seat online. It shows the row, the number, the aisles, the screen and the free seats. It does not show what you see from each seat: that is the job of a view from the seat.</p></div>
+          <h3 data-q>What is the difference between reserved seating and general admission?</h3>
+          <div data-a><p>With reserved seating, the seat is assigned at purchase: the ticket carries a row and a number. With general admission, the ticket gives access to the auditorium, and people sit where they like, first come, first served.</p></div>
+          <h3 data-q>What is the viewing angle in a movie theater?</h3>
+          <div data-a><p>The angle between the left and right edges of the screen, seen from the seat. SMPTE guideline EG&nbsp;18-1994 considers the image small below about 30°, and THX recommends 36° from the farthest seat.</p></div>
+          <h3 data-q>What is the difference between a 360° panorama and a computed 3D view?</h3>
+          <div data-a><p>A panorama is an image prepared in advance for a seat, from a photo or a digital twin. A computed 3D view is produced in the browser at the moment the moviegoer picks a seat, from the auditorium’s dimensions.</p></div>
+          <!--@/faq-->
+
+          <h2 id="sources">Sources</h2>
+          <ul class="sources">
+            <li>SMPTE, <em>EG&nbsp;18-1994, Design of Effective Cine Theaters</em>, guideline withdrawn in 2003: <a href="https://pub.smpte.org/doc/eg18/19940325-pub/eg0018-1994_withdrawn2003.pdf" rel="noopener noreferrer">text (PDF)</a>.</li>
+            <li>SMPTE, <em>RP&nbsp;2096-1:2017</em>, cinema sound system calibration: <a href="https://pub.smpte.org/doc/rp2096-1/20170715-pub/rp2096-1-2017.pdf" rel="noopener noreferrer">text (PDF)</a>.</li>
+            <li>Dolby, <em>Dolby Atmos Specifications</em>, Issue 5, October 2025: <a href="https://professional.dolby.com/siteassets/cinema/dolby-audio-products/dolby-atmos-specifications.pdf" rel="noopener noreferrer">text (PDF)</a>.</li>
+            <li>THX, <a href="https://www.thx.com/questions/thx-certified-screen-placement/" rel="noopener noreferrer">“What is THX Certified screen placement?”</a>, December&nbsp;22, 2016.</li>
+            <li>Rolv Gjestland for UNIC, <em>How to Design a Cinema Auditorium</em>, 2019: <a href="https://unic-cinemas.org/fileadmin/CinemaAuditoriumDesign_v1.0.pdf" rel="noopener noreferrer">text (PDF)</a>.</li>
+            <li>CST, <a href="https://cst.fr/download/48/label/8754/les-criteres-du-label-excellence-2.pdf" rel="noopener noreferrer">criteria of the Excellence label (PDF, in French)</a>.</li>
+          </ul>
+
+          <div class="suite">
+            <p>Floor slope, angle, the rows in front: it all reads better from a seat.</p>
+            <a class="btn" href="/en/demo">Try the demo<span class="arr" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+      <!--@voir-aussi-->
+    </main>
+    <!--@include footer-->
+  </body>
+</html>

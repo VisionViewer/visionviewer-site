@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <!--@include head-->
+    <title>Modélisation 3D d’une salle de cinéma&nbsp;: comment nous la faisons — VisionViewer</title>
+    <meta name="description" content="Modélisation 3D d’une salle de cinéma&nbsp;: les cotes relevées, la grille des places, l’écran incurvé, la caméra aux yeux du spectateur, et les limites du modèle." />
+    <meta name="vv:rubrique" content="article" />
+    <meta name="vv:date" content="2026-11-25" />
+    <meta name="vv:lecture" content="8" />
+    <meta name="vv:page" content="blog/modeling" />
+    <meta property="og:title" content="Modélisation 3D d’une salle de cinéma&nbsp;: comment nous la faisons" />
+    <meta property="og:description" content="Modélisation 3D d’une salle de cinéma&nbsp;: les cotes relevées, la grille des places, l’écran incurvé, la caméra aux yeux du spectateur, et les limites du modèle." />
+  </head>
+  <body>
+    <!--@include header-->
+    <main class="doc">
+      <header class="doc__head">
+        <span class="mono"><a href="/fr/blog">← Blog</a> · {{article.signature}}</span>
+        <h1>Modélisation 3D d’une salle de cinéma&nbsp;: de la salle réelle à la vue depuis le fauteuil</h1>
+        <p class="chapo">Pour montrer à un spectateur ce qu’il verra de sa place, VisionViewer ne photographie pas la salle&nbsp;: il la décrit par quelques cotes, et la calcule. Voici comment se fait cette modélisation 3D d’une salle de cinéma, cote par cote, ce que chacune change à l’image, et ce que le modèle ne sait pas encore décrire.</p>
+      </header>
+      <div class="doc__body">
+        <!--@sommaire-->
+        <div class="prose">
+          <h2 id="en-bref">En bref</h2>
+          <ul>
+            <li><strong>Une salle de cinéma se décrit par une dizaine de cotes</strong>&nbsp;: l’écran, sa hauteur, sa courbure, la distance au premier rang, l’écart entre les rangées, la hauteur de marche, la largeur des fauteuils et des allées.</li>
+            <li><strong>Les places forment une grille</strong>&nbsp;: des rangées, des numéros, des allées, des emplacements PMR, des places doubles et des places absentes.</li>
+            <li><strong>La caméra se place aux yeux d’un spectateur assis</strong>, 1,15&nbsp;m au-dessus du sol de sa rangée, et regarde le centre de l’écran.</li>
+            <li><strong>Le modèle a des limites</strong>&nbsp;: rangées droites, pente régulière, un seul niveau. Ni rangées courbes, ni balcon.</li>
+          </ul>
+
+          <h2 id="definition">Qu’est-ce qu’un plan de salle 3D&nbsp;?</h2>
+          <p><strong>Un plan de salle 3D est une représentation de la salle en volume, où l’on peut se placer à un fauteuil et regarder l’écran depuis lui.</strong> Le plan 2D dit où est la place&nbsp;; le plan 3D dit ce qu’on en voit.</p>
+          <p>Chez VisionViewer, ce volume ne vient pas d’une maquette d’architecte ni d’un relevé au laser. Il est reconstruit à partir des cotes de la salle, par un calcul.</p>
+
+          <h2 id="cotes">Quelles cotes faut-il relever, et pourquoi chacune compte&nbsp;?</h2>
+          <p>Chaque cote a un effet visible dans la vue. En voici la liste, avec, entre parenthèses, les valeurs de la salle de notre <a href="/fr/demo">démo</a>.</p>
+          <ul>
+            <li><strong>La largeur de l’écran</strong> (9,40&nbsp;m). Elle fixe l’angle sous lequel on voit l’image. À distance égale, un écran deux fois plus large paraît deux fois plus grand.</li>
+            <li><strong>La hauteur de l’écran</strong> (3,93&nbsp;m). Elle donne le format de l’image et, au premier rang, de combien il faut lever les yeux.</li>
+            <li><strong>La hauteur du bas de l’écran</strong> (1,30&nbsp;m). C’est elle qui décide si le bas de l’image passe au-dessus des têtes. Trop bas, il disparaît derrière le rang de devant&nbsp;; trop haut, le premier rang lève la tête.</li>
+            <li><strong>La distance de l’écran au premier rang</strong> (4,0&nbsp;m). Elle fixe l’expérience du premier rang, et décale toutes les autres. Trop près, il faut lever la tête vers le haut de l’image&nbsp;: les guides de conception des salles en font une limite de confort, que détaille notre article sur <a href="/fr/blog/quelle-est-la-meilleure-place-au-cinema">la meilleure place au cinéma</a>.</li>
+            <li><strong>L’écart entre deux rangées</strong> (1,10&nbsp;m). Il donne la profondeur de la salle, donc la distance à l’écran de chaque rang.</li>
+            <li><strong>La hauteur de marche</strong> (22&nbsp;cm). C’est la pente du gradin. Elle décide de ce qu’on voit par-dessus les têtes du rang de devant&nbsp;: chaque marche élève les yeux du spectateur au-dessus de ceux du rang qui le précède.</li>
+            <li><strong>La largeur d’un fauteuil</strong> (56&nbsp;cm) et <strong>l’espace entre deux fauteuils</strong>. Ensemble, ils placent chaque siège en largeur&nbsp;: à dix places du centre, quelques centimètres de plus par fauteuil décalent nettement l’angle sous lequel on voit l’écran.</li>
+            <li><strong>La largeur des allées</strong> (1,10&nbsp;m). Une allée centrale éloigne de l’axe les places qui la bordent.</li>
+          </ul>
+          <h3>La hauteur de marche, en détail</h3>
+          <p>Prenez deux fauteuils l’un derrière l’autre. Le spectateur du rang de devant a la tête un peu plus haut que ses yeux. Pour voir le bas de l’écran, le regard du spectateur de derrière doit passer au-dessus de cette tête. Plus la marche est haute, plus la marge est grande.</p>
+          <p>Dans une salle à pente régulière, cette marge diminue à mesure qu’on recule&nbsp;: le regard vers le bas de l’écran devient plus rasant, alors que les têtes de devant montent toujours du même pas. Selon nos calculs sur la salle de la démo, pour deux fauteuils alignés, le regard passe au-dessus de la tête de devant dans les premiers rangs, puis, vers le milieu de la salle, cette tête commence à couvrir le bas de l’image. La vue 3D le montre&nbsp;: les sièges déjà vendus y sont occupés par des silhouettes de spectateurs assis.</p>
+
+          <h2 id="releve">Comment relève-t-on ces cotes&nbsp;?</h2>
+          <p>Un cinéma n’a pas toujours ses plans d’architecte sous la main. Nous proposons deux façons de faire&nbsp;:</p>
+          <ul>
+            <li><strong>À distance, à partir de photos.</strong> Le cinéma nous envoie quelques photos de la salle. Nous reconstituons le plan, la numérotation et les cotes.</li>
+            <li><strong>Sur place.</strong> Un ingénieur VisionViewer se déplace et mesure l’écran, le gradin, les rangées et les espacements. Le cinéma n’a rien à préparer.</li>
+          </ul>
+
+          <h2 id="grille">Comment décrire les places d’une salle&nbsp;?</h2>
+          <p>Les places se décrivent comme <strong>une grille</strong>&nbsp;: des rangées, et les mêmes numéros de place dans chacune. Chaque case de la grille est un fauteuil, un emplacement PMR, ou rien.</p>
+          <ul>
+            <li><strong>Les rangées</strong> portent leur nom (A, B, C…) et <strong>les places leur numéro</strong>, dans le sens que choisit le cinéma.</li>
+            <li><strong>Les allées</strong> se posent entre deux numéros, pour toute la salle.</li>
+            <li><strong>Les emplacements PMR</strong>, pour les personnes en fauteuil roulant, sont des cases à part&nbsp;: pas de fauteuil, mais une place.</li>
+            <li><strong>Une place double</strong> occupe deux numéros, porte un seul identifiant et compte pour deux places.</li>
+            <li><strong>Les places absentes</strong> laissent une case vide&nbsp;: un poteau, un passage, un rang plus court.</li>
+          </ul>
+          <h3>Pourquoi le plan 2D est une grille, et pas un plan à l’échelle</h3>
+          <p>Nous avons essayé un plan 2D qui suivait les distances réelles de la salle. Sur la salle de la démo, il devenait environ deux fois plus haut, et ses fauteuils passaient de 38 à 26 pixels. Sur un téléphone, c’est un plan plus long à parcourir et des places plus difficiles à toucher. Nous y avons renoncé&nbsp;: sur le plan, un fauteuil occupe une case, et c’est la vue 3D qui montre les vraies proportions. Seule exception&nbsp;: un écran incurvé est dessiné en arc.</p>
+
+          <h2 id="ecran">Comment représenter un écran incurvé&nbsp;?</h2>
+          <p>Un écran incurvé se décrit par sa <strong>flèche</strong>&nbsp;: la distance dont ses bords avancent vers la salle par rapport à son centre. Elle ne dépasse pas le quart de sa largeur.</p>
+          <p>La courbure change la vue sur les côtés. Les bords de l’écran sont plus près du spectateur que son centre&nbsp;: depuis un fauteuil sur le côté, le bord le plus proche paraît plus grand que sur un écran plat. Le calcul de l’angle sous lequel on voit l’écran en tient compte.</p>
+
+          <h2 id="logo">Pourquoi projeter le logo du cinéma sur l’écran&nbsp;?</h2>
+          <p>Un écran blanc ne dit rien de la salle. Le logo du cinéma, déposé une fois, est <strong>projeté au centre de l’écran</strong> dans la vue 3D de toutes ses salles, sur un fond au choix. Il donne un repère&nbsp;: on voit où tombe le centre de l’image, et la taille qu’a un objet connu depuis la place choisie.</p>
+
+          <h2 id="camera">Où se place la caméra&nbsp;?</h2>
+          <p>La caméra se place <strong>aux yeux d’un spectateur assis</strong>&nbsp;: 1,15&nbsp;m au-dessus du sol de sa rangée, à l’aplomb de son fauteuil. Elle regarde le centre de l’écran.</p>
+          <p>Pour un groupe, la caméra se place au centre du groupe&nbsp;: trois places donnent celle du milieu, quatre le point entre les deux du milieu. Dans la vue, des flèches déplacent tout le groupe d’une rangée ou de quelques places, pour comparer, sans changer le nombre de places.</p>
+
+          <h2 id="calculer">Pourquoi calculer la vue plutôt que la photographier&nbsp;?</h2>
+          <ul>
+            <li><strong>Chaque fauteuil a sa vue.</strong> Une photo par place, c’est des centaines de prises par salle&nbsp;; une photo par zone ne montre pas la place choisie. Le calcul donne toutes les places, y compris celles d’un groupe.</li>
+            <li><strong>Les sièges vendus se voient tels qu’ils sont à l’instant</strong>, occupés par des silhouettes, ce qu’aucune photo prise salle vide ne montre.</li>
+            <li><strong>Le poids reste faible.</strong> Le navigateur reçoit des cotes, pas des images&nbsp;: la vue 3D montre sa première image en 0,87&nbsp;seconde depuis le plan, en 4G lente, lors d’une première visite (<a href="/fr/blog/un-plan-de-salle-en-moins-d-une-seconde">nos mesures</a>).</li>
+          </ul>
+          <p>Le prix de ce choix&nbsp;: la vue rend la géométrie de la salle, pas sa décoration. Ni la couleur des fauteuils, ni la lumière, ni les matières. C’est voulu&nbsp;: ce que le spectateur veut savoir, c’est la taille de l’écran depuis sa place et ce qui le gênera.</p>
+
+          <h2 id="limites">Quelles sont les limites du modèle&nbsp;?</h2>
+          <ul>
+            <li><strong>Des rangées droites.</strong> Les salles aux rangées en arc ne sont pas encore décrites.</li>
+            <li><strong>Une pente régulière.</strong> Un gradin dont la marche change d’un rang à l’autre est ramené à une marche unique.</li>
+            <li><strong>Un seul niveau.</strong> Pas de balcon, pas de mezzanine.</li>
+            <li><strong>Des fauteuils alignés.</strong> Un fauteuil n’est pas décalé d’un demi-siège par rapport à celui de devant.</li>
+            <li><strong>Une hauteur d’yeux moyenne</strong>, la même pour tous.</li>
+          </ul>
+
+          <h2 id="questions">Questions fréquentes</h2>
+          <!--@faq-->
+          <h3 data-q>Comment fait-on la modélisation 3D d’une salle de cinéma&nbsp;?</h3>
+          <div data-a><p>Chez VisionViewer, à partir des cotes de la salle&nbsp;: l’écran (largeur, hauteur, hauteur du bas, courbure), la distance au premier rang, l’écart entre les rangées, la hauteur de marche, la largeur des fauteuils, de leurs espaces et des allées, et la grille des places. La vue 3D est ensuite calculée dans le navigateur, pour chaque fauteuil.</p></div>
+          <h3 data-q>À quelle hauteur la vue depuis le fauteuil est-elle prise&nbsp;?</h3>
+          <div data-a><p>Aux yeux d’un spectateur assis, 1,15&nbsp;m au-dessus du sol de sa rangée, en regardant le centre de l’écran. Pour un groupe, la vue part du centre du groupe.</p></div>
+          <h3 data-q>Quelles salles VisionViewer ne sait-il pas encore modéliser&nbsp;?</h3>
+          <div data-a><p>Les salles à rangées courbes, à pente irrégulière ou à plusieurs niveaux, comme celles qui ont un balcon. Le modèle décrit des rangées droites, sur un gradin à pente régulière et un seul niveau.</p></div>
+          <!--@/faq-->
+
+          <div class="suite">
+            <p>Choisissez un fauteuil de la démo, et regardez l’écran depuis lui.</p>
+            <a class="btn" href="/fr/demo">Essayez la démo<span class="arr" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+      <!--@voir-aussi-->
+    </main>
+    <!--@include footer-->
+  </body>
+</html>

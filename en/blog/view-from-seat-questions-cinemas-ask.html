@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--@include head-->
+    <title>View from seat FAQ: the questions cinemas ask us — VisionViewer</title>
+    <meta name="description" content="View from seat FAQ for cinemas: 3D seat view pricing, integration, surveying the auditorium, GDPR, curved screens, balconies, results. Straight answers." />
+    <meta name="vv:rubrique" content="article" />
+    <meta name="vv:date" content="2026-11-30" />
+    <meta name="vv:lecture" content="7" />
+    <meta name="vv:page" content="blog/faq-cinemas" />
+    <meta property="og:title" content="View from the seat: the questions cinemas ask us" />
+    <meta property="og:description" content="View from seat FAQ for cinemas: 3D seat view pricing, integration, surveying the auditorium, GDPR, curved screens, balconies, results. Straight answers." />
+  </head>
+  <body>
+    <!--@include header-->
+    <main class="doc">
+      <header class="doc__head">
+        <span class="mono"><a href="/en/blog">← Blog</a> · {{article.signature}}</span>
+        <h1>View from the seat: the questions cinemas ask us</h1>
+        <p class="chapo">When a cinema first sees VisionViewer’s view from the seat, the same questions come up: price, timing, ticketing, moviegoers’ data, auditoriums that are out of the ordinary. This view from seat FAQ gives our answers, including when they are “no” or “not yet.”</p>
+      </header>
+      <div class="doc__body">
+        <!--@sommaire-->
+        <div class="prose">
+          <h2 id="en-bref">In short</h2>
+          <ul>
+            <li><strong>Pricing is by quote</strong>, based on your auditoriums.</li>
+            <li><strong>Your ticketing system stays.</strong> One tag and one call add the 3D view to your booking page; showtimes, availability and payment stay with you.</li>
+            <li><strong>Timing depends mostly on the survey</strong>: dimensions you already have, photos, or a visit from an engineer.</li>
+            <li><strong>We know nothing about your moviegoers.</strong> No account, no cookie: we count numbers per day and per auditorium.</li>
+            <li><strong>Limits</strong>: straight rows, an even slope, a single level. No balconies, no curved rows.</li>
+            <li><strong>No results published to date.</strong> Case studies will follow, with the cinemas’ agreement.</li>
+          </ul>
+
+          <h2 id="product">The product</h2>
+          <!--@faq-->
+          <h3 data-q>What exactly does VisionViewer show?</h3>
+          <div data-a><p>The view from the seat the moviegoer has just picked, in 3D, during booking and before payment. The camera sits at the eyes of a seated viewer, 1.15&nbsp;m above the floor of their row, and looks at the center of the screen. For a group, the view starts from the middle of the group; arrows move the whole group to compare other seats. Your logo is projected on the screen of your auditoriums.</p></div>
+          <h3 data-q>Is the 3D view a photo of our auditorium?</h3>
+          <div data-a><p>No. It is computed in the browser from the auditorium’s dimensions: screen, floor slope, rows, seats. It renders the geometry (distance, angle, height of the screen, the rows in front), not the decor. In return, every seat has its own view, and there is nothing to photograph. The method is described in <a href="/en/blog/how-we-model-a-cinema-auditorium-in-3d">how we model a cinema auditorium in 3D</a>.</p></div>
+          <h3 data-q>Does it work on phones, and in our mobile app?</h3>
+          <div data-a><p>On phones, yes: it is designed for them. On an emulated phone over slow 4G, our seat map is usable in 0.65&nbsp;seconds and the 3D view shows its first frame in 0.87&nbsp;seconds (measured November&nbsp;17, 2026). We have not yet measured on real phones, or in Safari: details in <a href="/en/blog/a-seat-map-in-under-a-second">a seat map in under a second</a>.</p><p>VisionViewer runs in web pages, which our SDK opens in an iframe. An app that shows its booking flow in a web view integrates it like a website. If your app is fully native, write to us and we will look at it with you.</p></div>
+          <!--@/faq-->
+
+          <h2 id="integration">Integration</h2>
+          <!--@faq-->
+          <h3 data-q>Do we have to change our ticketing system or seat map?</h3>
+          <div data-a><p>No. If you have a seat map, it stays: a button calls <code>VisionViewer.open()</code> with the selected seats, and the 3D view opens over your page. If you do not have one, <code>VisionViewer.mountPlan()</code> inserts ours into your page. Your page uses your own seat IDs: the mapping is recorded once, auditorium by auditorium. The step-by-step guide is <a href="/en/blog/add-a-3d-seat-view-to-cinema-ticketing">how to add a 3D seat view to cinema ticketing</a>.</p></div>
+          <h3 data-q>What happens if a seat sells while the moviegoer is choosing?</h3>
+          <div data-a><p>The list of sold seats your page gives us is a snapshot, taken when the view opens. If a seat sells in the meantime, your page sends the new list; if that seat was part of the selection, it is removed, and your page is told. VisionViewer neither reserves nor holds any seat: in every case, your ticketing system has the final say at payment.</p></div>
+          <h3 data-q>Can our developer try it before we commit?</h3>
+          <div data-a><p>Yes. A test key (<code>vv_test_…</code>) works right away on their machine, on <code>localhost</code>, and shows a “test version” notice. The live key (<code>vv_live_…</code>) only works on the domains you declare. The code and its options are in the <a href="https://docs.visionviewer.net" rel="noopener noreferrer">developer guide</a>.</p></div>
+          <!--@/faq-->
+
+          <h2 id="auditorium">The auditorium and the survey</h2>
+          <!--@faq-->
+          <h3 data-q>What do you need to model an auditorium?</h3>
+          <div data-a><p>Its dimensions: the screen’s width, height and bottom edge height, its curvature, the distance from the screen to the first row, the row spacing, the riser height, the seat width and the gap between seats, the aisles, the wheelchair spaces, the double seats and the missing seats. With no seat map and no dimensions, we rebuild them from a few photos, or a VisionViewer engineer measures on site; you have nothing to prepare. The terms are defined in our <a href="/en/blog/cinema-seating-glossary">cinema seating glossary</a>.</p></div>
+          <h3 data-q>We have several auditoriums: how does that work?</h3>
+          <div data-a><p>Each auditorium is described with its own dimensions, under its own ID: none reuses the shape of another. On the website side, nothing changes: the same tag and the same key serve the whole cinema, and each call names the auditorium. Your logo appears in all your auditoriums, and statistics read auditorium by auditorium.</p></div>
+          <h3 data-q>Our auditorium has a curved screen: is that supported?</h3>
+          <div data-a><p>Yes. The curvature is given by its depth of curve, that is, how far the edges come forward toward the audience, up to a quarter of the screen width. The 3D view takes it into account, and our seat map draws the screen as an arc.</p></div>
+          <h3 data-q>What about a balcony, or curved rows?</h3>
+          <div data-a><p>Not today. The model describes straight rows, on a floor with an even slope and a single level. An auditorium with a balcony, curved rows or a broken slope would not be rendered faithfully: we would rather say so before the survey than have you find out after.</p></div>
+          <!--@/faq-->
+
+          <h2 id="data">Data and privacy</h2>
+          <!--@faq-->
+          <h3 data-q>What do you know about our moviegoers?</h3>
+          <div data-a><p>Nothing that could identify them: no account, no cookie, no storage in their browser. We count numbers per day and per auditorium: seat maps shown, 3D views opened, confirmed selections and, if your page reports them, orders. Of an order reference, we keep only a hash, so we do not count it twice. As with any web page, the browser sends its IP address to our host; it is used, in memory, to rate-limit requests, and appears in the host’s technical logs.</p></div>
+          <h3 data-q>What about GDPR: who is responsible for what?</h3>
+          <div data-a><p>For cinemas subject to the EU’s GDPR: when VisionViewer appears on your website, you are the controller, and we act on your behalf as processor, under a data processing agreement (Article&nbsp;28 of the GDPR). The only personal data involved is technical: IP address, date and time, browser name, referring page. Our server and database run in Frankfurt, with providers established in the United States; those transfers are covered by the European Commission’s standard contractual clauses. VisionViewer sets no cookie or tracker on your page; on your side, you mention its use in your privacy policy. Our privacy policy and the agreement are published on this site.</p></div>
+          <!--@/faq-->
+
+          <h2 id="pricing">Pricing and getting started</h2>
+          <!--@faq-->
+          <h3 data-q>How much does a 3D seat view cost for a cinema?</h3>
+          <div data-a><p>Pricing is by quote, based on your auditoriums: we do not publish a price list. Write to us at <a href="mailto:{{contact}}">{{contact}}</a> with the name of one of them: we show it to you in VisionViewer, and the quote follows.</p></div>
+          <h3 data-q>How long until an auditorium is live?</h3>
+          <div data-a><p>We do not give a standard lead time, because it depends mostly on the survey. If you have a seat map with dimensions, all that is left is to enter the auditorium. From photos, we rebuild the seat map, the numbering and the dimensions. An on-site visit is scheduled with you. On the website side, integration is one tag and one call, and your developer can start on day one with the test key.</p></div>
+          <h3 data-q>Do you have results, or customers you can name?</h3>
+          <div data-a><p>Not yet. No cinema results have been published to date, and we credit VisionViewer with no gain we have not measured. The first numbers will appear in our <a href="/en/blog#etudes-de-cas">case studies</a>, with the agreement of the cinemas concerned. What studies say about seat choice is gathered in <a href="/en/blog/reserved-seating-what-the-studies-say">reserved seating: what the studies say</a>.</p></div>
+          <!--@/faq-->
+
+          <h2 id="further-reading">Further reading</h2>
+          <ul>
+            <li><a href="/en/blog/add-a-3d-seat-view-to-cinema-ticketing">How to add a 3D seat view to cinema ticketing</a>: both integrations, step by step.</li>
+            <li><a href="/en/blog/view-from-seat-software-compared">View-from-seat software compared</a>: the other tools, based on what their vendors publish.</li>
+            <li><a href="/en/blog/best-seat-in-a-movie-theater">The best seat in a movie theater</a>: what the standards say.</li>
+            <li>A question that is not here? <a href="mailto:{{contact}}">{{contact}}</a>: we will answer.</li>
+          </ul>
+
+          <div class="suite">
+            <p>The shortest answer is still the demo: pick a seat, then see the view.</p>
+            <a class="btn" href="/en/demo">Try the demo<span class="arr" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+      <!--@voir-aussi-->
+    </main>
+    <!--@include footer-->
+  </body>
+</html>

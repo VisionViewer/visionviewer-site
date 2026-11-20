@@ -32,6 +32,10 @@
  *
  * Une valeur de `societe.json` laissée à `null` s'affiche « À compléter » : la société est en
  * cours de formation, son adresse et son numéro d'immatriculation viendront avec elle.
+ *
+ * **Un article daté d'un jour à venir est programmé** (voir `publication`) : il est écrit, mais le
+ * site construit l'ignore jusqu'à ce jour-là. Pas de page, pas de carte, pas de lien de langue,
+ * rien dans le plan du site. En développement, il se voit, marqué « À paraître ».
  */
 import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
@@ -66,6 +70,10 @@ interface Textes {
   rubriques: Record<Rubrique, string>
   lecture: (minutes: string) => string
   lire: string
+  /** Sur la carte d'un article programmé, en développement seulement */
+  aParaitre: string
+  /** Le bouton qui déplie une rubrique du blog : `n` articles de plus */
+  plus: (n: number) => string
   sommaire: string
   voirAussi: string
   /** Ce qui s'affiche à la place d'une mention de la société encore inconnue, et le nom de chaque mention */
@@ -93,6 +101,8 @@ export const LANGUES = {
     rubriques: { enquete: 'Research', guide: 'Guide', article: 'Article', 'etude-de-cas': 'Case study' },
     lecture: (minutes) => `${minutes} min read`,
     lire: 'Read the article',
+    aParaitre: 'Scheduled',
+    plus: (n) => (n === 1 ? 'Show 1 more article' : `Show ${n} more articles`),
     sommaire: 'Contents',
     voirAussi: 'Read next',
     aCompleter: 'To be completed',
@@ -118,6 +128,8 @@ export const LANGUES = {
     rubriques: { enquete: 'Enquête', guide: 'Guide', article: 'Article', 'etude-de-cas': 'Étude de cas' },
     lecture: (minutes) => `${minutes} min de lecture`,
     lire: 'Lire l’article',
+    aParaitre: 'À paraître',
+    plus: (n) => (n === 1 ? 'Voir l’autre article' : `Voir les ${n} autres articles`),
     sommaire: 'Sommaire',
     voirAussi: 'À lire aussi',
     aCompleter: 'À compléter',
@@ -204,7 +216,26 @@ const heading = (html: string) => /<h1[^>]*>([\s\S]*?)<\/h1>/.exec(html)?.[1].tr
 /** Une page que les moteurs ne doivent pas garder le dit elle-même, dans son en-tête. */
 export const isIndexable = (html: string) => !/<meta\s+name="robots"\s+content="[^"]*noindex/.test(html)
 
-/** Les pages d'une langue : sa présentation, les pages de son dossier, les articles de son blog. */
+/**
+ * La publication programmée : un article paraît le jour de sa date (`vv:date`), à Paris. Avant,
+ * le site construit l'ignore. Une construction par jour suffit donc à publier les articles du
+ * jour : c'est ce que fait `.github/workflows/publication.yml` (voir aussi `tools/programme.ts`).
+ */
+export const publication = {
+  /** Le jour où l'on se place, « 2026-11-21 ». À défaut, `VV_JOUR`, puis aujourd'hui à Paris. */
+  jour: undefined as string | undefined,
+  /** Vrai : tout se voit, articles programmés compris. C'est le cas en développement. */
+  tout: false,
+}
+
+/** Aujourd'hui à Paris, « 2026-11-21 » (le format suédois s'écrit ainsi). */
+export const jourDeParis = (date = new Date()) => new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Paris' }).format(date)
+const jourDePublication = () => publication.jour ?? process.env.VV_JOUR ?? jourDeParis()
+
+/** Un article programmé : daté d'un jour qui n'est pas encore venu. */
+export const estProgramme = (html: string) => meta(html, 'vv:date') > jourDePublication()
+
+/** Les pages d'une langue : sa présentation, les pages de son dossier, les articles de son blog parus. */
 function pagesOf(root: string, langue: Langue): string[] {
   const html = (dir: string) =>
     existsSync(join(root, dir))
@@ -212,7 +243,8 @@ function pagesOf(root: string, langue: Langue): string[] {
           .filter((file) => file.endsWith('.html'))
           .map((file) => `${dir}/${file}`)
       : []
-  return [...(existsSync(join(root, accueil(langue))) ? [accueil(langue)] : []), ...html(langue), ...html(`${langue}/blog`)]
+  const parus = (file: string) => publication.tout || !estProgramme(read(root, file))
+  return [...(existsSync(join(root, accueil(langue))) ? [accueil(langue)] : []), ...html(langue), ...html(`${langue}/blog`).filter(parus)]
 }
 
 /** Toutes les pages du site, langue après langue. */
@@ -271,7 +303,7 @@ const byline = (article: Pick<Article, 'rubrique' | 'date' | 'lecture'>, langue:
   `${textes(langue).rubriques[article.rubrique as Rubrique]} · ${longDate(article.date, langue)}${article.lecture ? ` · ${textes(langue).lecture(article.lecture)}` : ''}`
 
 const card = (article: Article, langue: Langue) => `<a class="card" href="${article.href}">
-  <span class="mono">${byline(article, langue)}</span>
+  <span class="mono">${byline(article, langue)}${article.date > jourDePublication() ? ` · <b class="a-paraitre">${textes(langue).aParaitre}</b>` : ''}</span>
   <h3>${article.title}</h3>
   <p>${article.summary}</p>
   <span class="card__go">${textes(langue).lire}<span aria-hidden="true">→</span></span>
@@ -441,10 +473,17 @@ export function renderPage(root: string, file: string, source: string): string {
   if (file === blog(langue) || isArticle(file)) html = html.replace(`<a href="${blogPath}">Blog</a>`, `<a href="${blogPath}" aria-current="page">Blog</a>`)
 
   const all = /<!--@(articles |voir-aussi)/.test(html) ? articles(root, langue) : []
+  // Une rubrique montre son article le plus récent, et le début du suivant, grisé ; un bouton
+  // déplie le reste. Sans script : une case à cocher, que le bouton (son étiquette) coche. Tous
+  // les articles restent dans la page, donc lisibles par un moteur ou un assistant.
   html = html.replace(/<!--@articles ([\w-]+)(?: \| ([^>]*?))?-->/g, (_, rubrique: string, empty = '') => {
     if (!(rubrique in text.rubriques)) fail(`rubrique inconnue « ${rubrique} ».`)
     const list = all.filter((article) => article.rubrique === rubrique)
-    return list.length ? `<div class="cards">${list.map((article) => card(article, langue)).join('\n')}</div>` : `<p class="vide">${empty}</p>`
+    if (!list.length) return `<p class="vide">${empty}</p>`
+    const cards = `<div class="cards">${list.map((article) => card(article, langue)).join('\n')}</div>`
+    if (list.length === 1) return cards
+    const id = `plus-${rubrique}`
+    return `<div class="liste">\n<input type="checkbox" class="liste__bascule" id="${id}" />\n${cards}\n<label class="liste__plus" for="${id}">${text.plus(list.length - 1)}<span aria-hidden="true">↓</span></label>\n</div>`
   })
 
   // Au bas d'un article : les autres articles de sa langue, les plus récents d'abord
@@ -542,6 +581,8 @@ export function sitePages(): Plugin {
     configResolved(config) {
       root = config.root
       building = config.command === 'build' && !process.env.VITEST
+      // En développement, les articles programmés se voient, pour être relus avant leur jour
+      if (config.command === 'serve' && !process.env.VITEST) publication.tout = true
     },
     // Un morceau commun ou la fiche de la société modifiés : la page ouverte se recharge
     configureServer(server) {

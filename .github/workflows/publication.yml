@@ -1,0 +1,69 @@
+# La publication du jour : chaque matin, si un article est daté d'aujourd'hui, le site est
+# reconstruit sur Vercel (l'article paraît : voir « publication » dans tools/pages.ts), puis les
+# moteurs en sont prévenus (IndexNow).
+#
+# Il demande un secret du dépôt, VERCEL_DEPLOY_HOOK : l'adresse d'un « Deploy Hook » de Vercel
+# sur la branche main (Vercel → projet → Settings → Git → Deploy Hooks). Cette adresse suffit à
+# reconstruire le site : elle ne s'écrit nulle part ailleurs.
+#
+# On peut aussi le lancer à la main (Actions → Publication du jour → Run workflow).
+name: Publication du jour
+
+on:
+  schedule:
+    # 5 h UTC : 6 h à Paris l'hiver, 7 h l'été. GitHub peut le lancer avec du retard.
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publication
+  cancel-in-progress: false
+
+jobs:
+  publier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Les articles du jour
+        id: jour
+        run: |
+          urls="$(node tools/programme.ts --jour | tr '\n' ' ')"
+          echo "urls=$urls" >> "$GITHUB_OUTPUT"
+          if [ -n "$urls" ]; then echo "À publier : $urls"; else echo "Aucun article aujourd'hui."; fi
+
+      - name: Reconstruire le site
+        if: steps.jour.outputs.urls != ''
+        env:
+          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then echo "::error::Le secret VERCEL_DEPLOY_HOOK manque : voir l'en-tête de ce fichier."; exit 1; fi
+          curl --fail --silent --show-error --request POST "$HOOK"
+
+      - name: Attendre que les articles soient en ligne
+        if: steps.jour.outputs.urls != ''
+        env:
+          URLS: ${{ steps.jour.outputs.urls }}
+        run: |
+          for url in $URLS; do
+            case "$url" in */blog) continue ;; esac
+            for essai in $(seq 1 60); do
+              if curl --fail --silent --output /dev/null "$url"; then echo "En ligne : $url"; continue 2; fi
+              sleep 20
+            done
+            echo "::error::$url n'est toujours pas en ligne après 20 minutes."; exit 1
+          done
+
+      - name: Prévenir les moteurs (IndexNow)
+        if: steps.jour.outputs.urls != ''
+        env:
+          URLS: ${{ steps.jour.outputs.urls }}
+        run: node tools/indexnow.ts $URLS

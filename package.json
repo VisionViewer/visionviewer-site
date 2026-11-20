@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.node.json",
     "test": "vitest run",
     "indexnow": "node tools/indexnow.ts",
+    "programme": "node tools/programme.ts",
     "deploy": "npx vercel build --prod --yes && npx vercel deploy --prebuilt --prod --yes"
   },
   "dependencies": {

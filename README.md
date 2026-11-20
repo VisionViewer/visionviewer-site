@@ -20,6 +20,7 @@ Puis ouvrir http://localhost:5173/fr pour la présentation, ou http://localhost:
 | `npm run preview` | sert `dist/` avec les en-têtes de sécurité de `vercel.json` (http://localhost:4173) : c'est là que la politique de contenu s'éprouve |
 | `npm test` | tests du calcul des salles (positions, rangée K, indicateurs) et des pages (liens, règles de `vercel.json`, blog, référencement, traductions) |
 | `npm run indexnow` | après une mise en ligne : annonce à Bing les pages du plan du site en ligne (`-- --essai` pour voir sans envoyer, `-- <adresse>` pour n'annoncer qu'une page) |
+| `npm run programme` | les articles parus et programmés, jour par jour (`-- --jour` : les adresses du jour) |
 | `npm run deploy` | construit ici puis met en ligne sur Vercel, sans passer par GitHub (en secours : voir « Démo en ligne ») |
 
 ## Ajouter une salle
@@ -112,7 +113,7 @@ Ce sont des fichiers HTML sans script, dans le dossier de leur langue : les page
 | `<!--@include head-->`, `header`, `footer`, `avis` | le morceau du même nom, dans `src/pages/partials/`. Le pied de page est aussi celui de la présentation |
 | `{{contact}}`, `{{societe.siege}}`, `{{version}}`… | les valeurs de `src/pages/societe.json`. Une valeur à `null` s'affiche « À compléter » |
 | `<!--@sommaire-->` | un lien par section de la page (`<h2 id="…">`) |
-| `<!--@articles enquete \| texte si vide-->` | les articles de cette rubrique, les plus récents d'abord (dans `blog.html`) |
+| `<!--@articles enquete \| texte si vide-->` | les articles de cette rubrique, les plus récents d'abord (dans `blog.html`) : le premier, le début du suivant grisé, et un bouton qui déplie le reste (une case à cocher, sans script) |
 | `<!--@voir-aussi-->` | au bas d'un article : les trois autres articles les plus récents de sa langue |
 | `<!--@faq-->` … `<!--@/faq-->` | rien dans la page ; les questions (`data-q`) et les réponses (`data-a`) qu'ils encadrent passent dans les données structurées |
 | `<!--@langues-->`, `<!--@langues court-->` | les liens de langue : un par autre langue, vers la même page dans cette langue ; à défaut, vers sa présentation. Par son nom (« English ») dans le pied de page, par son code (« EN ») dans l'en-tête |
@@ -121,6 +122,7 @@ Un morceau commun existe par langue (`header.fr.html`, `header.en.html`, `footer
 
 - **La société est en cours de formation** : ce que `societe.json` ne dit pas encore (siège, capital, RCS, TVA, directeur de la publication, téléphones) est à renseigner avant de publier. `npm run build` le rappelle.
 - **Un article** dit lui-même, dans son en-tête, sa rubrique (`vv:rubrique` : `enquete`, `guide`, `article`, `etude-de-cas`), sa date (`vv:date`), son temps de lecture (`vv:lecture`) et sa clé (`vv:page`, la même dans chaque langue : c'est elle qui relie un article à ses traductions) ; son résumé est sa description. Le copier, changer ces valeurs : il apparaît dans le blog. Modifié après coup, il dit quand (`vv:maj`).
+- **Un article daté d'un jour à venir est programmé** : le site construit l'ignore jusqu'à ce jour (à Paris) ; en développement, il se voit, marqué « À paraître ». Chaque matin, `.github/workflows/publication.yml` reconstruit le site s'il y a un article du jour (secret `VERCEL_DEPLOY_HOOK`), puis l'annonce par IndexNow. `VV_JOUR=2026-11-25 npm run build` construit le site d'un jour donné.
 - **Chaque article existe dans chaque langue** (`fr/blog/`, `en/blog/`), sous un nom de fichier écrit dans sa langue. `npm test` refuse un article sans traduction.
 - **Les pages légales anglaises sont des traductions de courtoisie** : chacune le dit en tête, et renvoie au texte français, qui seul fait foi. Un changement du texte français se reporte dans la traduction.
 - **Une page nouvelle** a besoin de sa règle dans `vercel.json`, sans quoi elle répond 404 en ligne. `npm test` le vérifie, comme il vérifie qu'aucun lien ne mène nulle part.

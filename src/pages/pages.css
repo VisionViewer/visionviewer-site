@@ -90,6 +90,17 @@
 .card:hover,.card:focus-visible{border-color:var(--green);box-shadow:0 0 54px -22px rgba(95,208,138,.5),inset 0 0 44px -30px rgba(95,208,138,.55);outline:none}
 .card:hover .mono,.card:focus-visible .mono{color:var(--green)}
 .card:hover .card__go span,.card:focus-visible .card__go span{transform:translateX(5px)}
+/* Une rubrique de plusieurs articles : le plus récent, le début du suivant, grisé, et un bouton qui
+   déplie le reste. Le bouton est l'étiquette d'une case à cocher cachée : rien à exécuter. */
+.liste{position:relative;display:grid;gap:14px}
+.liste__bascule{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.liste__bascule:not(:checked)+.cards>.card:nth-child(n+3){display:none}
+.liste__bascule:not(:checked)+.cards>.card:nth-child(2){max-height:118px;overflow:hidden;opacity:.42;filter:grayscale(1);pointer-events:none;-webkit-mask-image:linear-gradient(#000 20%,transparent);mask-image:linear-gradient(#000 20%,transparent)}
+.liste__bascule:checked~.liste__plus{display:none}
+.liste__plus{justify-self:start;display:inline-flex;gap:10px;align-items:center;margin-top:-4px;padding:11px 16px;border:1px solid var(--line);font:400 11px/1.4 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink);cursor:pointer;transition:color .2s,border-color .2s}
+.liste__plus:hover,.liste__bascule:focus-visible~.liste__plus{color:var(--green);border-color:var(--green)}
+/* Une carte programmée, en développement seulement */
+.a-paraitre{font-weight:400;color:var(--red)}
 /* Une rubrique sans article : son emplacement, en pointillé */
 .vide{margin:0;padding:26px;border:1px dashed rgba(245,245,246,.35);color:var(--dim);font-size:16px;font-weight:400}
 
@@ -140,5 +151,5 @@
   .chiffres{grid-template-columns:minmax(0,1fr)}
 }
 @media (prefers-reduced-motion:reduce){
-  .card,.card .mono,.card__go span,.prose a,.sommaire a,.rubriques a{transition:none}
+  .card,.card .mono,.card__go span,.prose a,.sommaire a,.rubriques a,.liste__plus{transition:none}
 }
