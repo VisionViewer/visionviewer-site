@@ -19,6 +19,7 @@ Puis ouvrir http://localhost:5173/fr pour la présentation, ou http://localhost:
 | `npm run build` | vérifie les types puis génère `dist/` ; rappelle les mentions légales encore « À compléter » |
 | `npm run preview` | sert `dist/` avec les en-têtes de sécurité de `vercel.json` (http://localhost:4173) : c'est là que la politique de contenu s'éprouve |
 | `npm test` | tests du calcul des salles (positions, rangée K, indicateurs) et des pages (liens, règles de `vercel.json`, blog, référencement, traductions) |
+| `npm run indexnow` | après une mise en ligne : annonce à Bing les pages du plan du site en ligne (`-- --essai` pour voir sans envoyer, `-- <adresse>` pour n'annoncer qu'une page) |
 | `npm run deploy` | construit ici puis met en ligne sur Vercel, sans passer par GitHub (en secours : voir « Démo en ligne ») |
 
 ## Ajouter une salle
@@ -172,10 +173,12 @@ Le site est fait pour être trouvé, par un moteur de recherche comme par un ass
 | `sitemap.xml` | écrit dans `dist/` : toutes les pages, sauf celles qui se déclarent `noindex` |
 | `llms.txt` | écrit dans `dist/` : le résumé du site pour un assistant. Son début est `src/pages/llms.md`, la liste des pages est tirée des pages, langue après langue, la langue par défaut d'abord |
 | `robots.txt` | `public/robots.txt` : tout est ouvert, et le plan du site y est annoncé |
+| IndexNow | `public/<clé>.txt`, la clé du site publiée à sa racine, et `tools/indexnow.ts`, qui annonce les pages changées |
 
 - **Une page se retire des moteurs elle-même**, par `<meta name="robots" content="noindex, follow" />` dans son en-tête : c'est le cas des six pages légales, dans chaque langue, tant que leurs mentions sont « À compléter ». Elle sort alors du plan du site et de `llms.txt`.
 - **Le titre et la description** d'une page sont ce qu'un moteur affiche. `npm test` refuse un titre ou une description en double, un titre de plus de 90 caractères, une description de moins de 110 ou de plus de 170.
 - **Les données structurées sont le seul « script » écrit dans une page** : rien ne s'y exécute, la politique de contenu les laisse passer.
+- **IndexNow prévient Bing sans attendre son passage** (`npm run indexnow`, après une mise en ligne vérifiée). Bing partage ce qu'il reçoit avec les autres moteurs du protocole ; Google ne l'écoute pas, et lit le plan du site. **La clé n'est pas un secret** : le protocole veut qu'elle soit publiée à la racine du site, c'est ce qui prouve que la demande vient de lui. Le script ne lit que ce qui est en ligne, et refuse d'envoyer tant que la clé n'y est pas.
 - **Rien ne mesure l'audience** : le site ne pose ni cookie ni outil de mesure. Ce que les moteurs voient se lit dans la Search Console de Google et dans Bing Webmaster Tools, une fois le site déclaré (voir `widget/dossier/procedures.md`).
 
 ## Logo
@@ -189,6 +192,7 @@ en.html, fr.html                la présentation, dans chaque langue (/en, /fr)
 en/, fr/                        le reste de chaque langue : demo.html, blog.html, blog/*.html, les pages légales
 tools/pages.ts                  les langues (LANGUES), ce que les pages ont en commun, leurs liens de langue et leur référencement
 tools/routes.ts                 les redirections et les réécritures de vercel.json, appliquées aussi en développement et sur le site construit
+tools/indexnow.ts               l'annonce des pages à Bing (IndexNow) ; sa clé est dans public/<clé>.txt
 src/pages/                      la feuille de style des pages, leurs morceaux communs par langue, les mentions de la société, le début de llms.txt
 public/robots.txt               ce que les moteurs ont le droit de lire : tout
 src/styles/commun.css           la charte commune à la présentation, aux pages légales et au blog
