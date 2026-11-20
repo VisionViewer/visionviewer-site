@@ -13,9 +13,6 @@ import { setupWays } from './ways'
 
 const $ = (id: string) => document.getElementById(id)!
 
-// Anciens liens : `/?demo` ouvrait la démo
-if (new URLSearchParams(window.location.search).has('demo')) window.location.replace(DEMO_PATH)
-
 // « Essayez maintenant » mène à la démo, sur le plan de salle : au visiteur de choisir son fauteuil
 for (const link of document.querySelectorAll<HTMLAnchorElement>('.demo-link')) {
   link.href = DEMO_PATH

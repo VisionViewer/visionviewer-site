@@ -2,7 +2,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { CODES, DEFAUT, LANGUES, SITE, cle, isIndexable, langueDe, lieu, llmsTxt, pageInputs, pagePath, questions, renderPage, sitemap, versions, type Langue } from './pages'
-import { appliquer, fichierServi, readRoutes } from './routes'
+import { appliquer, fichierServi, readRoutes, repondre } from './routes'
 
 const root = process.cwd()
 const files = Object.values(pageInputs(root))
@@ -23,8 +23,11 @@ const internalLinks = (page: string) =>
     .map(([tag, href]) => ({ path: href.replace(/[#?].*$/, ''), hreflang: /\shreflang="([^"]+)"/.exec(tag)?.[1] }))
     .filter(({ path }) => !/\.\w+$/.test(path))
 
-/** Une adresse que vercel.json redirige, et où. */
-const redirigee = (path: string) => appliquer(routes.redirects, path)
+/** Une adresse que vercel.json redirige, et où. Ses paramètres comptent : « /?demo ». */
+const redirigee = (address: string) => {
+  const url = new URL(address, SITE)
+  return appliquer(routes.redirects, url.pathname, url.searchParams)
+}
 /** Le fichier qui sert une adresse (réécritures de vercel.json), s'il existe. */
 function servie(path: string): string | null {
   const file = fichierServi(routes, path)
@@ -293,6 +296,8 @@ describe('Redirections', () => {
   /** Les adresses du site tel qu'il était en ligne le 20 novembre 2026, le français à la racine. */
   const ANCIENNES = [
     '/',
+    // Plus ancienne encore : avant d'avoir son adresse, la démo s'ouvrait par un paramètre
+    '/?demo',
     '/blog',
     '/demo',
     '/mentions-legales',
@@ -331,7 +336,22 @@ describe('Redirections', () => {
   })
 
   it('une ancienne adresse française mène à la même page, en français', () => {
-    for (const old of ANCIENNES.filter((path) => path !== '/')) expect(redirigee(old)!.vers, old).toBe(`/fr${old}`)
+    expect(redirigee('/?demo')!.vers).toBe('/fr/demo')
+    for (const old of ANCIENNES.filter((path) => !path.startsWith('/?') && path !== '/')) expect(redirigee(old)!.vers, old).toBe(`/fr${old}`)
+  })
+
+  it('une adresse terminée par une barre mène à la même, sans barre', () => {
+    const existe = (file: string) => existsSync(join(root, file))
+    expect(routes.trailingSlash, 'vercel.json : trailingSlash').toBe(false)
+    for (const langue of CODES) {
+      expect(repondre(routes, `/${langue}/`, new URLSearchParams(), existe), `/${langue}/`).toEqual({ code: 308, vers: `/${langue}` })
+      expect(repondre(routes, `/${langue}/blog/`, new URLSearchParams(), existe), `/${langue}/blog/`).toEqual({ code: 308, vers: `/${langue}/blog` })
+      expect(repondre(routes, `/${langue}`, new URLSearchParams(), existe), `/${langue}`).toEqual({ fichier: `${langue}.html` })
+    }
+    // La racine, elle, n'a pas de barre à perdre : elle mène à la langue par défaut
+    expect(repondre(routes, '/', new URLSearchParams(), existe)).toEqual({ code: 308, vers: `/${DEFAUT}` })
+    expect(repondre(routes, '/', new URLSearchParams('demo'), existe)).toEqual({ code: 308, vers: '/fr/demo' })
+    expect(repondre(routes, '/fr/nexistepas', new URLSearchParams(), existe)).toBeNull()
   })
 
   it('les adresses qui n’ont pas bougé répondent toujours, sans redirection', () => {
@@ -346,8 +366,12 @@ describe('Redirections', () => {
       expect(routes.redirects.some((other) => other.source === destination), `${from} → ${destination}`).toBe(false)
       expect(destination.startsWith('/'), `${from} : une redirection reste sur le site`).toBe(true)
     }
-    // Ni l'adresse IP, ni la langue du navigateur, ni un cookie : vercel.json n'a aucune condition
-    expect(readFileSync(join(root, 'vercel.json'), 'utf8')).not.toMatch(/"(has|missing)"\s*:/)
+    // Ni l'adresse IP, ni la langue du navigateur, ni un cookie : la seule condition permise porte
+    // sur l'adresse elle-même (un de ses paramètres), jamais sur qui la demande
+    const config = readFileSync(join(root, 'vercel.json'), 'utf8')
+    expect(config).not.toMatch(/"missing"\s*:/)
+    expect([...config.matchAll(/"type"\s*:\s*"(\w+)"/g)].map(([, type]) => type).filter((type) => type !== 'query'), 'conditions sur l’hôte, un en-tête ou un cookie').toEqual([])
+    for (const rule of routes.rewrites) expect(rule.has, `${rule.source} : une réécriture sans condition`).toBeUndefined()
   })
 
   it('rien de ce que lisent les moteurs ne cite une adresse redirigée : plan du site, llms.txt, données structurées', () => {

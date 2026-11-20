@@ -1,7 +1,19 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "vite",
+  "trailingSlash": false,
   "redirects": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "demo"
+        }
+      ],
+      "destination": "/fr/demo",
+      "permanent": true
+    },
     {
       "source": "/",
       "destination": "/en",
