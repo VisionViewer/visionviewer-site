@@ -64,6 +64,8 @@ Sans rien régler, l'écran est blanc et lumineux, comme dans la page de présen
 
 Dans la démo, les deux salles projettent un logo au centre de l'écran : l'emplacement « Votre logo ici » (`"screenLogo": "screens/votre-logo-ici.png"`), pour montrer à un cinéma où ira le sien. Un logo garde ses proportions et l'écran reste blanc autour de lui ; `screenImage`, s'il est donné, l'emporte. Retirer le champ `screenLogo` rend l'écran blanc.
 
+Le logo se traduit comme le nom de la salle, dans `traductions` : la démo anglaise projette « YOUR LOGO HERE » (`"traductions": { "en": { …, "screenLogo": "screens/your-logo-here.png" } }`). La langue est celle de la page (`<html lang>`) ; une langue sans logo à elle reprend celui du fichier. Les deux images sont dessinées pareil : 900 × 300, fond transparent, cadre pointillé `#a3a9b6`, texte en Helvetica Neue gras `#3d4250`, à la même largeur (786 px).
+
 
 ## Conventions
 

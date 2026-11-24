@@ -60,6 +60,13 @@ export const RACINE = `${SITE}/`
 /** Le nom du site et de son éditeur, et la façon dont on le cherche aussi : en deux mots. */
 export const NOM = 'VisionViewer'
 export const NOM_EN_DEUX_MOTS = 'Vision Viewer'
+/**
+ * Nos pages hors du site (profils, annuaires, dépôts), que les moteurs relient à la société par
+ * `sameAs` : c'est ce qui leur dit que la page GitHub ou LinkedIn de VisionViewer est la nôtre.
+ * En ajouter une dès qu'elle existe et porte le bon nom, à son adresse exacte ; la liste et l'ordre
+ * des inscriptions sont dans `widget/hors-du-site/`.
+ */
+export const PROFILS: string[] = ['https://github.com/VisionViewer']
 
 /** Les rubriques du blog, et l'ordre de leurs sections */
 type Rubrique = 'enquete' | 'guide' | 'article' | 'etude-de-cas'
@@ -389,6 +396,7 @@ function referencement(file: string, source: string, html: string, societe: Soci
     logo: { '@type': 'ImageObject', url: `${SITE}/icon-512.png`, width: 512, height: 512 },
     email: societe.contact,
     description: text.produit,
+    sameAs: PROFILS,
   }
   const graph: unknown[] = []
   const crumbs = (...steps: [name: string, file: string][]) => ({

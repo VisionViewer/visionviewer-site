@@ -2,7 +2,8 @@ import { useEffect, useLayoutEffect, useMemo, useRef, type RefObject } from 'rea
 import { useFrame } from '@react-three/fiber'
 import { useTexture } from '@react-three/drei'
 import * as THREE from 'three'
-import type { RoomLayout } from '../../lib/room'
+import { LANGUE } from '../../lib/langue'
+import { roomScreenLogo, type RoomLayout } from '../../lib/room'
 
 /** Adresse d'un fichier de `public/`, ou adresse complète telle quelle. */
 const publicUrl = (path: string): string => (/^(https?:)?\/\//.test(path) ? path : import.meta.env.BASE_URL + path.replace(/^\//, ''))
@@ -16,9 +17,12 @@ export function screenImageUrl(layout: RoomLayout): string | null {
   return path ? publicUrl(path) : null
 }
 
-/** Adresse du logo projeté au centre de l'écran (`screenLogo`) ; `null` s'il n'y en a pas. */
-export function screenLogoUrl(layout: RoomLayout): string | null {
-  const path = layout.config.screenLogo
+/**
+ * Adresse du logo projeté au centre de l'écran (`screenLogo`), dans la langue de la page : « YOUR
+ * LOGO HERE » sur la démo anglaise, « VOTRE LOGO ICI » sur la française ; `null` s'il n'y en a pas.
+ */
+export function screenLogoUrl(layout: RoomLayout, langue: string = LANGUE): string | null {
+  const path = roomScreenLogo(layout.config, langue)
   return path ? publicUrl(path) : null
 }
 

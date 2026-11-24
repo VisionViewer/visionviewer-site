@@ -263,6 +263,14 @@ describe('Référencement', () => {
         publisher: { '@id': `${SITE}/#organisation` },
       })
       expect(graph.find((node) => node['@type'] === 'Organization'), langue).toMatchObject({ name: 'VisionViewer', alternateName: 'Vision Viewer', url: `${SITE}/` })
+      // Ses profils hors du site : des adresses https complètes, chacune une fois, aucune chez nous
+      const profils = graph.find((node) => node['@type'] === 'Organization')?.sameAs as string[]
+      expect(profils, langue).toContain('https://github.com/VisionViewer')
+      expect(new Set(profils).size, langue).toBe(profils.length)
+      for (const profil of profils) {
+        expect(new URL(profil).protocol, profil).toBe('https:')
+        expect(new URL(profil).host, profil).not.toMatch(/(^|\.)visionviewer\.net$/)
+      }
     }
     for (const file of articles) {
       const graph = structured(html(file)).flatMap((data) => data['@graph'])

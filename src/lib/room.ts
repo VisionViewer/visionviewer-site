@@ -62,15 +62,17 @@ export interface RoomConfig {
   /**
    * Logo projeté au centre de l'écran, qui reste blanc autour de lui ; relatif au dossier `public/`.
    * Dans la démo : l'emplacement « Votre logo ici ». Sans effet si `screenImage` est donné.
+   * Une autre langue peut avoir le sien, dans `traductions` (voir `roomScreenLogo`).
    */
   screenLogo?: string
   /** Une phrase qui décrit la salle, affichée par la page de présentation */
   description?: string
   /**
-   * Le nom et la description de la salle dans d'autres langues que celle du fichier, par code de
-   * langue : `{ "en": { "name": "Auditorium 1", "description": "…" } }`. Voir `roomTexts`.
+   * Le nom, la description et le logo de l'écran de la salle dans d'autres langues que celle du
+   * fichier, par code de langue : `{ "en": { "name": "Auditorium 1", "description": "…",
+   * "screenLogo": "screens/your-logo-here.png" } }`. Voir `roomTexts` et `roomScreenLogo`.
    */
-  traductions?: Record<string, { name?: string; description?: string }>
+  traductions?: Record<string, { name?: string; description?: string; screenLogo?: string }>
   dimensions: RoomDimensions
 }
 
@@ -354,4 +356,12 @@ export function neighborSeat(
 export function roomTexts(config: RoomConfig, langue: string): { name: string; description?: string } {
   const traduction = config.traductions?.[langue]
   return { name: traduction?.name ?? config.name, description: traduction ? traduction.description : config.description }
+}
+
+/**
+ * Le logo projeté sur l'écran d'une salle dans une langue : celui de sa traduction (« YOUR LOGO
+ * HERE » en anglais), à défaut celui du fichier (« VOTRE LOGO ICI »).
+ */
+export function roomScreenLogo(config: RoomConfig, langue: string): string | undefined {
+  return config.traductions?.[langue]?.screenLogo ?? config.screenLogo
 }

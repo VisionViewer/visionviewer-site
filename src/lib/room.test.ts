@@ -1,6 +1,8 @@
+import { existsSync } from 'node:fs'
 import { describe, expect, it, vi } from 'vitest'
+import { CODES } from '../../tools/pages'
 import { layouts } from '../data/rooms'
-import { isSelectable } from './room'
+import { isSelectable, roomScreenLogo } from './room'
 import { EYE_HEIGHT, eyePosition, viewMetrics } from './view'
 
 const salle1 = layouts.find((l) => l.config.id === 'salle-1')!
@@ -143,6 +145,17 @@ describe('Toutes les salles', () => {
       for (const id of layout.config.occupied ?? []) {
         expect(layout.slots.get(id)?.kind, `${layout.config.id} : ${id}`).toBe('seat')
       }
+    }
+  })
+
+  it('projettent sur l’écran un logo dans la langue de la page', () => {
+    for (const layout of layouts) {
+      for (const langue of CODES) {
+        const logo = roomScreenLogo(layout.config, langue)
+        expect(logo && existsSync(new URL(`../../public/${logo}`, import.meta.url)), `${layout.config.id} · ${langue} : ${logo}`).toBe(true)
+      }
+      expect(roomScreenLogo(layout.config, 'fr')).toBe('screens/votre-logo-ici.png')
+      expect(roomScreenLogo(layout.config, 'en')).toBe('screens/your-logo-here.png')
     }
   })
 
