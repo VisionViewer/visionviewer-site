@@ -38,11 +38,16 @@ function servie(path: string): string | null {
 }
 /** Les adresses du site que cite un texte (plan du site, llms.txt). */
 const adresses = (text: string) => [...text.matchAll(new RegExp(`${SITE.replace(/\./g, '\\.')}(/[^"<)\\s]*)?`, 'g'))].map(([, path]) => (path ?? '/').replace(/[#?].*$/, ''))
-/** Les adresses du site où mènent des données structurées. Un `@id` nomme une chose, il n'y mène pas : il ne compte pas. */
+/**
+ * Les adresses du site où mènent des données structurées. Un `@id` nomme une chose, il n'y mène
+ * pas : il ne compte pas, pas plus que `@type` ou `@context`. `@graph`, lui, porte tout le reste.
+ */
 function liensDe(data: unknown): string[] {
   if (Array.isArray(data)) return data.flatMap(liensDe)
   if (!data || typeof data !== 'object') return []
-  return Object.entries(data).flatMap(([name, value]) => (name.startsWith('@') ? [] : typeof value === 'string' ? (value.startsWith(SITE) ? adresses(value) : []) : liensDe(value)))
+  return Object.entries(data).flatMap(([name, value]) =>
+    name.startsWith('@') && name !== '@graph' ? [] : typeof value === 'string' ? (value.startsWith(SITE) ? adresses(value) : []) : liensDe(value),
+  )
 }
 
 /** Les pages qui gardent leur « noindex » : les six pages légales, par leur clé, dans chaque langue. */
@@ -50,6 +55,8 @@ const LEGALES = ['legal-notice', 'privacy', 'terms-of-use', 'terms-of-sale', 'sl
 const articles = files.filter((file) => chemin(file).startsWith('blog/'))
 const indexables = files.filter((file) => isIndexable(html(file)))
 const tag = (page: string, pattern: RegExp) => pattern.exec(page)?.[1] ?? ''
+/** La longueur d'un texte tel qu'il s'affiche : une entité (« &nbsp; ») y compte pour un caractère. */
+const longueur = (text: string) => text.replace(/&(?:[a-z]+|#\d+);/g, ' ').length
 const structured = (page: string) => [...page.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(([, json]) => JSON.parse(json) as { '@graph': Record<string, unknown>[] })
 const alternatesOf = (text: string) => [...text.matchAll(/hreflang="([^"]+)" href="([^"]+)"/g)].map(([, hreflang, href]) => `${hreflang} ${href}`)
 
@@ -221,11 +228,15 @@ describe('Référencement', () => {
       const title = tag(page, /<title>([\s\S]*?)<\/title>/)
       const description = tag(page, /<meta name="description" content="([^"]*)"/)
       expect(title.length, `${file} : titre « ${title} »`).toBeGreaterThan(20)
-      // Ces longueurs sont celles qu'un moteur affiche : elles ne valent que pour les pages qu'il garde
+      // Ces longueurs sont celles qu'un moteur affiche sans couper : elles ne valent que pour les
+      // pages qu'il garde. Au-delà, Bing le signale en erreur (« Title too long », « Meta
+      // Description too long or too short ») ; il ne publie pas ses seuils, ceux-ci sont en deçà de
+      // ceux qu'on lui prête (70 et 160). Un article se passe donc de « — VisionViewer » dans son
+      // titre : le nom du site s'affiche déjà au-dessus de chaque résultat.
       if (indexables.includes(file)) {
-        expect(title.length, `${file} : titre trop long pour un résultat de recherche (${title.length})`).toBeLessThanOrEqual(90)
-        expect(description.length, `${file} : description`).toBeGreaterThanOrEqual(110)
-        expect(description.length, `${file} : description trop longue (${description.length})`).toBeLessThanOrEqual(170)
+        expect(longueur(title), `${file} : titre trop long pour un résultat de recherche (${longueur(title)})`).toBeLessThanOrEqual(65)
+        expect(longueur(description), `${file} : description`).toBeGreaterThanOrEqual(110)
+        expect(longueur(description), `${file} : description trop longue (${longueur(description)})`).toBeLessThanOrEqual(155)
       }
       expect(titles.get(title), `${file} : même titre que ${titles.get(title)}`).toBeUndefined()
       expect(descriptions.get(description), `${file} : même description que ${descriptions.get(description)}`).toBeUndefined()
@@ -240,7 +251,18 @@ describe('Référencement', () => {
       const graph = structured(html(`${langue}.html`)).flatMap((data) => data['@graph'])
       expect(graph.map((node) => node['@type']), langue).toEqual(expect.arrayContaining(['Organization', 'WebSite', 'SoftwareApplication', 'FAQPage']))
       expect(graph.find((node) => node['@type'] === 'SoftwareApplication'), langue).toMatchObject({ inLanguage: langue, url: `${SITE}/${langue}` })
-      expect(graph.find((node) => node['@type'] === 'WebSite'), langue).toMatchObject({ inLanguage: CODES })
+      // Le nom du site : un moteur ne le lit que s'il est déclaré pour la racine du domaine, jamais
+      // pour la présentation d'une langue. Le même dans chaque langue, avec son écriture en deux mots.
+      expect(graph.find((node) => node['@type'] === 'WebSite'), langue).toEqual({
+        '@type': 'WebSite',
+        '@id': `${SITE}/#site`,
+        name: 'VisionViewer',
+        alternateName: ['Vision Viewer', 'visionviewer.net'],
+        url: `${SITE}/`,
+        inLanguage: CODES,
+        publisher: { '@id': `${SITE}/#organisation` },
+      })
+      expect(graph.find((node) => node['@type'] === 'Organization'), langue).toMatchObject({ name: 'VisionViewer', alternateName: 'Vision Viewer', url: `${SITE}/` })
     }
     for (const file of articles) {
       const graph = structured(html(file)).flatMap((data) => data['@graph'])
@@ -272,6 +294,18 @@ describe('Référencement', () => {
     const listed = [...sitemap(root).matchAll(/<loc>([^<]+)<\/loc>/g)].map(([, url]) => url).sort()
     expect(listed).toEqual(indexables.map((file) => SITE + pagePath(file)).sort())
     expect(readFileSync(join(root, 'public/robots.txt'), 'utf8')).toContain(`Sitemap: ${SITE}/sitemap.xml`)
+  })
+
+  it('date dans sitemap.xml chaque article, et toute page qui déclare sa dernière modification', () => {
+    const entries = sitemap(root).split('<url>').slice(1)
+    for (const entry of entries) {
+      const file = indexables.find((name) => SITE + pagePath(name) === tag(entry, /<loc>([^<]+)<\/loc>/))!
+      const declared = tag(source(file), /<meta name="vv:maj" content="([^"]*)"/) || (articles.includes(file) ? tag(source(file), /<meta name="vv:date" content="([^"]*)"/) : '')
+      expect(tag(entry, /<lastmod>([^<]+)<\/lastmod>/), file).toBe(declared)
+      if (declared) expect(declared, `${file} : une date, jamais à venir pour une page en ligne`).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+    }
+    // Les présentations portent une date : c'est elle qui dit à un moteur qu'elles ont changé
+    for (const langue of CODES) expect(tag(source(`${langue}.html`), /<meta name="vv:maj" content="([^"]*)"/), `${langue}.html`).toMatch(/^\d{4}-\d{2}-\d{2}$/)
   })
 
   it('donne dans sitemap.xml les mêmes traductions que dans l’en-tête de chaque page', () => {
@@ -378,9 +412,15 @@ describe('Redirections', () => {
   })
 
   it('rien de ce que lisent les moteurs ne cite une adresse redirigée : plan du site, llms.txt, données structurées', () => {
-    const cited = [...adresses(sitemap(root)), ...adresses(llmsTxt(root)), ...files.flatMap((file) => liensDe(structured(html(file))))]
+    const structurees = files.flatMap((file) => liensDe(structured(html(file))))
+    const cited = [...adresses(sitemap(root)), ...adresses(llmsTxt(root)), ...structurees]
     expect(cited.length).toBeGreaterThan(files.length)
-    for (const path of cited.filter((address) => !/\.\w+$/.test(address))) {
+    // Une seule exception, voulue : la racine du domaine, qui redirige vers la langue par défaut.
+    // C'est l'adresse du site et de son éditeur dans les données structurées, parce qu'un moteur
+    // ne lit le nom d'un site que là. Elle ne se cite nulle part ailleurs.
+    expect(structurees.filter((path) => path === '/').length, 'la racine, adresse du site dans les données structurées').toBeGreaterThan(0)
+    expect([...adresses(sitemap(root)), ...adresses(llmsTxt(root))], 'la racine, dans le plan du site ou llms.txt').not.toContain('/')
+    for (const path of cited.filter((address) => address !== '/' && !/\.\w+$/.test(address))) {
       expect(redirigee(path), `${path} est redirigée`).toBeNull()
       expect(servie(path), `${path} : aucune page à cette adresse`).not.toBeNull()
     }

@@ -50,6 +50,16 @@ const LLMS = 'src/pages/llms.md'
 export const SITE = 'https://visionviewer.net'
 const IMAGE = `${SITE}/og-visionviewer.jpg`
 const ORGANISATION = `${SITE}/#organisation`
+/**
+ * L'accueil du site, pour un moteur : la racine du domaine, et non la présentation d'une langue.
+ * Google ne lit le nom d'un site que sur cette adresse-là (« / » redirige, il lit alors la page où
+ * elle mène), et l'ignore s'il est déclaré pour un sous-dossier comme `/en` : il affichait
+ * « visionviewer.net » à la place de « VisionViewer ».
+ */
+export const RACINE = `${SITE}/`
+/** Le nom du site et de son éditeur, et la façon dont on le cherche aussi : en deux mots. */
+export const NOM = 'VisionViewer'
+export const NOM_EN_DEUX_MOTS = 'Vision Viewer'
 
 /** Les rubriques du blog, et l'ordre de leurs sections */
 type Rubrique = 'enquete' | 'guide' | 'article' | 'etude-de-cas'
@@ -370,12 +380,12 @@ function referencement(file: string, source: string, html: string, societe: Soci
   ]
   if (!isIndexable(html)) return tags.join('\n')
 
-  const home = pageUrl(accueil(langue))
   const organisation = {
     '@type': 'Organization',
     '@id': ORGANISATION,
-    name: 'VisionViewer',
-    url: home,
+    name: NOM,
+    alternateName: NOM_EN_DEUX_MOTS,
+    url: RACINE,
     logo: { '@type': 'ImageObject', url: `${SITE}/icon-512.png`, width: 512, height: 512 },
     email: societe.contact,
     description: text.produit,
@@ -389,11 +399,14 @@ function referencement(file: string, source: string, html: string, societe: Soci
   if (isAccueil(file)) {
     graph.push(
       organisation,
-      { '@type': 'WebSite', '@id': `${SITE}/#site`, name: 'VisionViewer', url: home, inLanguage: CODES, publisher: { '@id': ORGANISATION } },
+      // Le même nœud dans chaque langue : un site, un nom, une adresse. Les autres noms sont ceux que
+      // Google peut retenir à défaut du premier, dans l'ordre : l'écriture en deux mots, puis le domaine.
+      { '@type': 'WebSite', '@id': `${SITE}/#site`, name: NOM, alternateName: [NOM_EN_DEUX_MOTS, new URL(SITE).host], url: RACINE, inLanguage: CODES, publisher: { '@id': ORGANISATION } },
       {
         '@type': 'SoftwareApplication',
         '@id': `${SITE}/#produit`,
-        name: 'VisionViewer',
+        name: NOM,
+        alternateName: NOM_EN_DEUX_MOTS,
         url,
         applicationCategory: 'BusinessApplication',
         operatingSystem: 'Web',
@@ -531,12 +544,17 @@ function indexablePages(root: string): { file: string; source: string }[] {
     .filter(({ source }) => isIndexable(source))
 }
 
-/** `sitemap.xml` : chaque page ouverte aux moteurs, avec ses traductions et, pour un article, sa date. */
+/**
+ * `sitemap.xml` : chaque page ouverte aux moteurs, avec ses traductions et sa date. Un article a
+ * toujours la sienne ; une autre page n'en a une que si elle déclare sa dernière modification
+ * (`vv:maj`), à tenir à la main : une date fausse ou refaite à chaque construction ferait perdre
+ * au moteur la confiance qu'il accorde à toutes les autres.
+ */
 export function sitemap(root: string = process.cwd()): string {
   const urls = indexablePages(root)
     .sort((a, b) => pagePath(a.file).localeCompare(pagePath(b.file)))
     .map(({ file, source }) => {
-      const date = isArticle(file) ? meta(source, 'vv:maj') || meta(source, 'vv:date') : ''
+      const date = meta(source, 'vv:maj') || (isArticle(file) ? meta(source, 'vv:date') : '')
       return [
         '  <url>',
         `    <loc>${pageUrl(file)}</loc>`,
